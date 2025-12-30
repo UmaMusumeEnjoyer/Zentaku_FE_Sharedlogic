@@ -1,5 +1,5 @@
 export declare const NAMESPACES: readonly ["common", "HomePage"];
-export declare const LANGUAGES: readonly ["vi", "en", "jp"];
+export declare const LANGUAGES: readonly ["en", "jp"];
 export declare const DEFAULT_NS = "common";
 export declare const DEFAULT_LANG = "en";
 import common from './locales/en/common.json';

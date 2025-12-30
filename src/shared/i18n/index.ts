@@ -4,7 +4,7 @@
 export const NAMESPACES = ['common', 'HomePage'] as const;
 
 // 2. Định nghĩa danh sách Ngôn ngữ
-export const LANGUAGES = ['vi', 'en', 'jp'] as const;
+export const LANGUAGES = ['en', 'jp'] as const;
 
 // 3. Config mặc định
 export const DEFAULT_NS = 'common';
