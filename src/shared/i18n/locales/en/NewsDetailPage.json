@@ -1,0 +1,12 @@
+{
+  "news_detail": {
+    "not_found": {
+      "title": "News Not Found",
+      "message": "News with ID \"{{id}}\" does not exist.",
+      "back_home": "Back to Home"
+    },
+    "navigation": {
+      "back_to_list": "Back to Home"
+    }
+  }
+}

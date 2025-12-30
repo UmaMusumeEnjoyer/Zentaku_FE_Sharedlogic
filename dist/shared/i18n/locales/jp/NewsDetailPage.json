@@ -1,0 +1,12 @@
+{
+    "news_detail": {
+        "not_found": {
+            "title": "ニュースが見つかりません",
+            "message": "ID \"{{id}}\" のニュースは存在しません。",
+            "back_home": "ホームに戻る"
+        },
+        "navigation": {
+            "back_to_list": "ホームに戻る"
+        }
+    }
+}
