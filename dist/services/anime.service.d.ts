@@ -1,0 +1,16 @@
+export declare const animeService: {
+    getById: (id: number | string) => Promise<import("axios").AxiosResponse<any, any, {}> | {
+        data: {};
+    }>;
+    getCharacters: (id: number | string) => Promise<import("axios").AxiosResponse<any, any, {}> | {
+        data: {};
+    }>;
+    getOverview: (id: number | string) => Promise<import("axios").AxiosResponse<any, any, {}> | {
+        data: {};
+    }>;
+    searchByName: (keyword: string) => Promise<import("axios").AxiosResponse<any, any, {}>>;
+    getTrending: () => Promise<import("axios").AxiosResponse<any, any, {}> | {
+        data: {};
+    }>;
+};
+//# sourceMappingURL=anime.service.d.ts.map

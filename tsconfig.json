@@ -1,15 +1,38 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "strict": true,
-    "esModuleInterop": true,
+    /* 1. Cấu hình cơ bản cho môi trường Modern (Web & Mobile) */
+    "target": "es2016",                       /* Build ra JS đời mới vừa đủ */
+    "lib": ["dom", "dom.iterable", "esnext"], /* Hỗ trợ các hàm mới nhất của JS và DOM */
+    "allowJs": true,
     "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,                           /* Bắt buộc khai báo type rõ ràng (Quan trọng) */
     "forceConsistentCasingInFileNames": true,
+    "module": "esnext",                       /* Giữ nguyên import/export để Web/Mobile tree-shaking tối ưu */
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    
+    /* 2. Hỗ trợ React Hooks (dù không có JSX) */
+    "jsx": "react-jsx",                       /* Để dùng được các hook của React mà không lỗi */
+
+    /* 3. Output config for build */
+    "outDir": "./dist",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+
+    /* 4. Cấu hình đường dẫn ngắn (Alias Path) */
+    /* Giúp bạn import sạch đẹp: import { ... } from '@shared/utils' */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@core/*": ["src/core/*"],
+      "@pages/*": ["src/pages/*"],
+      "@shared/*": ["src/shared/*"],
+      "@mocks/*": ["src/mocks/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "build"]
 }

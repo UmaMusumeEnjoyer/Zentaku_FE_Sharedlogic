@@ -1,0 +1,20 @@
+# Source files (chỉ publish dist, không publish src)
+src/
+tsconfig.json
+*.ts
+!*.d.ts
+
+# Development files
+node_modules/
+.git/
+.gitignore
+.vscode/
+*.log
+
+# Test files
+__tests__/
+*.test.ts
+*.spec.ts
+
+# Documentation (optional - có thể giữ README)
+# README.md
