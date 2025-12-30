@@ -1,0 +1,16 @@
+{
+  "loading": "Loading...",
+  "video_unsupported": "Your browser does not support the video tag.",
+  "buttons": {
+    "sign_up": "Sign Up",
+    "learn_more": "Learn More",
+    "read_more": "Read More"
+  },
+  "footer": {
+    "about_us": "About Us",
+    "contact": "Contact",
+    "privacy_policy": "Privacy Policy",
+    "terms_of_service": "Terms of Service",
+    "copyright": "© {{year}} MyAnilist Site. All Rights Reserved."
+  }
+}

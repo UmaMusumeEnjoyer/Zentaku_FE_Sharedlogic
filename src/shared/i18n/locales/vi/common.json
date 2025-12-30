@@ -1,0 +1,16 @@
+{
+  "loading": "Đang tải...",
+  "video_unsupported": "Trình duyệt của bạn không hỗ trợ thẻ video.",
+  "buttons": {
+    "sign_up": "Đăng ký",
+    "learn_more": "Tìm hiểu thêm",
+    "read_more": "Đọc thêm"
+  },
+  "footer": {
+    "about_us": "Về chúng tôi",
+    "contact": "Liên hệ",
+    "privacy_policy": "Chính sách bảo mật",
+    "terms_of_service": "Điều khoản dịch vụ",
+    "copyright": "© {{year}} MyAnilist Site. Đã đăng ký bản quyền."
+  }
+}

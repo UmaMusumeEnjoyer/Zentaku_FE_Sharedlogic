@@ -1,0 +1,28 @@
+{
+  "hero": {
+    "title": "Manage <br /> Your Anime <br /> Dream Journey",
+    "subtitle": "From the latest series to the classics. Search, follow. Never lose your way in your watching list again."
+  },
+  "features": {
+    "label": "OUR FEATURES",
+    "title": "How our data will help your <br /> day to day Anime",
+    "intro": "Get ready for an extraordinary journey into the world of Anime.",
+    "exploration": {
+      "title": "Endless Exploration",
+      "desc": "Finding your next series has never been easier. Our detailed filters allow you to delve into our vast library by genre, rating, or studio. From blockbuster hits to hidden gems, your next adventure is just a click away."
+    },
+    "analytics": {
+      "title": "Analytics",
+      "desc": "Receive detailed information about your anime viewing journey. Discover how much time you've spent watching, which genres you watch the most, and your average rating."
+    }
+  },
+  "community_cta": {
+    "title": "Connecting Communities",
+    "desc": "Don't miss out on information about upcoming series, new broadcast schedules, and join in lively discussions about the anime trends of the season."
+  },
+  "sections": {
+    "popular": "Popular This Season",
+    "genres": "Explore by Genre",
+    "latest_news": "Latest News"
+  }
+}
