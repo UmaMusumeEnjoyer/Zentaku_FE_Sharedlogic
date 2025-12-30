@@ -8,6 +8,7 @@ export * from './services/list.service';
 export * from './services/notification.service';
 // Export features
 export * from './features/home';
+export * from './features/animeNewsDetail';
 // Export i18n configuration và translations
 export * from './shared/i18n';
 export { default as commonEn } from './shared/i18n/locales/en/common.json';

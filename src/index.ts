@@ -10,6 +10,7 @@ export * from './services/notification.service';
 
 // Export features
 export * from './features/home';
+export * from './features/animeNewsDetail';
 
 // Export i18n configuration và translations
 export * from './shared/i18n';

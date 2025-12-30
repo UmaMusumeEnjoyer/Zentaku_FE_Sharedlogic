@@ -5,6 +5,7 @@ export * from './services/user.service';
 export * from './services/list.service';
 export * from './services/notification.service';
 export * from './features/home';
+export * from './features/animeNewsDetail';
 export * from './shared/i18n';
 export { default as commonEn } from './shared/i18n/locales/en/common.json';
 export { default as homePageEn } from './shared/i18n/locales/en/HomePage.json';
