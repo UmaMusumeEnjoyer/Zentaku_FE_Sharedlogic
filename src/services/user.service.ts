@@ -1,4 +1,4 @@
-import { apiClient, getCached, setCached, TTL_SHORT } from '../core/apiClient';
+import { apiClient, getCached, setCached, TTL_SHORT } from '../api/apiClient';
 
 export const userService = {
   // --- Profile ---

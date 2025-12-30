@@ -1,11 +1,10 @@
-export { initSharedLogic, SharedConfig } from './core/config';
+export { initSharedLogic, SharedConfig } from './api/config';
 export * from './services/auth.service';
 export * from './services/anime.service';
 export * from './services/user.service';
 export * from './services/list.service';
 export * from './services/notification.service';
-export * from './pages/HomePage/useHomeLogic';
-export * from './pages/HomePage/constants';
+export * from './features/home';
 export * from './shared/i18n';
 export { default as commonEn } from './shared/i18n/locales/en/common.json';
 export { default as homePageEn } from './shared/i18n/locales/en/HomePage.json';

@@ -1,7 +1,8 @@
-// src/pages/Home/useHomeLogic.ts
+// src/features/home/hooks/useHomeLogic.ts
 import { useState, useEffect } from 'react';
-import { TRENDING_ANIME_MOCK, GENRES_MOCK, LATEST_NEWS_MOCK, AnimeItem, NewsItem } from './constants';
-// Sau này import animeService từ '../../services/anime.service' vào đây
+import { TRENDING_ANIME_MOCK, GENRES_MOCK, LATEST_NEWS_MOCK } from '../constants/homeConstants';
+import { AnimeItem, NewsItem } from '../types/home.types';
+// Sau này import animeService từ '../../../services/anime.service' vào đây
 
 export const useHomeLogic = () => {
   // Giả lập state như khi gọi API thật

@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { apiClient, getCached, setCached, TTL_SHORT } from '../core/apiClient';
+import { apiClient, getCached, setCached, TTL_SHORT } from '../api/apiClient';
 export const userService = {
     // --- Profile ---
     getProfile: (username) => {

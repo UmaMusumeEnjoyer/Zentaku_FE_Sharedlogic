@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { apiClient, getCached, setCached } from '../core/apiClient';
+import { apiClient, getCached, setCached } from '../api/apiClient';
 export const animeService = {
     getById: (id) => __awaiter(void 0, void 0, void 0, function* () {
         const key = `anime:${id}:detail`;

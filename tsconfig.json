@@ -27,7 +27,7 @@
     /* Giúp bạn import sạch đẹp: import { ... } from '@shared/utils' */
     "baseUrl": ".",
     "paths": {
-      "@core/*": ["src/core/*"],
+      "@core/*": ["src/api/*"],
       "@pages/*": ["src/pages/*"],
       "@shared/*": ["src/shared/*"],
       "@mocks/*": ["src/mocks/*"]

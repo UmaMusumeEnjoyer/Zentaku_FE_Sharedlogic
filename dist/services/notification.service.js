@@ -1,4 +1,4 @@
-import { apiClient } from '../core/apiClient';
+import { apiClient } from '../api/apiClient';
 export const notificationService = {
     getPreferences: () => apiClient.get('/notification/preferences/'),
     updatePreferences: (data) => apiClient.put('/notification/preferences/', data),

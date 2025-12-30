@@ -1,4 +1,4 @@
-import { apiClient } from '../core/apiClient';
+import { apiClient } from '../api/apiClient';
 export const listService = {
     // --- CRUD ---
     getUserLists: (username) => {

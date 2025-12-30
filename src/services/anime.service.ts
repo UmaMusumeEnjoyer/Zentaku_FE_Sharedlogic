@@ -1,4 +1,4 @@
-import { apiClient, getCached, setCached, TTL_DEFAULT } from '../core/apiClient';
+import { apiClient, getCached, setCached, TTL_DEFAULT } from '../api/apiClient';
 
 export const animeService = {
   getById: async (id: number | string) => {

@@ -1,24 +1,11 @@
-// src/pages/Home/constants.ts
-
-export interface AnimeItem {
-  id: number;
-  title: string;
-  img: string;
-  desc: string;
-}
-
-export interface NewsItem {
-  id: number;
-  title: string;
-  img: string;
-  snippet: string;
-}
+// src/features/home/constants/homeConstants.ts
+import { AnimeItem, NewsItem } from '../types/home.types';
 
 export const TRENDING_ANIME_MOCK: AnimeItem[] = [
-  { id: 183385, title: 'This Monster Wants to Eat Me', img: 'https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx123777-sdb3Fts3FlVH.jpg', desc: '“I’ve come to eat you.” So softly utters the mermaid...' },
+  { id: 183385, title: 'This Monster Wants to Eat Me', img: 'https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx123777-sdb3Fts3FlVH.jpg', desc: '"I\'ve come to eat you." So softly utters the mermaid...' },
   { id: 109287, title: 'Adachi and Shimamura', img: 'https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx92550-gIC8HZR1cun2.jpg', desc: 'Adachi spends her school days skipping class until she meets fellow delinquent ...' },
   { id: 98444, title: 'Laid-Back Camp', img: 'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx98444-Vzysp1EsrzgD.jpg', desc: 'Rin likes to go camping by herself along the lakes that provide a scenic view of Mt. Fuji...' },
-  { id: 113418, title: 'Super Cub', img: 'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx113418-OjWcmCXAHWkq.jpg', desc: 'There’s freedom in loneliness, and Koguma finds hers on a motorcycle. A Honda Super...' },
+  { id: 113418, title: 'Super Cub', img: 'https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx113418-OjWcmCXAHWkq.jpg', desc: 'There\'s freedom in loneliness, and Koguma finds hers on a motorcycle. A Honda Super...' },
 ];
 
 export const GENRES_MOCK = ['Shonen', 'Isekai', 'Slice of Life', 'Sci-Fi', 'Fantasy', 'Yuri'];
