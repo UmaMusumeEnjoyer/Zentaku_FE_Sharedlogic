@@ -13,4 +13,5 @@ export { default as commonVi } from './shared/i18n/locales/vi/common.json';
 export { default as homePageVi } from './shared/i18n/locales/vi/HomePage.json';
 export { default as commonJp } from './shared/i18n/locales/jp/common.json';
 export { default as homePageJp } from './shared/i18n/locales/jp/HomePage.json';
+export * from './components/AnimeCard';
 //# sourceMappingURL=index.d.ts.map
