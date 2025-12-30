@@ -1,4 +1,4 @@
-import { AnimeItem, NewsItem } from '../types/home.types';
+import { AnimeItem, NewsItem } from '../home.types';
 export declare const useHomeLogic: () => {
     trendingAnime: AnimeItem[];
     genres: string[];

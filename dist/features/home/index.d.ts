@@ -1,4 +1,4 @@
-export * from './hooks/useHomeLogic';
-export * from './types/home.types';
-export * from './constants/homeConstants';
+export * from './useHomeLogic';
+export * from './home.types';
+export * from './homeConstants';
 //# sourceMappingURL=index.d.ts.map

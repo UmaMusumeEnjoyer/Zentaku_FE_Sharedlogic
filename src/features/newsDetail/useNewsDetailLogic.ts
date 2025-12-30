@@ -1,4 +1,4 @@
-import { newsData } from '../constants/newsData'; // Đảm bảo đường dẫn import đúng
+import { newsData } from './newsData'; // Đảm bảo đường dẫn import đúng
 
 export const useNewsDetailLogic = (id?: string) => {
   // Logic nghiệp vụ: Tìm tin tức dựa trên ID

@@ -1,7 +1,7 @@
 // src/features/home/hooks/useHomeLogic.ts
 import { useState, useEffect } from 'react';
-import { TRENDING_ANIME_MOCK, GENRES_MOCK, LATEST_NEWS_MOCK } from '../constants/homeConstants';
-import { AnimeItem, NewsItem } from '../types/home.types';
+import { TRENDING_ANIME_MOCK, GENRES_MOCK, LATEST_NEWS_MOCK } from './homeConstants';
+import { AnimeItem, NewsItem } from './home.types';
 // Sau này import animeService từ '../../../services/anime.service' vào đây
 
 export const useHomeLogic = () => {

@@ -1,5 +1,5 @@
 // src/features/home/constants/homeConstants.ts
-import { AnimeItem, NewsItem } from '../types/home.types';
+import { AnimeItem, NewsItem } from './home.types';
 
 export const TRENDING_ANIME_MOCK: AnimeItem[] = [
   { id: 183385, title: 'This Monster Wants to Eat Me', img: 'https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx123777-sdb3Fts3FlVH.jpg', desc: '"I\'ve come to eat you." So softly utters the mermaid...' },
