@@ -1,0 +1,11 @@
+export declare const NAMESPACES: readonly ["common", "HomePage"];
+export declare const LANGUAGES: readonly ["vi", "en", "jp"];
+export declare const DEFAULT_NS = "common";
+export declare const DEFAULT_LANG = "en";
+import common from './locales/en/common.json';
+import HomePage from './locales/en/HomePage.json';
+export interface I18nSchema {
+    common: typeof common;
+    HomePage: typeof HomePage;
+}
+//# sourceMappingURL=index.d.ts.map
