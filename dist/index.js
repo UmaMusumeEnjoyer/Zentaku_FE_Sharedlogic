@@ -22,5 +22,7 @@ export { default as RankingSectionEn } from './shared/i18n/locales/en/RankingSec
 export { default as RankingSectionJp } from './shared/i18n/locales/jp/RankingSection.json';
 export { default as charactersSectionJp } from './shared/i18n/locales/jp/CharactersSection.json';
 export { default as charactersSectionEn } from './shared/i18n/locales/en/CharactersSection.json';
+export { default as staffSectionJp } from './shared/i18n/locales/jp/StaffSection.json';
+export { default as staffSectionEn } from './shared/i18n/locales/en/StaffSection.json';
 export * from './components/AnimeCard';
 //# sourceMappingURL=index.js.map
