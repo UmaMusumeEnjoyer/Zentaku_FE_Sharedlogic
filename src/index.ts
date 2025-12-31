@@ -21,5 +21,7 @@ export { default as commonJp } from './shared/i18n/locales/jp/common.json';
 export { default as homePageJp } from './shared/i18n/locales/jp/HomePage.json';
 export { default as newsDetailPageEn } from './shared/i18n/locales/en/NewsDetailPage.json';
 export { default as newsDetailPageJp } from './shared/i18n/locales/jp/NewsDetailPage.json';
+export { default as characterSectionEn } from './shared/i18n/locales/en/RankingSection.json';
+export { default as characterSectionJp } from './shared/i18n/locales/jp/RankingSection.json';
 
 export * from './components/AnimeCard';
