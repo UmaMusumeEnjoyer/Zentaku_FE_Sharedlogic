@@ -1,0 +1,12 @@
+{
+    "ranking": {
+        "no_available": "No rankings available.",
+        "format": "#{{rank}} {{context}} {{season}} {{year}}",
+        "season": {
+            "winter": "Winter",
+            "spring": "Spring",
+            "summer": "Summer",
+            "fall": "Fall"
+        }
+    }
+}
