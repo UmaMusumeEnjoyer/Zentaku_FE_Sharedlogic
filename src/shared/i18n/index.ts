@@ -2,7 +2,7 @@
 
 // 1. Định nghĩa danh sách Namespace (tương ứng với tên các file JSON)
 export const NAMESPACES = ['common', 'HomePage', 'NewsDetailPage', 'RankingSection'
-    , 'CharactersSection'
+    , 'CharactersSection', 'StaffSection'
 ] as const;
 
 // 2. Định nghĩa danh sách Ngôn ngữ

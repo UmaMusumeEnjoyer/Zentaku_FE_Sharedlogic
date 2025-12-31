@@ -46,5 +46,14 @@ export const animeService = {
   },
   
   // ... Bạn có thể copy nốt các hàm getAnimeStaff, getAnimeStats vào đây tương tự
+  getAnimeStaff: async (id: number | string) => {
+    const key = `anime:${id}:staff`;
+    const cached = getCached(key);
+    if (cached) return { data: cached };
+    
+    const res = await apiClient.get(`/anilist/anime/${id}/staffs/`);
+    setCached(key, res.data);
+    return res;
+  },
   
 };

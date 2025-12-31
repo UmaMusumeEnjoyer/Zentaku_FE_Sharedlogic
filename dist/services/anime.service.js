@@ -49,5 +49,14 @@ export const animeService = {
         return res;
     }),
     // ... Bạn có thể copy nốt các hàm getAnimeStaff, getAnimeStats vào đây tương tự
+    getAnimeStaff: (id) => __awaiter(void 0, void 0, void 0, function* () {
+        const key = `anime:${id}:staff`;
+        const cached = getCached(key);
+        if (cached)
+            return { data: cached };
+        const res = yield apiClient.get(`/anilist/anime/${id}/staffs/`);
+        setCached(key, res.data);
+        return res;
+    }),
 };
 //# sourceMappingURL=anime.service.js.map

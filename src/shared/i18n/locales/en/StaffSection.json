@@ -1,0 +1,11 @@
+{
+  "loading": "Loading...",
+  "buttons": {
+    "read_more": "Read More"
+  },
+  "staff": {
+    "loading": "Loading staff...",
+    "no_info": "No staff information available.",
+    "no_image": "NO IMAGE"
+  }
+}
