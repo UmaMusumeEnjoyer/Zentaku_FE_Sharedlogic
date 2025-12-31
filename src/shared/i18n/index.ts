@@ -2,7 +2,7 @@
 
 // 1. Định nghĩa danh sách Namespace (tương ứng với tên các file JSON)
 export const NAMESPACES = ['common', 'HomePage', 'NewsDetailPage', 'RankingSection'
-    , 'CharactersSection', 'StaffSection'
+    , 'CharactersSection', 'StaffSection', 'CharacterPage'
 ] as const;
 
 // 2. Định nghĩa danh sách Ngôn ngữ
@@ -16,8 +16,10 @@ export const DEFAULT_LANG = 'en';
 // Import mẫu một ngôn ngữ để lấy cấu trúc Type
 import common from './locales/en/common.json';
 import HomePage from './locales/en/HomePage.json';
+import CharacterPage from './locales/en/CharacterPage.json';
 
 export interface I18nSchema {
     common: typeof common;
     HomePage: typeof HomePage;
+    CharacterPage: typeof CharacterPage;
 }

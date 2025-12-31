@@ -1,0 +1,11 @@
+{
+    "spoiler": {
+        "click_to_view": "ネタバレ、クリックして表示"
+    },
+    "sections": {
+        "media_appearances": "メディア出演歴"
+    },
+    "error": {
+        "not_found": "キャラクターが見つかりません。"
+    }
+}

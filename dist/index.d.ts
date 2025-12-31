@@ -7,6 +7,7 @@ export * from './services/notification.service';
 export * from './features/home';
 export * from './features/newsDetail';
 export * from './features/animeDetail';
+export * from './features/characterPage';
 export * from './shared/i18n';
 export { default as commonEn } from './shared/i18n/locales/en/common.json';
 export { default as homePageEn } from './shared/i18n/locales/en/HomePage.json';
@@ -20,5 +21,7 @@ export { default as charactersSectionJp } from './shared/i18n/locales/jp/Charact
 export { default as charactersSectionEn } from './shared/i18n/locales/en/CharactersSection.json';
 export { default as staffSectionJp } from './shared/i18n/locales/jp/StaffSection.json';
 export { default as staffSectionEn } from './shared/i18n/locales/en/StaffSection.json';
+export { default as characterPageJp } from './shared/i18n/locales/jp/CharacterPage.json';
+export { default as characterPageEn } from './shared/i18n/locales/en/CharacterPage.json';
 export * from './components/AnimeCard';
 //# sourceMappingURL=index.d.ts.map

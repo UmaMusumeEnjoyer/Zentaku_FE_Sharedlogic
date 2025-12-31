@@ -15,5 +15,8 @@ export declare const animeService: {
     getAnimeStaff: (id: number | string) => Promise<import("axios").AxiosResponse<any, any, {}> | {
         data: {};
     }>;
+    getAnimeCharacter: (id: number | string) => Promise<import("axios").AxiosResponse<any, any, {}> | {
+        data: {};
+    }>;
 };
 //# sourceMappingURL=anime.service.d.ts.map

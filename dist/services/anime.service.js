@@ -58,5 +58,14 @@ export const animeService = {
         setCached(key, res.data);
         return res;
     }),
+    getAnimeCharacter: (id) => __awaiter(void 0, void 0, void 0, function* () {
+        const key = `character:${id}:detail`;
+        const cached = getCached(key);
+        if (cached)
+            return { data: cached };
+        const res = yield apiClient.get(`/anilist/character/${id}/`);
+        setCached(key, res.data);
+        return res;
+    }),
 };
 //# sourceMappingURL=anime.service.js.map

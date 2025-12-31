@@ -1,0 +1,11 @@
+{
+    "spoiler": {
+        "click_to_view": "Spoiler, click to view"
+    },
+    "sections": {
+        "media_appearances": "Media Appearances"
+    },
+    "error": {
+        "not_found": "Character not found."
+    }
+}
