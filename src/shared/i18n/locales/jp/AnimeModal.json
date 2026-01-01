@@ -1,0 +1,23 @@
+{
+  "labels": {
+    "status": "ステータス",
+    "score": "スコア",
+    "episode_progress": "エピソード進捗",
+    "start_date": "開始日",
+    "finish_date": "終了日",
+    "total_rewatches": "総再視聴回数",
+    "notes": "メモ",
+    "custom_lists": "カスタムリスト",
+    "private": "非公開"
+  },
+  "status_options": {
+    "plan_to_watch": "視聴予定",
+    "watching": "視聴中",
+    "completed": "完了",
+    "dropped": "中断",
+    "on_hold": "保留中"
+  },
+  "placeholders": {
+    "no_custom_lists": "カスタムリストなし"
+  }
+}

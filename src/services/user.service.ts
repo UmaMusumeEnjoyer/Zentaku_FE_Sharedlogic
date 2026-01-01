@@ -28,6 +28,10 @@ export const userService = {
     return apiClient.get(`/follow/${animeId}/get`);
   },
 
+  deleteAnimeStatus: (animeId: string) => {
+  return apiClient.delete(`/follow/${animeId}/delete/`);
+  },
+
   // --- Stats (Heatmap/Activity) ---
   getHeatmap: async (username: string) => {
     const key = `user:${username}:heatmap`;

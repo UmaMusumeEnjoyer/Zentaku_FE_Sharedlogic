@@ -1,0 +1,23 @@
+{
+  "labels": {
+    "status": "Status",
+    "score": "Score",
+    "episode_progress": "Episode progress",
+    "start_date": "Start Date",
+    "finish_date": "Finish Date",
+    "total_rewatches": "Total Rewatches",
+    "notes": "Notes",
+    "custom_lists": "Custom Lists",
+    "private": "Private"
+  },
+  "status_options": {
+    "plan_to_watch": "Plan to watch",
+    "watching": "Watching",
+    "completed": "Completed",
+    "dropped": "Dropped",
+    "on_hold": "On hold"
+  },
+  "placeholders": {
+    "no_custom_lists": "No custom lists"
+  }
+}

@@ -18,6 +18,8 @@ export * from './components/StatisticsSection/useStatusDistribution';
 export * from './components/summarySection/summarySection.types';
 export * from './components/summarySection/useSummarySection';
 
+export * from './components/AnimeModal/AnimeModal.types';
+export * from './components/AnimeModal/useEditorModal';
 
 
 

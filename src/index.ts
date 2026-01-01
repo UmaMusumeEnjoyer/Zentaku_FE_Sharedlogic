@@ -40,4 +40,7 @@ export { default as staffSectionEn } from './shared/i18n/locales/en/StaffSection
 export { default as statisticsSectionJp } from './shared/i18n/locales/jp/StatisticsSection.json';
 export { default as statisticsSectionEn } from './shared/i18n/locales/en/StatisticsSection.json';
 
+export { default as AnimeModalJp } from './shared/i18n/locales/jp/AnimeModal.json';
+export { default as AnimeModalEn } from './shared/i18n/locales/en/AnimeModal.json';
+
 export * from './components/AnimeCard';

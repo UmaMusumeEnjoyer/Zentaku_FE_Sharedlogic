@@ -31,6 +31,9 @@ export const userService = {
     getAnimeStatus: (animeId) => {
         return apiClient.get(`/follow/${animeId}/get`);
     },
+    deleteAnimeStatus: (animeId) => {
+        return apiClient.delete(`/follow/${animeId}/delete/`);
+    },
     // --- Stats (Heatmap/Activity) ---
     getHeatmap: (username) => __awaiter(void 0, void 0, void 0, function* () {
         const key = `user:${username}:heatmap`;
