@@ -1,0 +1,8 @@
+{
+    "status_distribution": {
+        "no_data": "ステータス分布データはありません。"
+    },
+    "score_distribution": {
+        "no_data": "スコア分布データはありません。"
+    }
+}

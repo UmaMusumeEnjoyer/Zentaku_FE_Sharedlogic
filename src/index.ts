@@ -24,6 +24,10 @@ export { default as homePageJp } from './shared/i18n/locales/jp/HomePage.json';
 export { default as newsDetailPageEn } from './shared/i18n/locales/en/NewsDetailPage.json';
 export { default as newsDetailPageJp } from './shared/i18n/locales/jp/NewsDetailPage.json';
 
+export { default as characterPageJp } from './shared/i18n/locales/jp/CharacterPage.json';
+export { default as characterPageEn } from './shared/i18n/locales/en/CharacterPage.json';
+
+//////////////////AnimeDetailPage//////////////////////////////////////////////////////////
 export { default as RankingSectionEn } from './shared/i18n/locales/en/RankingSection.json';
 export { default as RankingSectionJp } from './shared/i18n/locales/jp/RankingSection.json';
 
@@ -33,7 +37,7 @@ export { default as charactersSectionEn } from './shared/i18n/locales/en/Charact
 export { default as staffSectionJp } from './shared/i18n/locales/jp/StaffSection.json';
 export { default as staffSectionEn } from './shared/i18n/locales/en/StaffSection.json';
 
-export { default as characterPageJp } from './shared/i18n/locales/jp/CharacterPage.json';
-export { default as characterPageEn } from './shared/i18n/locales/en/CharacterPage.json';
+export { default as statisticsSectionJp } from './shared/i18n/locales/jp/StatisticsSection.json';
+export { default as statisticsSectionEn } from './shared/i18n/locales/en/StatisticsSection.json';
 
 export * from './components/AnimeCard';

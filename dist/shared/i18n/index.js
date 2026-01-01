@@ -1,7 +1,7 @@
 // src/shared/i18n/index.ts
 // 1. Định nghĩa danh sách Namespace (tương ứng với tên các file JSON)
 export const NAMESPACES = ['common', 'HomePage', 'NewsDetailPage', 'RankingSection',
-    'CharactersSection', 'StaffSection', 'CharacterPage'
+    'CharactersSection', 'StaffSection', 'CharacterPage', 'StatisticsSection'
 ];
 // 2. Định nghĩa danh sách Ngôn ngữ
 export const LANGUAGES = ['en', 'jp'];
