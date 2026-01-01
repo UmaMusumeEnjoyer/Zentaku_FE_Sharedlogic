@@ -1,10 +1,17 @@
 {
   "loading": "読み込み中...",
+  "loading_stats": "統計を読み込み中...",
+  "error": "エラー：{{message}}",
+  "users_count": "{{count}} ユーザー",
   "video_unsupported": "お使いのブラウザは動画タグに対応していません。",
   "buttons": {
     "sign_up": "新規登録",
     "learn_more": "詳細を見る",
     "read_more": "続きを読む"
+  },
+  "staff": {
+    "loading": "スタッフを読み込み中...",
+    "no_info": "スタッフ情報が利用できません。"
   },
   "footer": {
     "about_us": "私たちについて",

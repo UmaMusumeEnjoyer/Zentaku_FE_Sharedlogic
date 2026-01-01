@@ -1,10 +1,17 @@
 {
   "loading": "Loading...",
+  "loading_stats": "Loading statistics...",
+  "error": "Error: {{message}}",
+  "users_count": "{{count}} Users",
   "video_unsupported": "Your browser does not support the video tag.",
   "buttons": {
     "sign_up": "Sign Up",
     "learn_more": "Learn More",
     "read_more": "Read More"
+  },
+  "staff": {
+    "loading": "Loading staff...",
+    "no_info": "No staff information available."
   },
   "footer": {
     "about_us": "About Us",
