@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "characters": "キャラクター",
+    "staff": "スタッフ",
+    "rankings": "ランキング",
+    "status_distribution": "ステータス分布",
+    "score_distribution": "スコア分布",
+    "trailer": "予告編"
+  },
+  "trailer": {
+    "no_data": "予告編は利用できません。",
+    "iframe_title": "アニメ予告編"
+  }
+}

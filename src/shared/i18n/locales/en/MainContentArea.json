@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "characters": "Characters",
+    "staff": "Staff",
+    "rankings": "Rankings",
+    "status_distribution": "Status Distribution",
+    "score_distribution": "Score Distribution",
+    "trailer": "Trailer"
+  },
+  "trailer": {
+    "no_data": "No trailer available.",
+    "iframe_title": "Anime Trailer"
+  }
+}

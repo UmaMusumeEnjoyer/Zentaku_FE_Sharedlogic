@@ -32,5 +32,7 @@ export { default as statisticsSectionJp } from './shared/i18n/locales/jp/Statist
 export { default as statisticsSectionEn } from './shared/i18n/locales/en/StatisticsSection.json';
 export { default as AnimeModalJp } from './shared/i18n/locales/jp/AnimeModal.json';
 export { default as AnimeModalEn } from './shared/i18n/locales/en/AnimeModal.json';
+export { default as MainContentAreaEn } from './shared/i18n/locales/en/MainContentArea.json';
+export { default as MainContentAreaJp } from './shared/i18n/locales/jp/MainContentArea.json';
 export * from './components/AnimeCard';
 //# sourceMappingURL=index.js.map

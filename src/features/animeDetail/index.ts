@@ -1,6 +1,10 @@
 export * from './hooks/useAnimeDetailPage';
+export * from './components/mainContentArea/useAnimeStats';
 
-//components
+// Types
+export * from './components/mainContentArea/animeStats.types';
+
+// Components
 export * from './components/CharacterSection/useAnimeCharacters';
 export * from './components/CharacterSection/characterSection.types';
 
@@ -20,6 +24,5 @@ export * from './components/summarySection/useSummarySection';
 
 export * from './components/AnimeModal/AnimeModal.types';
 export * from './components/AnimeModal/useEditorModal';
-
 
 

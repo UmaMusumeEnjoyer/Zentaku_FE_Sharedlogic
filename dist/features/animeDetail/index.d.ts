@@ -1,4 +1,6 @@
 export * from './hooks/useAnimeDetailPage';
+export * from './components/mainContentArea/useAnimeStats';
+export * from './components/mainContentArea/animeStats.types';
 export * from './components/CharacterSection/useAnimeCharacters';
 export * from './components/CharacterSection/characterSection.types';
 export * from './components/RankingSection/useRankingSection';
