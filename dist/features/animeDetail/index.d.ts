@@ -9,4 +9,6 @@ export * from './components/StatisticsSection/StatisticsSection.types.Score';
 export * from './components/StatisticsSection/useScoreDistribution';
 export * from './components/StatisticsSection/StatisticsSection.types.Status';
 export * from './components/StatisticsSection/useStatusDistribution';
+export * from './components/summarySection/summarySection.types';
+export * from './components/summarySection/useSummarySection';
 //# sourceMappingURL=index.d.ts.map
