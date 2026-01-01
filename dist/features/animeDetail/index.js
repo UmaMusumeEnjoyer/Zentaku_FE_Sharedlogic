@@ -17,4 +17,6 @@ export * from './components/summarySection/summarySection.types';
 export * from './components/summarySection/useSummarySection';
 export * from './components/AnimeModal/AnimeModal.types';
 export * from './components/AnimeModal/useEditorModal';
+export * from './components/infoSidebar/infoSidebar.types';
+export * from './components/infoSidebar/useInfoSidebar';
 //# sourceMappingURL=index.js.map

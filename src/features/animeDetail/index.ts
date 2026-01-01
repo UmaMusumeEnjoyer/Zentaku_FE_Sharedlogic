@@ -25,4 +25,7 @@ export * from './components/summarySection/useSummarySection';
 export * from './components/AnimeModal/AnimeModal.types';
 export * from './components/AnimeModal/useEditorModal';
 
+export * from './components/infoSidebar/infoSidebar.types';
+export * from './components/infoSidebar/useInfoSidebar';
+
 
