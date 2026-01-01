@@ -1,0 +1,21 @@
+{
+  "sidebar": {
+    "airing": "放送中",
+    "format": "フォーマット",
+    "episodes": "エピソード数",
+    "episode_duration": "放送時間",
+    "status": "ステータス",
+    "start_date": "開始日",
+    "end_date": "終了日",
+    "season": "シーズン",
+    "average_score": "平均スコア",
+    "mean_score": "総合スコア",
+    "popularity": "人気度",
+    "favorites": "お気に入り",
+    "studios": "スタジオ",
+    "producers": "プロデューサー",
+    "source": "出典",
+    "native_title": "原題",
+    "english_title": "英語タイトル"
+  }
+}

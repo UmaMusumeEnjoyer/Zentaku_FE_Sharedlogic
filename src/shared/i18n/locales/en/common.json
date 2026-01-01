@@ -19,5 +19,8 @@
     "privacy_policy": "Privacy Policy",
     "terms_of_service": "Terms of Service",
     "copyright": "© {{year}} MyAnilist Site. All Rights Reserved."
+  },
+  "time": {
+    "mins": "minute"
   }
 }

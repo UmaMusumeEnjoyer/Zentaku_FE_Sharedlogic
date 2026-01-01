@@ -46,5 +46,9 @@ export { default as AnimeModalEn } from './shared/i18n/locales/en/AnimeModal.jso
 export { default as MainContentAreaEn } from './shared/i18n/locales/en/MainContentArea.json';
 export { default as MainContentAreaJp } from './shared/i18n/locales/jp/MainContentArea.json';
 
+export { default as AnimeDetailEn } from './shared/i18n/locales/en/AnimeDetail.json';
+export { default as AnimeDetailJp } from './shared/i18n/locales/jp/AnimeDetail.json';
+
+
 
 export * from './components/AnimeCard';
