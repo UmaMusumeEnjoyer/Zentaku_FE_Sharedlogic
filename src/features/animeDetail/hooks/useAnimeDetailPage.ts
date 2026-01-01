@@ -1,24 +1,29 @@
-// src/features/anime/hooks/useAnimeDetailPage.ts
-import { useState, useEffect } from 'react';
-import { animeService } from '../../../services/anime.service'; // Đường dẫn import tùy thuộc cấu trúc thư mục của bạn
-import { AnimeData, UseAnimeDetailReturn } from '../types/animeDetail.types';
+// src/pages/AnimeDetail/useAnimeDetail.ts
+import { useState, useEffect, useMemo } from 'react';
+import { animeService } from '../../../services/anime.service'; // Đường dẫn import tùy thuộc cấu trúc của bạn
+import { AnimeDetailData, AnimeDetailHook } from '../types/animeDetail.types';
 
-export const useAnimeDetailPage = (animeId?: string): UseAnimeDetailReturn => {
-  const [anime, setAnime] = useState<AnimeData | null>(null);
+export const useAnimeDetail = (animeId: string | undefined): AnimeDetailHook => {
+  const [anime, setAnime] = useState<AnimeDetailData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchAnime = async () => {
-      if (!animeId) return;
+      if (!animeId) {
+        setError("Anime ID is missing");
+        setLoading(false);
+        return;
+      }
 
       try {
         setLoading(true);
+        setError(null);
         const response = await animeService.getById(animeId);
-        // Giả định response.data khớp với interface AnimeData
         setAnime(response.data);
-      } catch (error) {
-        console.error("Lỗi khi lấy chi tiết anime:", error);
-        setAnime(null);
+      } catch (err) {
+        console.error("Lỗi khi lấy chi tiết anime:", err);
+        setError("Failed to load anime details.");
       } finally {
         setLoading(false);
       }
@@ -27,13 +32,10 @@ export const useAnimeDetailPage = (animeId?: string): UseAnimeDetailReturn => {
     fetchAnime();
   }, [animeId]);
 
-  // Logic tính toán derived state
-  const hasBanner = !!anime?.banner_image;
+  // Logic tính toán derived state (state dẫn xuất)
+  const hasBanner = useMemo(() => {
+    return !!(anime && anime.banner_image);
+  }, [anime]);
 
-  return {
-    anime,
-    loading,
-    hasBanner,
-    isNotFound: !anime && !loading, // Cờ trạng thái để UI dễ dàng kiểm tra
-  };
+  return { anime, loading, error, hasBanner };
 };

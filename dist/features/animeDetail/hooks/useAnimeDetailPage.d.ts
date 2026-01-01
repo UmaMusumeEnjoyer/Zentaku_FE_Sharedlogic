@@ -1,3 +1,3 @@
-import { UseAnimeDetailReturn } from '../types/animeDetail.types';
-export declare const useAnimeDetailPage: (animeId?: string) => UseAnimeDetailReturn;
+import { AnimeDetailHook } from '../types/animeDetail.types';
+export declare const useAnimeDetail: (animeId: string | undefined) => AnimeDetailHook;
 //# sourceMappingURL=useAnimeDetailPage.d.ts.map

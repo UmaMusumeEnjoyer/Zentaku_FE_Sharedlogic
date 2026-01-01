@@ -7,25 +7,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-// src/features/anime/hooks/useAnimeDetailPage.ts
-import { useState, useEffect } from 'react';
-import { animeService } from '../../../services/anime.service'; // Đường dẫn import tùy thuộc cấu trúc thư mục của bạn
-export const useAnimeDetailPage = (animeId) => {
+// src/pages/AnimeDetail/useAnimeDetail.ts
+import { useState, useEffect, useMemo } from 'react';
+import { animeService } from '../../../services/anime.service'; // Đường dẫn import tùy thuộc cấu trúc của bạn
+export const useAnimeDetail = (animeId) => {
     const [anime, setAnime] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     useEffect(() => {
         const fetchAnime = () => __awaiter(void 0, void 0, void 0, function* () {
-            if (!animeId)
+            if (!animeId) {
+                setError("Anime ID is missing");
+                setLoading(false);
                 return;
+            }
             try {
                 setLoading(true);
+                setError(null);
                 const response = yield animeService.getById(animeId);
-                // Giả định response.data khớp với interface AnimeData
                 setAnime(response.data);
             }
-            catch (error) {
-                console.error("Lỗi khi lấy chi tiết anime:", error);
-                setAnime(null);
+            catch (err) {
+                console.error("Lỗi khi lấy chi tiết anime:", err);
+                setError("Failed to load anime details.");
             }
             finally {
                 setLoading(false);
@@ -33,13 +37,10 @@ export const useAnimeDetailPage = (animeId) => {
         });
         fetchAnime();
     }, [animeId]);
-    // Logic tính toán derived state
-    const hasBanner = !!(anime === null || anime === void 0 ? void 0 : anime.banner_image);
-    return {
-        anime,
-        loading,
-        hasBanner,
-        isNotFound: !anime && !loading, // Cờ trạng thái để UI dễ dàng kiểm tra
-    };
+    // Logic tính toán derived state (state dẫn xuất)
+    const hasBanner = useMemo(() => {
+        return !!(anime && anime.banner_image);
+    }, [anime]);
+    return { anime, loading, error, hasBanner };
 };
 //# sourceMappingURL=useAnimeDetailPage.js.map
