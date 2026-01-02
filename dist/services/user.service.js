@@ -10,10 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { apiClient, getCached, setCached, TTL_SHORT } from '../api/apiClient';
 export const userService = {
     // --- Profile ---
-    getProfile: (username) => {
+    getUserProfile: (username) => {
         return apiClient.get(`/user/${username}/profile/`);
     },
-    updateProfile: (userData) => {
+    updateUserProfile: (userData) => {
         return apiClient.put('/user/profile/update/', userData);
     },
     uploadAvatar: (file) => {
@@ -43,6 +43,11 @@ export const userService = {
         const res = yield apiClient.get(`/user/${username}/overview/heatmap`);
         setCached(key, res.data, TTL_SHORT);
         return res;
-    })
+    }),
+    searchUsers: (keyword) => {
+        return apiClient.get('/user/search/', {
+            params: { q: keyword }
+        });
+    },
 };
 //# sourceMappingURL=user.service.js.map

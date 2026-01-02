@@ -31,5 +31,13 @@ export { default as MainContentAreaEn } from './shared/i18n/locales/en/MainConte
 export { default as MainContentAreaJp } from './shared/i18n/locales/jp/MainContentArea.json';
 export { default as AnimeDetailEn } from './shared/i18n/locales/en/AnimeDetail.json';
 export { default as AnimeDetailJp } from './shared/i18n/locales/jp/AnimeDetail.json';
+export { default as HeaderEn } from './shared/i18n/locales/en/Header.json';
+export { default as HeaderJp } from './shared/i18n/locales/jp/Header.json';
+export { default as GlobalSearchEn } from './shared/i18n/locales/en/GlobalSearch.json';
+export { default as GlobalSearchJp } from './shared/i18n/locales/jp/GlobalSearch.json';
 export * from './components/AnimeCard';
+export * from './components/GlobalSearch/GlobalSearch.types';
+export * from './components/GlobalSearch/useGlobalSearch';
+export * from './shared/types';
+export * from './shared/hooks';
 //# sourceMappingURL=index.d.ts.map

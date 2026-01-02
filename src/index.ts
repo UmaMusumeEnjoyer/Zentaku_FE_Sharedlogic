@@ -49,6 +49,18 @@ export { default as MainContentAreaJp } from './shared/i18n/locales/jp/MainConte
 export { default as AnimeDetailEn } from './shared/i18n/locales/en/AnimeDetail.json';
 export { default as AnimeDetailJp } from './shared/i18n/locales/jp/AnimeDetail.json';
 
+///////////////Components/////////////
+export { default as HeaderEn } from './shared/i18n/locales/en/Header.json';
+export { default as HeaderJp } from './shared/i18n/locales/jp/Header.json';
+
+export { default as GlobalSearchEn } from './shared/i18n/locales/en/GlobalSearch.json';
+export { default as GlobalSearchJp } from './shared/i18n/locales/jp/GlobalSearch.json';
 
 
+/////////Components///////////////
 export * from './components/AnimeCard';
+export * from './components/GlobalSearch/GlobalSearch.types';
+export * from './components/GlobalSearch/useGlobalSearch';
+// shared-logic/src/index.ts - Thêm vào file hiện tại
+export * from './shared/types';
+export * from './shared/hooks';

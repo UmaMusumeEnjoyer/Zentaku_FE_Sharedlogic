@@ -1,13 +1,14 @@
 import { apiClient, getCached, setCached, TTL_SHORT } from '../api/apiClient';
+import { User } from '../shared/types/auth.types';
 
 export const userService = {
   // --- Profile ---
-  getProfile: (username: string) => {
-    return apiClient.get(`/user/${username}/profile/`);
+  getUserProfile: (username: string) => {
+    return apiClient.get<User>(`/user/${username}/profile/`);
   },
 
-  updateProfile: (userData: any) => {
-    return apiClient.put('/user/profile/update/', userData);
+  updateUserProfile: (userData: Partial<User>) => {
+    return apiClient.put<User>('/user/profile/update/', userData);
   },
 
   uploadAvatar: (file: any) => {
@@ -41,5 +42,11 @@ export const userService = {
     const res = await apiClient.get(`/user/${username}/overview/heatmap`);
     setCached(key, res.data, TTL_SHORT);
     return res;
-  }
+  },
+
+  searchUsers: (keyword: string) => {
+    return apiClient.get('/user/search/', { 
+      params: { q: keyword } 
+    });
+  },
 };

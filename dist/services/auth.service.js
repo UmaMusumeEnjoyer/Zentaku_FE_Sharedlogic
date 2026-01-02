@@ -1,3 +1,4 @@
+// shared-logic/src/services/auth.service.ts
 import { apiClient } from '../api/apiClient';
 export const authService = {
     login: (credentials) => {

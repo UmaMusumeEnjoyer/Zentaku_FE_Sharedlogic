@@ -1,6 +1,7 @@
+import { User } from '../shared/types/auth.types';
 export declare const userService: {
-    getProfile: (username: string) => Promise<import("axios").AxiosResponse<any, any, {}>>;
-    updateProfile: (userData: any) => Promise<import("axios").AxiosResponse<any, any, {}>>;
+    getUserProfile: (username: string) => Promise<import("axios").AxiosResponse<User, any, {}>>;
+    updateUserProfile: (userData: Partial<User>) => Promise<import("axios").AxiosResponse<User, any, {}>>;
     uploadAvatar: (file: any) => Promise<import("axios").AxiosResponse<any, any, {}>>;
     updateAnimeStatus: (animeId: string, data: any) => Promise<import("axios").AxiosResponse<any, any, {}>>;
     getAnimeStatus: (animeId: string) => Promise<import("axios").AxiosResponse<any, any, {}>>;
@@ -8,5 +9,6 @@ export declare const userService: {
     getHeatmap: (username: string) => Promise<import("axios").AxiosResponse<any, any, {}> | {
         data: {};
     }>;
+    searchUsers: (keyword: string) => Promise<import("axios").AxiosResponse<any, any, {}>>;
 };
 //# sourceMappingURL=user.service.d.ts.map

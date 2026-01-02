@@ -1,0 +1,6 @@
+{
+    "placeholder": "Search for users...",
+    "loading": "Searching...",
+    "no_results": "No users found for \"{{query}}\"",
+    "start_typing": "Enter a username to search"
+}

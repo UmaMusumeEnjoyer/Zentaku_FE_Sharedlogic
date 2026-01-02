@@ -1,3 +1,4 @@
+// shared-logic/src/services/notification.service.ts
 import { apiClient } from '../api/apiClient';
 export const notificationService = {
     getPreferences: () => apiClient.get('/notification/preferences/'),

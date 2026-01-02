@@ -1,6 +1,7 @@
+import { LoginCredentials, LoginResponse, RegisterData } from '../shared/types/auth.types';
 export declare const authService: {
-    login: (credentials: any) => Promise<import("axios").AxiosResponse<any, any, {}>>;
-    register: (userData: any) => Promise<import("axios").AxiosResponse<any, any, {}>>;
+    login: (credentials: LoginCredentials) => Promise<import("axios").AxiosResponse<LoginResponse, any, {}>>;
+    register: (userData: RegisterData) => Promise<import("axios").AxiosResponse<any, any, {}>>;
     verifyEmail: (token: string) => Promise<import("axios").AxiosResponse<any, any, {}>>;
 };
 //# sourceMappingURL=auth.service.d.ts.map

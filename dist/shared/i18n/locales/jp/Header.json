@@ -1,0 +1,14 @@
+{
+    "navigation": {
+        "home": "ホーム",
+        "browse": "閲覧"
+    },
+    "buttons": {
+        "login": "ログイン",
+        "sign_up": "新規登録"
+    },
+    "accessibility": {
+        "toggle_theme": "テーマ切り替え",
+        "search": "検索"
+    }
+}

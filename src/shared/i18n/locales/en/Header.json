@@ -1,0 +1,14 @@
+{
+  "navigation": {
+    "home": "Home",
+    "browse": "Browse"
+  },
+  "buttons": {
+    "login": "Login",
+    "sign_up": "Sign Up"
+  },
+  "accessibility": {
+    "toggle_theme": "Toggle theme",
+    "search": "Search"
+  }
+}
