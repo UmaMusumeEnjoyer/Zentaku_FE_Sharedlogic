@@ -1,14 +1,29 @@
 {
   "navigation": {
     "home": "ホーム",
-    "browse": "閲覧"
+    "browse": "閲覧",
+    "anime_list": "アニメリスト",
+    "profile": "プロフィール"
   },
   "buttons": {
     "login": "ログイン",
-    "sign_up": "新規登録"
+    "sign_up": "新規登録",
+    "logout": "ログアウト"
   },
   "accessibility": {
     "toggle_theme": "テーマ切り替え",
     "search": "検索"
+  },
+  "user_menu": {
+    "notifications": "通知",
+    "profile": "プロフィール"
+  },
+  "notifications": {
+    "title": "通知",
+    "empty": "新しい通知はありません",
+    "episode": "エピソード",
+    "anime_id": "アニメID",
+    "sent": "送信済み",
+    "aired": "放送済み"
   }
 }

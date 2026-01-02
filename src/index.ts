@@ -67,5 +67,6 @@ export { default as GlobalSearchJp } from './shared/i18n/locales/jp/GlobalSearch
 export * from './components/AnimeCard';
 export * from './components/GlobalSearch/GlobalSearch.types';
 export * from './components/GlobalSearch/useGlobalSearch';
+export * from './components/Header/userHeader';
 // shared-logic/src/index.ts - Thêm vào file hiện tại
 export * from './shared/types';
