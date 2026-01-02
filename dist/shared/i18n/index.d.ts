@@ -1,4 +1,4 @@
-export declare const NAMESPACES: readonly ["common", "HomePage", "NewsDetailPage", "RankingSection", "CharactersSection", "StaffSection", "CharacterPage", "StatisticsSection", "AnimeModal", "MainContentArea", "AnimeDetail", "Header", "GlobalSearch"];
+export declare const NAMESPACES: readonly ["common", "HomePage", "NewsDetailPage", "RankingSection", "CharactersSection", "StaffSection", "CharacterPage", "StatisticsSection", "AnimeModal", "MainContentArea", "AnimeDetail", "Header", "GlobalSearch", "Auth"];
 export declare const LANGUAGES: readonly ["en", "jp"];
 export declare const DEFAULT_NS = "common";
 export declare const DEFAULT_LANG = "en";

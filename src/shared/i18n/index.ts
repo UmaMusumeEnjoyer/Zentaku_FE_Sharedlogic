@@ -4,7 +4,7 @@
 export const NAMESPACES = ['common', 'HomePage', 'NewsDetailPage', 'RankingSection'
     , 'CharactersSection', 'StaffSection', 'CharacterPage', 'StatisticsSection'
     , 'AnimeModal', 'MainContentArea', 'AnimeDetail', 'Header'
-    , 'GlobalSearch'
+    , 'GlobalSearch', 'Auth'
 ] as const;
 
 // 2. Định nghĩa danh sách Ngôn ngữ

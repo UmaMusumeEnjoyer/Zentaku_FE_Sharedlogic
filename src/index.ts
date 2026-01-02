@@ -13,6 +13,7 @@ export * from './features/home';
 export * from './features/newsDetail';
 export * from './features/animeDetail';
 export * from './features/characterPage';
+export * from './features/authPage';
 
 // Export i18n configuration và translations
 export * from './shared/i18n';
@@ -49,6 +50,11 @@ export { default as MainContentAreaJp } from './shared/i18n/locales/jp/MainConte
 export { default as AnimeDetailEn } from './shared/i18n/locales/en/AnimeDetail.json';
 export { default as AnimeDetailJp } from './shared/i18n/locales/jp/AnimeDetail.json';
 
+/////////////AuthPage////////////////
+export { default as AuthEn } from './shared/i18n/locales/en/Auth.json';
+export { default as AuthJp } from './shared/i18n/locales/jp/Auth.json';
+
+
 ///////////////Components/////////////
 export { default as HeaderEn } from './shared/i18n/locales/en/Header.json';
 export { default as HeaderJp } from './shared/i18n/locales/jp/Header.json';
@@ -63,4 +69,3 @@ export * from './components/GlobalSearch/GlobalSearch.types';
 export * from './components/GlobalSearch/useGlobalSearch';
 // shared-logic/src/index.ts - Thêm vào file hiện tại
 export * from './shared/types';
-export * from './shared/hooks';

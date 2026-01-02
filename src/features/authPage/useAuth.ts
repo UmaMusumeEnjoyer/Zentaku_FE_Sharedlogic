@@ -2,7 +2,7 @@
 import { useState, useCallback } from 'react';
 import { authService } from '../../services/auth.service';
 import { userService } from '../../services/user.service';
-import { User, LoginCredentials } from '../types/auth.types';
+import { User, LoginCredentials } from './auth.types';
 
 export interface UseAuthReturn {
   user: User | null;

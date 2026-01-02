@@ -1,5 +1,5 @@
 import { apiClient, getCached, setCached, TTL_SHORT } from '../api/apiClient';
-import { User } from '../shared/types/auth.types';
+import { User } from '../features/authPage/auth.types';
 
 export const userService = {
   // --- Profile ---

@@ -1,4 +1,4 @@
-import { User } from '../shared/types/auth.types';
+import { User } from '../features/authPage/auth.types';
 export declare const userService: {
     getUserProfile: (username: string) => Promise<import("axios").AxiosResponse<User, any, {}>>;
     updateUserProfile: (userData: Partial<User>) => Promise<import("axios").AxiosResponse<User, any, {}>>;
