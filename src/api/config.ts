@@ -7,13 +7,18 @@ export interface IStorage {
 
 export const SharedConfig = {
   storage: null as IStorage | null,
-  apiBaseUrl: 'https://doannguyen.pythonanywhere.com/api', // Default
+  apiBaseUrl: '', // Bắt buộc phải được set qua initSharedLogic
 };
 
 // Hàm khởi tạo này sẽ được gọi ở index.js của Web và App.js của Mobile
-export const initSharedLogic = (config: { storage: IStorage, apiBaseUrl?: string }) => {
-  SharedConfig.storage = config.storage;
-  if (config.apiBaseUrl) {
-    SharedConfig.apiBaseUrl = config.apiBaseUrl;
+export const initSharedLogic = (config: { storage: IStorage, apiBaseUrl: string }) => {
+  if (!config.apiBaseUrl) {
+    throw new Error('apiBaseUrl is required. Please provide it via initSharedLogic()');
   }
+  if (!config.storage) {
+    throw new Error('storage is required. Please provide it via initSharedLogic()');
+  }
+  
+  SharedConfig.storage = config.storage;
+  SharedConfig.apiBaseUrl = config.apiBaseUrl;
 };

@@ -9,6 +9,6 @@ export declare const SharedConfig: {
 };
 export declare const initSharedLogic: (config: {
     storage: IStorage;
-    apiBaseUrl?: string;
+    apiBaseUrl: string;
 }) => void;
 //# sourceMappingURL=config.d.ts.map
