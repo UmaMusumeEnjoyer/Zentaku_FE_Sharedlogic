@@ -1,0 +1,72 @@
+{
+  "filterBar": {
+    "labels": {
+      "search": "検索",
+      "genres": "ジャンル",
+      "year": "年",
+      "season": "シーズン",
+      "format": "フォーマット",
+      "status": "ステータス",
+      "sort": "並べ替え"
+    },
+    "placeholder": {
+      "search": "アニメを検索..."
+    },
+    "options": {
+      "any": "いずれでも",
+      "genres": {
+        "action": "アクション",
+        "adventure": "アドベンチャー",
+        "comedy": "コメディ",
+        "drama": "ドラマ",
+        "fantasy": "Fantasy",
+        "sliceOfLife": "日常",
+        "sciFi": "SF",
+        "horror": "ホラー",
+        "ecchi": "エッチ",
+        "魔法少女": "魔法少女",
+        "メカ": "メカ",
+        "音楽": "音楽",
+        "ミステリー": "ミステリー",
+        "心理サスペンス": "心理サスペンス",
+        "ロマンス": "ロマンス",
+        "スポーツ": "スポーツ",
+        "超常現象": "超常現象",
+        "スリラー": "スリラー"
+      },
+     
+      "季節": {
+        "冬": "冬",
+        "春": "春",
+        "夏": "夏",
+        "秋": "秋"
+      },
+      "formats": {
+        "tv": "TV番組",
+        "tvShort": "TV短編",
+        "movie": "映画",
+        "special": "スペシャル",
+        "ova": "OVA",
+        "ona": "ONA",
+        "music": "音楽"
+      },
+      "statuses": {
+        "releasing": "放送中",
+        "finished": "終了",
+        "notYetReleased": "未放送",
+        "cancelled": "打ち切り",
+        "hiatus": "休止中"
+      },
+      "sorts": {
+        "popularity": "人気順",
+        "title": "タイトル",
+        "score": "平均スコア",
+        "trending": "トレンド"
+      }
+    },
+    "buttons": {
+      "clear": "クリア",
+      "clearTitle": "フィルターをリセット"
+    }
+  }
+}

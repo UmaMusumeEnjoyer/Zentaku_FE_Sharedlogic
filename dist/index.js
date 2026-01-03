@@ -13,6 +13,7 @@ export * from './features/animeDetail';
 export * from './features/characterPage';
 export * from './features/authPage';
 export * from './features/staffPage';
+export * from './features/animeSearch';
 // Export i18n configuration và translations
 export * from './shared/i18n';
 export { default as commonEn } from './shared/i18n/locales/en/common.json';
@@ -24,20 +25,20 @@ export { default as newsDetailPageJp } from './shared/i18n/locales/jp/NewsDetail
 export { default as characterPageJp } from './shared/i18n/locales/jp/CharacterPage.json';
 export { default as characterPageEn } from './shared/i18n/locales/en/CharacterPage.json';
 //////////////////AnimeDetailPage//////////////////////////////////////////////////////////
-export { default as RankingSectionEn } from './shared/i18n/locales/en/RankingSection.json';
-export { default as RankingSectionJp } from './shared/i18n/locales/jp/RankingSection.json';
-export { default as charactersSectionJp } from './shared/i18n/locales/jp/CharactersSection.json';
-export { default as charactersSectionEn } from './shared/i18n/locales/en/CharactersSection.json';
-export { default as staffSectionJp } from './shared/i18n/locales/jp/StaffSection.json';
-export { default as staffSectionEn } from './shared/i18n/locales/en/StaffSection.json';
-export { default as statisticsSectionJp } from './shared/i18n/locales/jp/StatisticsSection.json';
-export { default as statisticsSectionEn } from './shared/i18n/locales/en/StatisticsSection.json';
-export { default as AnimeModalJp } from './shared/i18n/locales/jp/AnimeModal.json';
-export { default as AnimeModalEn } from './shared/i18n/locales/en/AnimeModal.json';
-export { default as MainContentAreaEn } from './shared/i18n/locales/en/MainContentArea.json';
-export { default as MainContentAreaJp } from './shared/i18n/locales/jp/MainContentArea.json';
-export { default as AnimeDetailEn } from './shared/i18n/locales/en/AnimeDetail.json';
-export { default as AnimeDetailJp } from './shared/i18n/locales/jp/AnimeDetail.json';
+export { default as RankingSectionEn } from './shared/i18n/locales/en/AnimeDetailPage/RankingSection.json';
+export { default as RankingSectionJp } from './shared/i18n/locales/jp/AnimeDetailPage/RankingSection.json';
+export { default as charactersSectionJp } from './shared/i18n/locales/jp/AnimeDetailPage/CharactersSection.json';
+export { default as charactersSectionEn } from './shared/i18n/locales/en/AnimeDetailPage/CharactersSection.json';
+export { default as staffSectionJp } from './shared/i18n/locales/jp/AnimeDetailPage/StaffSection.json';
+export { default as staffSectionEn } from './shared/i18n/locales/en/AnimeDetailPage/StaffSection.json';
+export { default as statisticsSectionJp } from './shared/i18n/locales/jp/AnimeDetailPage/StatisticsSection.json';
+export { default as statisticsSectionEn } from './shared/i18n/locales/en/AnimeDetailPage/StatisticsSection.json';
+export { default as AnimeModalJp } from './shared/i18n/locales/jp/AnimeDetailPage/AnimeModal.json';
+export { default as AnimeModalEn } from './shared/i18n/locales/en/AnimeDetailPage/AnimeModal.json';
+export { default as MainContentAreaEn } from './shared/i18n/locales/en/AnimeDetailPage/MainContentArea.json';
+export { default as MainContentAreaJp } from './shared/i18n/locales/jp/AnimeDetailPage/MainContentArea.json';
+export { default as AnimeDetailEn } from './shared/i18n/locales/en/AnimeDetailPage/AnimeDetail.json';
+export { default as AnimeDetailJp } from './shared/i18n/locales/jp/AnimeDetailPage/AnimeDetail.json';
 /////////////AuthPage////////////////
 export { default as AuthEn } from './shared/i18n/locales/en/Auth.json';
 export { default as AuthJp } from './shared/i18n/locales/jp/Auth.json';
@@ -49,6 +50,9 @@ export { default as HeaderEn } from './shared/i18n/locales/en/Header.json';
 export { default as HeaderJp } from './shared/i18n/locales/jp/Header.json';
 export { default as GlobalSearchEn } from './shared/i18n/locales/en/GlobalSearch.json';
 export { default as GlobalSearchJp } from './shared/i18n/locales/jp/GlobalSearch.json';
+////////////AnimeSearch/////
+export { default as AnimeSearchEN } from './shared/i18n/locales/en/AnimeSearch/AnimeSearch.json';
+export { default as AnimeSearchJP } from './shared/i18n/locales/jp/AnimeSearch/AnimeSearch.json';
 /////////Components///////////////
 export * from './components/AnimeCard';
 export * from './components/GlobalSearch/GlobalSearch.types';

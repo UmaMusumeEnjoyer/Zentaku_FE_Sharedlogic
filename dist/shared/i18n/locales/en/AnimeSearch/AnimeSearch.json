@@ -1,0 +1,71 @@
+{
+    "filterBar": {
+        "labels": {
+            "search": "Search",
+            "genres": "Genres",
+            "year": "Year",
+            "season": "Season",
+            "format": "Format",
+            "status": "Status",
+            "sort": "Sort"
+        },
+        "placeholder": {
+            "search": "Search anime..."
+        },
+        "options": {
+            "any": "Any",
+            "genres": {
+                "action": "Action",
+                "adventure": "Adventure",
+                "comedy": "Comedy",
+                "drama": "Drama",
+                "fantasy": "Fantasy",
+                "sliceOfLife": "Slice of Life",
+                "sciFi": "Sci-Fi",
+                "horror": "Horror",
+                "ecchi": "Ecchi",
+                "mahouShoujo": "Mahou Shoujo",
+                "mecha": "Mecha",
+                "music": "Music",
+                "mystery": "Mystery",
+                "psychological": "Psychological",
+                "romance": "Romance",
+                "sports": "Sports",
+                "supernatural": "Supernatural",
+                "thriller": "Thriller"
+            },
+            "seasons": {
+                "winter": "Winter",
+                "spring": "Spring",
+                "summer": "Summer",
+                "fall": "Fall"
+            },
+            "formats": {
+                "tv": "TV Show",
+                "tvShort": "TV Short",
+                "movie": "Movie",
+                "special": "Special",
+                "ova": "OVA",
+                "ona": "ONA",
+                "music": "Music"
+            },
+            "statuses": {
+                "releasing": "Airing",
+                "finished": "Finished",
+                "notYetReleased": "Not Yet Aired",
+                "cancelled": "Cancelled",
+                "hiatus": "Hiatus"
+            },
+            "sorts": {
+                "popularity": "Popularity",
+                "title": "Title",
+                "score": "Average Score",
+                "trending": "Trending"
+            }
+        },
+        "buttons": {
+            "clear": "Clear",
+            "clearTitle": "Reset Filters"
+        }
+    }
+}
