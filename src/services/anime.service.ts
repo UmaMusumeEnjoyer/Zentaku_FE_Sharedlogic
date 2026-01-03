@@ -75,5 +75,15 @@ export const animeService = {
     setCached(key, res.data);
     return res;
   },
+
+  getStaffById : async (id : number | string) => {
+  const key = `staff:${id}:detail`;
+  const cached = getCached(key);
+  if (cached) return Promise.resolve({ data: cached });
+
+  const res = await apiClient.get(`/anilist/staff/${id}/`);
+    setCached(key, res.data);
+    return res;
+  },
   
 };

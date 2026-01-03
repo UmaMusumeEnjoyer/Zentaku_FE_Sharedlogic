@@ -19,5 +19,9 @@ export const listService = {
     toggleLike: (listId) => apiClient.post(`/list/${listId}/like/`),
     getTrending: () => apiClient.post('/list/likes/trending/'),
     search: (keyword) => apiClient.post('/list/search/', { query: keyword, limit: 20 }),
+    getListsLikedByUser: (data = {}) => {
+        // data có thể chứa { username: "abc", page: 1, ... }
+        return apiClient.post('/list/likes/user/', data);
+    },
 };
 //# sourceMappingURL=list.service.js.map

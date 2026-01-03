@@ -12,6 +12,7 @@ export * from './features/newsDetail';
 export * from './features/animeDetail';
 export * from './features/characterPage';
 export * from './features/authPage';
+export * from './features/staffPage';
 // Export i18n configuration và translations
 export * from './shared/i18n';
 export { default as commonEn } from './shared/i18n/locales/en/common.json';
@@ -40,6 +41,9 @@ export { default as AnimeDetailJp } from './shared/i18n/locales/jp/AnimeDetail.j
 /////////////AuthPage////////////////
 export { default as AuthEn } from './shared/i18n/locales/en/Auth.json';
 export { default as AuthJp } from './shared/i18n/locales/jp/Auth.json';
+///////////////StaffPage
+export { default as StaffPageEn } from './shared/i18n/locales/en/StaffPage.json';
+export { default as StaffPageJp } from './shared/i18n/locales/jp/StaffPage.json';
 ///////////////Components/////////////
 export { default as HeaderEn } from './shared/i18n/locales/en/Header.json';
 export { default as HeaderJp } from './shared/i18n/locales/jp/Header.json';

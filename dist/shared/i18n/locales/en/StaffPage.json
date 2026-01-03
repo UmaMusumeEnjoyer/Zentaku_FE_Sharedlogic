@@ -1,0 +1,17 @@
+{
+    "loading": "Loading...",
+    "error": {
+        "not_found": "Staff not found."
+    },
+    "info": {
+        "birth": "Birth",
+        "age": "Age",
+        "gender": "Gender",
+        "hometown": "Hometown",
+        "not_available": "N/A"
+    },
+    "actions": {
+        "read_more": "Read More",
+        "show_less": "Show Less"
+    }
+}

@@ -10,5 +10,8 @@ export declare const userService: {
         data: {};
     }>;
     searchUsers: (keyword: string) => Promise<import("axios").AxiosResponse<any, any, {}>>;
+    getUserActivity: (username: string) => Promise<import("axios").AxiosResponse<any, any, {}> | {
+        data: {};
+    }>;
 };
 //# sourceMappingURL=user.service.d.ts.map

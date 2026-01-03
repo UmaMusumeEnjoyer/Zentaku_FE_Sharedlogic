@@ -1,9 +1,14 @@
 {
   "navigation": {
     "home": "ホーム",
-    "browse": "閲覧",
+    "browse": "ブラウズ",
     "anime_list": "アニメリスト",
     "profile": "プロフィール"
+  },
+  "user_menu": {
+    "profile": "プロフィール",
+    "notifications": "通知",
+    "settings": "設定"
   },
   "buttons": {
     "login": "ログイン",
@@ -14,16 +19,27 @@
     "toggle_theme": "テーマ切り替え",
     "search": "検索"
   },
-  "user_menu": {
-    "notifications": "通知",
-    "profile": "プロフィール"
-  },
   "notifications": {
     "title": "通知",
-    "empty": "新しい通知はありません",
     "episode": "エピソード",
     "anime_id": "アニメID",
-    "sent": "送信済み",
-    "aired": "放送済み"
+    "sent": "送信日時",
+    "aired": "放送済み",
+    "empty": "新しい通知はありません"
+  },
+  "settings": {
+    "title": "設定",
+    "theme": {
+      "title": "テーマ",
+      "description": "お好みのテーマを選択してください",
+      "dark": "ダークモード",
+      "light": "ライトモード"
+    },
+    "language": {
+      "title": "言語",
+      "description": "お好みの言語を選択してください",
+      "english": "英語",
+      "japanese": "日本語"
+    }
   }
 }

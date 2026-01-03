@@ -49,5 +49,14 @@ export const userService = {
             params: { q: keyword }
         });
     },
+    getUserActivity: (username) => __awaiter(void 0, void 0, void 0, function* () {
+        const key = `user:${username}:activity`;
+        const cached = getCached(key);
+        if (cached)
+            return { data: cached };
+        const res = yield apiClient.get(`/user/${username}/overview/activity`);
+        setCached(key, res.data, TTL_SHORT); // Cache 5 phút
+        return res;
+    }),
 };
 //# sourceMappingURL=user.service.js.map

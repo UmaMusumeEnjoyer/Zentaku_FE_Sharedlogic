@@ -49,4 +49,15 @@ export const userService = {
       params: { q: keyword } 
     });
   },
+
+  getUserActivity: async (username: string) => {
+  const key = `user:${username}:activity`;
+  const cached = getCached(key);
+  if (cached) return{ data: cached };
+
+  const res = await apiClient.get(`/user/${username}/overview/activity`)
+    setCached(key, res.data, TTL_SHORT); // Cache 5 phút
+    return res;
+  },
+
 };
