@@ -9,6 +9,12 @@ export const authService = {
     },
     verifyEmail: (token) => {
         return apiClient.get(`/auth/verify-email/?token=${token}`);
+    },
+    // Thêm API refresh token
+    refreshToken: (refreshToken) => {
+        return apiClient.post('/auth/token/refresh/', {
+            refresh: refreshToken
+        });
     }
 };
 //# sourceMappingURL=auth.service.js.map
