@@ -7,7 +7,8 @@
     "buttons": {
         "sign_up": "新規登録",
         "learn_more": "詳細を見る",
-        "read_more": "続きを読む"
+        "read_more": "続きを読む",
+        "view_all": "すべて見る"
     },
     "staff": {
         "loading": "スタッフを読み込み中...",
