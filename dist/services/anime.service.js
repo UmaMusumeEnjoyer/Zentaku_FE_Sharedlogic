@@ -85,5 +85,8 @@ export const animeService = {
         setCached(key, res.data);
         return res;
     }),
+    searchAnimeByCriteria: (criteria) => {
+        return apiClient.post('/anilist/search/criteria/', criteria);
+    }
 };
 //# sourceMappingURL=anime.service.js.map

@@ -5,4 +5,7 @@ export * from './components/heroSection/heroSection.types';
 export * from './components/heroSection/useHeroSection';
 export * from './components/sectionGrid/sectionGrid.types';
 export * from './components/sectionGrid/useSectionGrid';
+export * from './animeSearch.types';
+export * from './animeSearchConstants';
+export * from './useAnimeSearch';
 //# sourceMappingURL=index.d.ts.map

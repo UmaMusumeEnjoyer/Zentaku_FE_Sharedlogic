@@ -10,19 +10,27 @@ interface UseFilterBarProps {
 }
 
 export const useFilterBar = ({ onSearch, activeFilters }: UseFilterBarProps) => {
-  const [filters, setFilters] = useState<FilterState>({ ...DEFAULT_FILTER_VALUES });
+  const [filters, setFilters] = useState<FilterState>({ 
+    keyword: '',
+    genre: 'Any',
+    year: 'Any',
+    season: 'Any',
+    format: 'Any',
+    status: 'Any',
+    sort: 'POPULARITY_DESC'
+  });
 
   // Sync with active filters from parent
   useEffect(() => {
     if (activeFilters) {
       setFilters((prev) => ({
-        keyword: activeFilters.keyword || prev.keyword,
-        genre: activeFilters.filters.genre || prev.genre,
-        year: activeFilters.filters.year || prev.year,
-        season: activeFilters.filters.season || prev.season,
-        format: activeFilters.filters.format || prev.format,
-        status: activeFilters.filters.status || prev.status,
-        sort: activeFilters.filters.sort || prev.sort,
+        keyword: activeFilters.keyword ?? prev.keyword,
+        genre: activeFilters.filters.genre?.toString() ?? prev.genre,
+        year: activeFilters.filters.year?.toString() ?? prev.year,
+        season: activeFilters.filters.season ?? prev.season,
+        format: activeFilters.filters.format ?? prev.format,
+        status: activeFilters.filters.status ?? prev.status,
+        sort: activeFilters.filters.sort ?? prev.sort,
       }));
     }
   }, [activeFilters]);
@@ -58,7 +66,15 @@ export const useFilterBar = ({ onSearch, activeFilters }: UseFilterBarProps) => 
   };
 
   const handleClear = () => {
-    const resetFilters = { ...DEFAULT_FILTER_VALUES };
+    const resetFilters: FilterState = {
+      keyword: '',
+      genre: 'Any',
+      year: 'Any',
+      season: 'Any',
+      format: 'Any',
+      status: 'Any',
+      sort: 'POPULARITY_DESC'
+    };
     setFilters(resetFilters);
     
     const { keyword, ...rest } = resetFilters;
