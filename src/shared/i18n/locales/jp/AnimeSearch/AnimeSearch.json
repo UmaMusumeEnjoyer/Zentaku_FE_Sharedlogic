@@ -19,27 +19,26 @@
         "adventure": "アドベンチャー",
         "comedy": "コメディ",
         "drama": "ドラマ",
-        "fantasy": "Fantasy",
+        "fantasy": "ファンタジー",
         "sliceOfLife": "日常",
         "sciFi": "SF",
         "horror": "ホラー",
         "ecchi": "エッチ",
-        "魔法少女": "魔法少女",
-        "メカ": "メカ",
-        "音楽": "音楽",
-        "ミステリー": "ミステリー",
-        "心理サスペンス": "心理サスペンス",
-        "ロマンス": "ロマンス",
-        "スポーツ": "スポーツ",
-        "超常現象": "超常現象",
-        "スリラー": "スリラー"
+        "mahouShoujo": "魔法少女",
+        "mecha": "メカ",
+        "music": "音楽",
+        "mystery": "ミステリー",
+        "psychological": "心理サスペンス",
+        "romance": "ロマンス",
+        "sports": "スポーツ",
+        "supernatural": "超常現象",
+        "thriller": "スリラー"
       },
-     
-      "季節": {
-        "冬": "冬",
-        "春": "春",
-        "夏": "夏",
-        "秋": "秋"
+      "seasons": {
+        "winter": "冬",
+        "spring": "春",
+        "summer": "夏",
+        "fall": "秋"
       },
       "formats": {
         "tv": "TV番組",
@@ -68,5 +67,17 @@
       "clear": "クリア",
       "clearTitle": "フィルターをリセット"
     }
+  },
+  "sections": {
+    "trendingNow": "今トレンド",
+    "popularThisSeason": "今期人気",
+    "upcomingNextSeason": "次期予定",
+    "allTimePopular": "殿堂入り人気作品"
+  },
+  "searchResults": {
+    "back": "戻る",
+    "noResults": "検索条件に一致する結果が見つかりませんでした。",
+    "loading": "読み込み中...",
+    "seeMore": "もっと見る"
   }
 }

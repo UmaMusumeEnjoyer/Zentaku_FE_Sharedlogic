@@ -67,5 +67,17 @@
             "clear": "Clear",
             "clearTitle": "Reset Filters"
         }
+    },
+    "sections": {
+        "trendingNow": "TRENDING NOW",
+        "popularThisSeason": "POPULAR THIS SEASON",
+        "upcomingNextSeason": "UPCOMING NEXT SEASON",
+        "allTimePopular": "ALL TIME POPULAR"
+    },
+    "searchResults": {
+        "back": "Back",
+        "noResults": "No results found based on your filters.",
+        "loading": "Loading...",
+        "seeMore": "See more"
     }
 }
