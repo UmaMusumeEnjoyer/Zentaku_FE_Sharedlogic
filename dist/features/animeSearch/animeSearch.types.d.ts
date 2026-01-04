@@ -9,8 +9,10 @@ export interface AnimeFilters {
 export interface AnimeData_animeSearch {
     id: number | undefined;
     anilist_id: number | undefined;
-    title_romaji: string;
-    english: string;
+    title_romaji?: string;
+    name_romaji?: string;
+    name_english?: string;
+    name_native?: string;
     cover_image: string;
     episodes: number | undefined;
     average_score: number | null;

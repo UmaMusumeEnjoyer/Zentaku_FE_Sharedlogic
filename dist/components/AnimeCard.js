@@ -1,7 +1,14 @@
 // src/utils/animeLogic.ts
-// 2. Logic lấy tiêu đề
-export const getAnimeTitle = (anime) => {
-    return anime.title_romaji || anime.name_romaji || "Unknown Title";
+// 2. Logic lấy tiêu đề theo ngôn ngữ
+export const getAnimeTitle = (anime, language = 'en') => {
+    if (language === 'jp') {
+        // Ưu tiên: name_native -> name_romaji -> name_english -> fallback
+        return anime.name_native || anime.name_romaji || anime.title_romaji || anime.name_english || "Unknown Title";
+    }
+    else {
+        // Ưu tiên: name_english -> name_romaji -> name_native -> fallback
+        return anime.name_english || anime.name_romaji || anime.title_romaji || anime.name_native || "Unknown Title";
+    }
 };
 // 3. Logic lấy ID cho Link
 export const getAnimeLinkId = (anime) => {

@@ -6,22 +6,30 @@ export declare const heroList: {
 }[];
 export declare const trendingAnime: {
     id: number;
-    title_romaji: string;
+    name_romaji: string;
+    name_english: string;
+    name_native: string;
     cover_image: string;
 }[];
 export declare const popularSeason: {
     id: number;
-    title_romaji: string;
+    name_romaji: string;
+    name_english: string;
+    name_native: string;
     cover_image: string;
 }[];
 export declare const upcomingNext: {
     id: number;
-    title_romaji: string;
+    name_romaji: string;
+    name_english: string;
+    name_native: string;
     cover_image: string;
 }[];
 export declare const allTimePopular: {
     id: number;
-    title_romaji: string;
+    name_romaji: string;
+    name_english: string;
+    name_native: string;
     cover_image: string;
 }[];
 //# sourceMappingURL=animeSearchConstants.d.ts.map

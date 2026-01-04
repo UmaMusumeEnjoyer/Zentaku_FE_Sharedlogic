@@ -6,6 +6,8 @@ export interface AnimeData {
   anilist_id?: number;
   title_romaji?: string;
   name_romaji?: string;
+  name_native?: string;
+  name_english?: string;
   cover_image: string;
   episode_progress?: number;
   episodes?: number;
@@ -15,9 +17,15 @@ export interface AnimeData {
   };
 }
 
-// 2. Logic lấy tiêu đề
-export const getAnimeTitle = (anime: AnimeData): string => {
-  return anime.title_romaji || anime.name_romaji || "Unknown Title";
+// 2. Logic lấy tiêu đề theo ngôn ngữ
+export const getAnimeTitle = (anime: AnimeData, language: 'en' | 'jp' = 'en'): string => {
+  if (language === 'jp') {
+    // Ưu tiên: name_native -> name_romaji -> name_english -> fallback
+    return anime.name_native || anime.name_romaji || anime.title_romaji || anime.name_english || "Unknown Title";
+  } else {
+    // Ưu tiên: name_english -> name_romaji -> name_native -> fallback
+    return anime.name_english || anime.name_romaji || anime.title_romaji || anime.name_native || "Unknown Title";
+  }
 };
 
 // 3. Logic lấy ID cho Link

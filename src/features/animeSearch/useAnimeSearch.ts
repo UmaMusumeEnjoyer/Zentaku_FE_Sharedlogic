@@ -25,16 +25,19 @@ export const useAnimeSearchPage = () => {
 
   // --- HELPER: MAP DATA ---
   const mapAnimeData = (rawItem: any): AnimeData_animeSearch => ({
+    ...rawItem,
     id: rawItem.id,
     anilist_id: rawItem.id,
-    title_romaji: rawItem.name_romaji || rawItem.romaji,
-    english: rawItem.name_english || rawItem.english,
+    title_romaji: rawItem.title_romaji || rawItem.name_romaji || rawItem.romaji,
+    name_romaji: rawItem.name_romaji || rawItem.romaji,
+    name_english: rawItem.name_english || rawItem.english,
+    name_native: rawItem.name_native || rawItem.native,
     cover_image: rawItem.cover_image || rawItem.cover,
     episodes: rawItem.airing_episodes || rawItem.episodes,
     average_score: rawItem.average_score,
     season: rawItem.season,
     next_airing_ep: null,
-    ...rawItem,
+    
   });
 
   // --- EFFECT: RESTORE STATE ---
