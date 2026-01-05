@@ -1,5 +1,3 @@
-export * from './profilePage.types';
-export * from './useActivityFeed';
-export * from './useProfileData';
-export * from './useProfileLists';
+export * from './components/ActivityFeed/ActivityFeed.types';
+export * from './components/ActivityFeed/useActivityFeed';
 //# sourceMappingURL=index.js.map

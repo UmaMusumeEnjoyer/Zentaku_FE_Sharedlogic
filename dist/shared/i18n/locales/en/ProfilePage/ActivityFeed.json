@@ -1,0 +1,26 @@
+{
+    "loading": "Loading activity...",
+    "empty_state": {
+        "no_activity": "No recent activity.",
+        "no_activity_on_date": "No activity recorded on {{date}}."
+    },
+    "actions": {
+        "followed_anime": "followed anime",
+        "create_list": "created custom list",
+        "updated_followed_anime": "updated progress",
+        "default": "performed action"
+    },
+    "targets": {
+        "unnamed_list": "Unnamed List",
+        "unknown_anime": "Unknown Anime"
+    },
+    "buttons": {
+        "load_more": "Load more activity"
+    },
+    "time": {
+        "now": "now",
+        "minutes_ago": "{{count}}m ago",
+        "hours_ago": "{{count}}h ago",
+        "days_ago": "{{count}}d ago"
+    }
+}
