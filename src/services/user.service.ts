@@ -60,4 +60,9 @@ export const userService = {
     return res;
   },
 
+  getUserAnimeList : (username: string) => {
+  // KHÔNG CACHE: List thay đổi thường xuyên khi user update
+  return apiClient.get(`/user/${username}/animelist`);
+  },
+
 };

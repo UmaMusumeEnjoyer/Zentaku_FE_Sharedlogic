@@ -13,5 +13,6 @@ export declare const userService: {
     getUserActivity: (username: string) => Promise<import("axios").AxiosResponse<any, any, {}> | {
         data: {};
     }>;
+    getUserAnimeList: (username: string) => Promise<import("axios").AxiosResponse<any, any, {}>>;
 };
 //# sourceMappingURL=user.service.d.ts.map

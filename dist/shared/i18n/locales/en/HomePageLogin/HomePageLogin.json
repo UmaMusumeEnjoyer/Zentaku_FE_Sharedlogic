@@ -1,0 +1,18 @@
+{
+    "loading": {
+        "message": "Loading your list..."
+    },
+    "emptyState": {
+        "title": "Your List is Empty",
+        "description": "It looks like you haven't added any anime yet.",
+        "browseFeature": "Browse",
+        "instruction": "Please use the <strong>{{feature}}</strong> feature to find your favorite anime and add them to your collection."
+    },
+    "sections": {
+        "watching": "Anime in Progress",
+        "planning": "Plan to Watch",
+        "completed": "Completed",
+        "onHold": "On Hold",
+        "dropped": "Dropped"
+    }
+}

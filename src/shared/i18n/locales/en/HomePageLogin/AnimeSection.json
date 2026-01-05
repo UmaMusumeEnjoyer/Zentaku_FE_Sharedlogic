@@ -1,0 +1,22 @@
+{
+  "buttons": {
+    "notify": "Notify",
+    "viewAll": "View All",
+    "showLess": "Show Less",
+    "cancel": "Cancel",
+    "saveChanges": "Save Changes"
+  },
+  "modal": {
+    "title": "Notification Settings",
+    "loading": "Loading settings..."
+  },
+  "form": {
+    "enableNotifications": "Enable Notifications",
+    "notifyBeforeHours": "Notify Before (Hours):",
+    "sendViaEmail": "Send via Email",
+    "sendInAppNotification": "Send In-App Notification"
+  },
+  "accessibility": {
+    "notificationSettings": "Notification Settings"
+  }
+}

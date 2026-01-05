@@ -1,0 +1,18 @@
+{
+  "loading": {
+    "message": "リストを読み込んでいます..."
+  },
+  "emptyState": {
+    "title": "リストが空です",
+    "description": "まだアニメを追加していないようです。",
+    "browseFeature": "ブラウズ",
+    "instruction": "お気に入りのアニメを見つけてコレクションに追加するには、<strong>{{feature}}</strong> 機能をご利用ください。"
+  },
+  "sections": {
+    "watching": "視聴中",
+    "planning": "視聴予定",
+    "completed": "視聴済み",
+    "onHold": "保留中",
+    "dropped": "視聴中止"
+  }
+}

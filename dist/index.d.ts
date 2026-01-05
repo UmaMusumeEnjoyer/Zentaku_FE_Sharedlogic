@@ -11,6 +11,7 @@ export * from './features/characterPage';
 export * from './features/authPage';
 export * from './features/staffPage';
 export * from './features/animeSearch';
+export * from './features/loginHomePage';
 export * from './shared/i18n';
 export { default as commonEn } from './shared/i18n/locales/en/common.json';
 export { default as homePageEn } from './shared/i18n/locales/en/HomePage.json';
@@ -44,6 +45,10 @@ export { default as GlobalSearchEn } from './shared/i18n/locales/en/GlobalSearch
 export { default as GlobalSearchJp } from './shared/i18n/locales/jp/GlobalSearch.json';
 export { default as AnimeSearchEN } from './shared/i18n/locales/en/AnimeSearch/AnimeSearch.json';
 export { default as AnimeSearchJP } from './shared/i18n/locales/jp/AnimeSearch/AnimeSearch.json';
+export { default as AnimeSectionEN } from './shared/i18n/locales/en/HomePageLogin/AnimeSection.json';
+export { default as AnimeSectionJP } from './shared/i18n/locales/jp/HomePageLogin/AnimeSection.json';
+export { default as HomePageLoginEN } from './shared/i18n/locales/en/HomePageLogin/HomePageLogin.json';
+export { default as HomePageLoginJP } from './shared/i18n/locales/jp/HomePageLogin/HomePageLogin.json';
 export * from './components/AnimeCard';
 export * from './components/GlobalSearch/GlobalSearch.types';
 export * from './components/GlobalSearch/useGlobalSearch';

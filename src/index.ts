@@ -16,6 +16,7 @@ export * from './features/characterPage';
 export * from './features/authPage';
 export * from './features/staffPage';
 export * from './features/animeSearch';
+export * from './features/loginHomePage';
 
 // Export i18n configuration và translations
 export * from './shared/i18n';
@@ -69,6 +70,12 @@ export { default as GlobalSearchJp } from './shared/i18n/locales/jp/GlobalSearch
 ////////////AnimeSearch/////
 export { default as AnimeSearchEN } from './shared/i18n/locales/en/AnimeSearch/AnimeSearch.json';
 export { default as AnimeSearchJP } from './shared/i18n/locales/jp/AnimeSearch/AnimeSearch.json';
+
+//////////////HomepageLogin////////
+export { default as AnimeSectionEN} from './shared/i18n/locales/en/HomePageLogin/AnimeSection.json';
+export { default as AnimeSectionJP} from './shared/i18n/locales/jp/HomePageLogin/AnimeSection.json';
+export { default as HomePageLoginEN} from './shared/i18n/locales/en/HomePageLogin/HomePageLogin.json';
+export { default as HomePageLoginJP} from './shared/i18n/locales/jp/HomePageLogin/HomePageLogin.json';
 
 
 /////////Components///////////////

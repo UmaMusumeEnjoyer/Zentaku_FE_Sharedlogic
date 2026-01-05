@@ -58,5 +58,9 @@ export const userService = {
         setCached(key, res.data, TTL_SHORT); // Cache 5 phút
         return res;
     }),
+    getUserAnimeList: (username) => {
+        // KHÔNG CACHE: List thay đổi thường xuyên khi user update
+        return apiClient.get(`/user/${username}/animelist`);
+    },
 };
 //# sourceMappingURL=user.service.js.map
