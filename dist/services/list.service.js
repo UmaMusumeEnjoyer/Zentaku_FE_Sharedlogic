@@ -23,5 +23,16 @@ export const listService = {
         // data có thể chứa { username: "abc", page: 1, ... }
         return apiClient.post('/list/likes/user/', data);
     },
+    getMostLikedLists: () => {
+        return apiClient.post('/list/likes/most-liked/', {
+            limit: 20
+        });
+    },
+    searchCustomLists: (keyword) => {
+        return apiClient.post('/list/search/', {
+            query: keyword,
+            limit: 20 // Limit được fix cứng là 20 theo yêu cầu
+        });
+    },
 };
 //# sourceMappingURL=list.service.js.map

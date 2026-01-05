@@ -10,5 +10,7 @@ export declare const listService: {
     getTrending: () => Promise<import("axios").AxiosResponse<any, any, {}>>;
     search: (keyword: string) => Promise<import("axios").AxiosResponse<any, any, {}>>;
     getListsLikedByUser: (data?: {}) => Promise<import("axios").AxiosResponse<any, any, {}>>;
+    getMostLikedLists: () => Promise<import("axios").AxiosResponse<any, any, {}>>;
+    searchCustomLists: (keyword: string) => Promise<import("axios").AxiosResponse<any, any, {}>>;
 };
 //# sourceMappingURL=list.service.d.ts.map

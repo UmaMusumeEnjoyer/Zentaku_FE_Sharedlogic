@@ -1,0 +1,24 @@
+{
+    "page_header": {
+        "title": "Discover Anime Lists",
+        "subtitle": "Curated collections from the community"
+    },
+    "search_bar": {
+        "label": "Search Lists",
+        "placeholder": "Find a list (e.g., 'Best Isekai 2024')..."
+    },
+    "search_results": {
+        "searching": "Searching...",
+        "title": "Search Results",
+        "loading": "Looking for lists...",
+        "no_results": "No lists found matching your query."
+    },
+    "top_lists": {
+        "loading": "Loading top lists...",
+        "title": "Most Liked Lists"
+    },
+    "card": {
+        "items": "items",
+        "items_count": "{{count}} items"
+    }
+}

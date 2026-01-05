@@ -1,0 +1,1 @@
+{"version":3,"file":"useTopListsSection.js","sourceRoot":"","sources":["../../../../src/features/animeListSearch/components/useTopListsSection.ts"],"names":[],"mappings":"AAEA,MAAM,CAAC,MAAM,kBAAkB,GAAG,CAAC,KAAsB,EAAE,EAAE;IAC3D,4DAA4D;IAC5D,MAAM,QAAQ,GAAG,KAAK,CAAC,OAAO,CAAC,KAAK,CAAC,IAAI,KAAK,CAAC,MAAM,GAAG,CAAC,CAAC;IAE1D,OAAO;QACL,QAAQ;KACT,CAAC;AACJ,CAAC,CAAC"}
