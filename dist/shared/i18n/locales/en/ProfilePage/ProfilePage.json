@@ -1,0 +1,63 @@
+{
+    "loading": {
+        "profile": "Loading profile...",
+        "lists": "Loading...",
+        "liked_lists": "Loading liked lists...",
+        "favorites": "Loading..."
+    },
+    "sidebar": {
+        "joined": "Joined {{date}}",
+        "edit_profile": "Edit profile",
+        "badges": {
+            "title": "Badges",
+            "staff": "STAFF"
+        }
+    },
+    "tabs": {
+        "overview": "Overview",
+        "anime_list": "Anime List",
+        "favorites": "Favorites",
+        "social": "Social"
+    },
+    "overview": {
+        "contributions": {
+            "title": "{{count}} contributions in the last year"
+        }
+    },
+    "anime_list": {
+        "my_custom_lists": "My Custom Lists",
+        "users_lists": "{{username}}'s Lists",
+        "new_list": "New List",
+        "liked_lists": "Liked Lists",
+        "empty": {
+            "no_lists": "No custom lists found.",
+            "no_liked_lists": "No liked lists yet."
+        },
+        "badges": {
+            "private": "Private"
+        },
+        "likes_count": "❤️ {{count}}"
+    },
+    "favorites": {
+        "title": "Favorites"
+    },
+    "create_list_modal": {
+        "title": "Create New List",
+        "fields": {
+            "list_name": {
+                "label": "List Name"
+            },
+            "description": {
+                "label": "Description"
+            },
+            "is_private": {
+                "label": "Make this list private"
+            }
+        },
+        "actions": {
+            "cancel": "Cancel",
+            "create": "Create",
+            "creating": "Creating..."
+        }
+    }
+}

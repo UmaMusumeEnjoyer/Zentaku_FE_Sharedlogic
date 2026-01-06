@@ -90,6 +90,14 @@ export {default as ProfilePageJP} from './shared/i18n/locales/jp/ProfilePage/Act
 export {default as ActivityHistoryEN} from './shared/i18n/locales/en/ProfilePage/ActivityHistory.json';
 export {default as ActivityHistoryJP} from './shared/i18n/locales/jp/ProfilePage/ActivityHistory.json';
 
+export {default as EditProfileModalEN} from './shared/i18n/locales/en/ProfilePage/EditProfileModal.json';
+export {default as EditProfileModalJP} from './shared/i18n/locales/jp/ProfilePage/EditProfileModal.json';
+
+export {default as ProfilePagePageEN} from './shared/i18n/locales/en/ProfilePage/ProfilePage.json';
+export {default as ProfilePagePageJP} from './shared/i18n/locales/jp/ProfilePage/ProfilePage.json';
+
+export {default as ActivityFeedEN} from './shared/i18n/locales/en/ProfilePage/ActivityFeed.json';
+export {default as ActivityFeedJP} from './shared/i18n/locales/jp/ProfilePage/ActivityFeed.json';
 
 /////////Components///////////////
 export * from './components/AnimeCard';

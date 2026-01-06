@@ -2,7 +2,12 @@ import { useState, useEffect, useMemo } from 'react';
 import { userService } from '../../../../services/user.service';
 import { ActivityItem } from './ActivityFeed.types';
 
-export const useActivityFeed = (filterDate?: string) => {
+interface UseActivityFeedParams {
+  filterDate?: string;
+  t: (key: string, options?: any) => string; // Thêm hàm dịch
+}
+
+export const useActivityFeed = ({ filterDate, t }: UseActivityFeedParams) => {
   const [activities, setActivities] = useState<ActivityItem[]>([]);
   const [visibleCount, setVisibleCount] = useState(10);
   const [loading, setLoading] = useState(true);
@@ -47,10 +52,10 @@ export const useActivityFeed = (filterDate?: string) => {
   // --- 3. HELPER FUNCTIONS (Logic hiển thị) ---
   
   const formatTimeAgo = (s: number) => {
-    if (s < 60) return 'now';
-    if (s < 3600) return `${Math.floor(s/60)}m ago`;
-    if (s < 86400) return `${Math.floor(s/3600)}h ago`;
-    return `${Math.floor(s/86400)}d ago`;
+    if (s < 60) return t('ActivityFeed:time.now');
+    if (s < 3600) return t('ActivityFeed:time.minutes_ago', { count: Math.floor(s/60) });
+    if (s < 86400) return t('ActivityFeed:time.hours_ago', { count: Math.floor(s/3600) });
+    return t('ActivityFeed:time.days_ago', { count: Math.floor(s/86400) });
   };
 
   const getActionClass = (type: string) => {
@@ -75,21 +80,21 @@ export const useActivityFeed = (filterDate?: string) => {
   const getActionDescription = (type: string) => {
     switch (type) {
       case 'followed_anime':
-        return 'followed anime';
+        return t('ActivityFeed:actions.followed_anime');
       case 'create_list':
-        return 'created custom list';
+        return t('ActivityFeed:actions.create_list');
       case 'updated_followed_anime':
-        return 'updated progress';
+        return t('ActivityFeed:actions.updated_followed_anime');
       default:
-        return 'performed action';
+        return t('ActivityFeed:actions.default');
     }
   };
 
   const getTargetName = (item: ActivityItem) => {
     if (item.action_type === 'create_list') {
-      return item.metadata?.list_name || "Unnamed List";
+      return item.metadata?.list_name || t('ActivityFeed:targets.unnamed_list');
     }
-    return item.metadata?.title || "Unknown Anime";
+    return item.metadata?.title || t('ActivityFeed:targets.unknown_anime');
   };
 
   // --- 4. NAVIGATION LOGIC ---

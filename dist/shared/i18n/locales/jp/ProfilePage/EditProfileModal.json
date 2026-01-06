@@ -1,0 +1,25 @@
+{
+    "title": "プロフィールを編集",
+    "avatar": {
+        "label": "プロフィール画像",
+        "upload": "新しい画像をアップロード",
+        "delete": "削除"
+    },
+    "fields": {
+        "first_name": {
+            "label": "名"
+        },
+        "last_name": {
+            "label": "姓"
+        },
+        "username": {
+            "label": "ユーザー名",
+            "hint": "ユーザー名を変更すると、プロフィールリンクに影響する可能性があります。"
+        }
+    },
+    "actions": {
+        "cancel": "キャンセル",
+        "save": "プロフィールを保存",
+        "saving": "保存中..."
+    }
+}

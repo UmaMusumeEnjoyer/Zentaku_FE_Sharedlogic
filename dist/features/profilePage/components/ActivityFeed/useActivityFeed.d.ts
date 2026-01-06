@@ -1,5 +1,9 @@
 import { ActivityItem } from './ActivityFeed.types';
-export declare const useActivityFeed: (filterDate?: string) => {
+interface UseActivityFeedParams {
+    filterDate?: string;
+    t: (key: string, options?: any) => string;
+}
+export declare const useActivityFeed: ({ filterDate, t }: UseActivityFeedParams) => {
     username: string | null;
     loading: boolean;
     displayItems: ActivityItem[];
@@ -10,7 +14,8 @@ export declare const useActivityFeed: (filterDate?: string) => {
     formatTimeAgo: (s: number) => string;
     getActionClass: (type: string) => "feed-icon-add" | "feed-icon-update" | "feed-icon-default";
     getActionIconChar: (type: string) => "☰" | "+" | "✎" | "•";
-    getActionDescription: (type: string) => "followed anime" | "created custom list" | "updated progress" | "performed action";
+    getActionDescription: (type: string) => string;
     getTargetName: (item: ActivityItem) => string;
 };
+export {};
 //# sourceMappingURL=useActivityFeed.d.ts.map

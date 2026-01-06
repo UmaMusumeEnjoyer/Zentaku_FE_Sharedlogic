@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { useState, useEffect, useMemo } from 'react';
 import { userService } from '../../../../services/user.service';
-export const useActivityFeed = (filterDate) => {
+export const useActivityFeed = ({ filterDate, t }) => {
     const [activities, setActivities] = useState([]);
     const [visibleCount, setVisibleCount] = useState(10);
     const [loading, setLoading] = useState(true);
@@ -49,12 +49,12 @@ export const useActivityFeed = (filterDate) => {
     // --- 3. HELPER FUNCTIONS (Logic hiển thị) ---
     const formatTimeAgo = (s) => {
         if (s < 60)
-            return 'now';
+            return t('ActivityFeed:time.now');
         if (s < 3600)
-            return `${Math.floor(s / 60)}m ago`;
+            return t('ActivityFeed:time.minutes_ago', { count: Math.floor(s / 60) });
         if (s < 86400)
-            return `${Math.floor(s / 3600)}h ago`;
-        return `${Math.floor(s / 86400)}d ago`;
+            return t('ActivityFeed:time.hours_ago', { count: Math.floor(s / 3600) });
+        return t('ActivityFeed:time.days_ago', { count: Math.floor(s / 86400) });
     };
     const getActionClass = (type) => {
         switch (type) {
@@ -79,21 +79,21 @@ export const useActivityFeed = (filterDate) => {
     const getActionDescription = (type) => {
         switch (type) {
             case 'followed_anime':
-                return 'followed anime';
+                return t('ActivityFeed:actions.followed_anime');
             case 'create_list':
-                return 'created custom list';
+                return t('ActivityFeed:actions.create_list');
             case 'updated_followed_anime':
-                return 'updated progress';
+                return t('ActivityFeed:actions.updated_followed_anime');
             default:
-                return 'performed action';
+                return t('ActivityFeed:actions.default');
         }
     };
     const getTargetName = (item) => {
         var _a, _b;
         if (item.action_type === 'create_list') {
-            return ((_a = item.metadata) === null || _a === void 0 ? void 0 : _a.list_name) || "Unnamed List";
+            return ((_a = item.metadata) === null || _a === void 0 ? void 0 : _a.list_name) || t('ActivityFeed:targets.unnamed_list');
         }
-        return ((_b = item.metadata) === null || _b === void 0 ? void 0 : _b.title) || "Unknown Anime";
+        return ((_b = item.metadata) === null || _b === void 0 ? void 0 : _b.title) || t('ActivityFeed:targets.unknown_anime');
     };
     // --- 4. NAVIGATION LOGIC ---
     const getTargetUrl = (item) => {

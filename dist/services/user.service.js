@@ -62,5 +62,8 @@ export const userService = {
         // KHÔNG CACHE: List thay đổi thường xuyên khi user update
         return apiClient.get(`/user/${username}/animelist`);
     },
+    deleteUserAvatar: () => {
+        return apiClient.delete('/user/avatar/delete/');
+    },
 };
 //# sourceMappingURL=user.service.js.map

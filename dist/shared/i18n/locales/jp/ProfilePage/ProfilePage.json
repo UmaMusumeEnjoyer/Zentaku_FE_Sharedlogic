@@ -1,0 +1,63 @@
+{
+    "loading": {
+        "profile": "プロフィールを読み込み中...",
+        "lists": "読み込み中...",
+        "liked_lists": "いいねしたリストを読み込み中...",
+        "favorites": "読み込み中..."
+    },
+    "sidebar": {
+        "joined": "{{date}} に登録しました",
+        "edit_profile": "プロフィールを編集",
+        "badges": {
+            "title": "バッジ",
+            "staff": "STAFF"
+        }
+    },
+    "tabs": {
+        "overview": "概要",
+        "anime_list": "アニメリスト",
+        "favorites": "お気に入り",
+        "social": "ソーシャル"
+    },
+    "overview": {
+        "contributions": {
+            "title": "過去1年間の{{count}}件の貢献"
+        }
+    },
+    "anime_list": {
+        "my_custom_lists": "マイカスタムリスト",
+        "users_lists": "{{username}}さんのリスト",
+        "new_list": "新規リスト",
+        "liked_lists": "いいねしたリスト",
+        "empty": {
+            "no_lists": "カスタムリストが見つかりません。",
+            "no_liked_lists": "まだいいねしたリストはありません。"
+        },
+        "badges": {
+            "private": "非公開"
+        },
+        "likes_count": "❤️ {{count}}"
+    },
+    "favorites": {
+        "title": "お気に入り"
+    },
+    "create_list_modal": {
+        "title": "新しいリストを作成",
+        "fields": {
+            "list_name": {
+                "label": "リスト名"
+            },
+            "description": {
+                "label": "説明"
+            },
+            "is_private": {
+                "label": "このリストを非公開にする"
+            }
+        },
+        "actions": {
+            "cancel": "キャンセル",
+            "create": "作成",
+            "creating": "作成中..."
+        }
+    }
+}

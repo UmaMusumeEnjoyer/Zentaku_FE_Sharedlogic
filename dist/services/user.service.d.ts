@@ -14,5 +14,6 @@ export declare const userService: {
         data: {};
     }>;
     getUserAnimeList: (username: string) => Promise<import("axios").AxiosResponse<any, any, {}>>;
+    deleteUserAvatar: () => Promise<import("axios").AxiosResponse<any, any, {}>>;
 };
 //# sourceMappingURL=user.service.d.ts.map

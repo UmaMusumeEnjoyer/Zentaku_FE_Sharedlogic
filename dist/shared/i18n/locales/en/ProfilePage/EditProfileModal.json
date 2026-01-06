@@ -1,0 +1,25 @@
+{
+    "title": "Edit Profile",
+    "avatar": {
+        "label": "Profile Picture",
+        "upload": "Upload new picture",
+        "delete": "Delete"
+    },
+    "fields": {
+        "first_name": {
+            "label": "First Name"
+        },
+        "last_name": {
+            "label": "Last Name"
+        },
+        "username": {
+            "label": "Username",
+            "hint": "Changing username may affect your profile link."
+        }
+    },
+    "actions": {
+        "cancel": "Cancel",
+        "save": "Save profile",
+        "saving": "Saving..."
+    }
+}

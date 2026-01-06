@@ -65,4 +65,8 @@ export const userService = {
   return apiClient.get(`/user/${username}/animelist`);
   },
 
+  deleteUserAvatar : () => {
+  return apiClient.delete('/user/avatar/delete/');
+  },
+
 };

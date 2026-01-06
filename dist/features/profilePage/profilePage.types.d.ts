@@ -1,30 +1,27 @@
-export interface UserProfile {
+export interface UserProfile_ProfilePage {
     username: string;
     first_name?: string;
     last_name?: string;
-    avatar_url?: string;
+    avatar_url?: string | undefined;
     date_joined?: string;
     is_staff?: boolean;
     is_own_profile?: boolean;
+    [key: string]: any;
 }
 export interface CustomList {
-    list_id: number;
+    list_id: number | string;
+    list_name: string;
+    description?: string;
+    is_private: boolean;
+    like_count?: number;
+    [key: string]: any;
+}
+export interface NewListData {
     list_name: string;
     description: string;
     is_private: boolean;
-    like_count?: number;
+    color: string;
 }
-export interface ActivityItem {
-    id: number;
-    action_type: 'followed_anime' | 'create_list' | 'updated_followed_anime';
-    ago_seconds: number;
-    metadata?: {
-        list_name?: string;
-        title?: string;
-    };
-    target_id: string | number;
+export interface ProfilePageProps {
 }
-export interface HeatmapData {
-    [date: string]: number;
-}
-//# sourceMappingURL=profilePage.types.d.ts.map
+//# sourceMappingURL=ProfilePage.types.d.ts.map
