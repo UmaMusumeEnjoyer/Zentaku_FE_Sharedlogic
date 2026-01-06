@@ -87,6 +87,9 @@ export {default as AnimeListSearchJP} from './shared/i18n/locales/jp/AnimeListSe
 export {default as ProfilePageEN} from './shared/i18n/locales/en/ProfilePage/ActivityFeed.json';
 export {default as ProfilePageJP} from './shared/i18n/locales/jp/ProfilePage/ActivityFeed.json';
 
+export {default as ActivityHistoryEN} from './shared/i18n/locales/en/ProfilePage/ActivityHistory.json';
+export {default as ActivityHistoryJP} from './shared/i18n/locales/jp/ProfilePage/ActivityHistory.json';
+
 
 /////////Components///////////////
 export * from './components/AnimeCard';

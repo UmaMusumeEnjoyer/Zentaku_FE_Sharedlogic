@@ -1,0 +1,10 @@
+{
+    "loading": "貢献度グラフを読み込み中...",
+    "legend": {
+        "less": "少ない",
+        "more": "多い"
+    },
+    "tooltip": {
+        "activities": "アクティビティ"
+    }
+}

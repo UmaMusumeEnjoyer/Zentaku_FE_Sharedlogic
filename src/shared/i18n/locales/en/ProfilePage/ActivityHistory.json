@@ -1,0 +1,10 @@
+{
+  "loading": "Loading contribution graph...",
+  "legend": {
+    "less": "Less",
+    "more": "More"
+  },
+  "tooltip": {
+    "activities": "activities"
+  }
+}
