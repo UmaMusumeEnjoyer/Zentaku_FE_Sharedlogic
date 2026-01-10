@@ -90,20 +90,45 @@ export const useEditProfileModal = (isOpen, currentUser, onUpdateSuccess, onClos
         }
     });
     // --- HANDLERS: SUBMIT ---
+    // --- HANDLERS: SUBMIT ---
     const handleSubmit = (e) => __awaiter(void 0, void 0, void 0, function* () {
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j;
         e.preventDefault();
         setLoading(true);
         setError(null);
         try {
             const res = yield userService.updateUserProfile(formData);
-            if (res.data) {
-                onUpdateSuccess(res.data);
+            // ✅ FIX: API trả về { user: {...} } chứ không phải trực tiếp data
+            const updatedUserData = 'user' in res.data ? res.data.user : res.data;
+            if (updatedUserData) {
+                // ✅ Cập nhật localStorage TRƯỚC KHI gọi callback
+                if (updatedUserData.username) {
+                    localStorage.setItem('username', updatedUserData.username);
+                }
+                // ✅ Gọi callback với đầy đủ thông tin
+                onUpdateSuccess(updatedUserData);
+                // ✅ Đóng modal
                 onClose();
             }
         }
         catch (err) {
             console.error("Update failed:", err);
-            setError("Failed to update profile. Username might be taken.");
+            // Xử lý các loại lỗi cụ thể
+            if (((_a = err.response) === null || _a === void 0 ? void 0 : _a.status) === 401) {
+                setError("Session expired. Please login again.");
+            }
+            else if (((_b = err.response) === null || _b === void 0 ? void 0 : _b.status) === 400) {
+                const errorMsg = ((_e = (_d = (_c = err.response) === null || _c === void 0 ? void 0 : _c.data) === null || _d === void 0 ? void 0 : _d.username) === null || _e === void 0 ? void 0 : _e[0]) ||
+                    ((_g = (_f = err.response) === null || _f === void 0 ? void 0 : _f.data) === null || _g === void 0 ? void 0 : _g.message) ||
+                    "Username might be taken or invalid.";
+                setError(errorMsg);
+            }
+            else if ((_j = (_h = err.response) === null || _h === void 0 ? void 0 : _h.data) === null || _j === void 0 ? void 0 : _j.message) {
+                setError(err.response.data.message);
+            }
+            else {
+                setError("Failed to update profile. Please try again.");
+            }
         }
         finally {
             setLoading(false);

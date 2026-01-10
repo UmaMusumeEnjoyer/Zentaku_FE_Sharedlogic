@@ -14,10 +14,10 @@ export const useEditProfileModal = (
     last_name: '',
     username: ''
   });
-  
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // --- EFFECT: INIT FORM DATA ---
@@ -60,15 +60,15 @@ export const useEditProfileModal = (
 
     try {
       const res = await userService.uploadAvatar(file);
-      
+
       // Cập nhật UI cha ngay lập tức với avatar mới
       if (currentUser) {
-        onUpdateSuccess({ 
-            ...currentUser, 
-            avatar_url: res.data.avatar_url 
+        onUpdateSuccess({
+          ...currentUser,
+          avatar_url: res.data.avatar_url
         });
       }
-      
+
     } catch (err) {
       console.error("Upload failed:", err);
       setError("Failed to upload avatar.");
@@ -87,12 +87,12 @@ export const useEditProfileModal = (
       await userService.deleteUserAvatar();
 
       if (currentUser) {
-        onUpdateSuccess({ 
-            ...currentUser, 
-            avatar_url: undefined 
+        onUpdateSuccess({
+          ...currentUser,
+          avatar_url: undefined
         });
       }
-      
+
     } catch (err) {
       console.error("Delete failed:", err);
       setError("Failed to delete avatar.");
@@ -102,6 +102,7 @@ export const useEditProfileModal = (
   };
 
   // --- HANDLERS: SUBMIT ---
+  // --- HANDLERS: SUBMIT ---
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -109,13 +110,38 @@ export const useEditProfileModal = (
 
     try {
       const res = await userService.updateUserProfile(formData);
-      if (res.data) {
-        onUpdateSuccess(res.data as UserProfile);
+
+      // ✅ FIX: API trả về { user: {...} } chứ không phải trực tiếp data
+      const updatedUserData = 'user' in res.data ? res.data.user : res.data;
+
+      if (updatedUserData) {
+        // ✅ Cập nhật localStorage TRƯỚC KHI gọi callback
+        if (updatedUserData.username) {
+          localStorage.setItem('username', updatedUserData.username);
+        }
+
+        // ✅ Gọi callback với đầy đủ thông tin
+        onUpdateSuccess(updatedUserData as UserProfile);
+
+        // ✅ Đóng modal
         onClose();
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error("Update failed:", err);
-      setError("Failed to update profile. Username might be taken.");
+
+      // Xử lý các loại lỗi cụ thể
+      if (err.response?.status === 401) {
+        setError("Session expired. Please login again.");
+      } else if (err.response?.status === 400) {
+        const errorMsg = err.response?.data?.username?.[0] ||
+          err.response?.data?.message ||
+          "Username might be taken or invalid.";
+        setError(errorMsg);
+      } else if (err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError("Failed to update profile. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -127,7 +153,7 @@ export const useEditProfileModal = (
     loading,
     error,
     fileInputRef,
-    
+
     // Actions
     handleChange,
     handleUploadClick,

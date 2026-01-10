@@ -18,8 +18,8 @@ export const useProfilePage = (
   callbacks?: UseProfilePageCallbacks
 ) => {
   const { updateUserInState } = useAuth();
-  
-  const loggedInUsername = localStorage.getItem('username'); 
+
+  const loggedInUsername = localStorage.getItem('username');
 
   // --- 1. IDENTIFY TARGET USER ---
   const targetUsername = routeUsername || loggedInUsername || "guest";
@@ -27,7 +27,7 @@ export const useProfilePage = (
 
   // --- 2. STATE MANAGEMENT ---
   const [activeTab, setActiveTab] = useState('Overview');
-  
+
   // Profile Data
   const [userProfile, setUserProfile] = useState<UserProfile_ProfilePage | null>(null);
   const [profileLoading, setProfileLoading] = useState(true);
@@ -53,22 +53,22 @@ export const useProfilePage = (
   const [creating, setCreating] = useState(false);
 
   // --- 3. HELPER FUNCTIONS ---
-const getAvatarUrl = useCallback((url?: string | null) => {
+  const getAvatarUrl = useCallback((url?: string | null) => {
 
-  
-  if (!url) {
 
-    return DEFAULT_AVATAR;
-  }
-  
-  
+    if (!url) {
 
-  
-  const finalUrl = `${SharedConfig.VITE_BACKEND_DOMAIN}${url}`;
+      return DEFAULT_AVATAR;
+    }
 
-  
-  return finalUrl;
-}, []);
+
+
+
+    const finalUrl = `${SharedConfig.VITE_BACKEND_DOMAIN}${url}`;
+
+
+    return finalUrl;
+  }, []);
 
   const getDisplayName = useCallback(() => {
     if (!userProfile) return targetUsername;
@@ -86,7 +86,7 @@ const getAvatarUrl = useCallback((url?: string | null) => {
   // Fetch User Profile
   useEffect(() => {
     if (!targetUsername) return;
-    
+
     setProfileLoading(true);
     userService.getUserProfile(targetUsername)
       .then((res) => {
@@ -127,18 +127,18 @@ const getAvatarUrl = useCallback((url?: string | null) => {
       const fetchFavorites = async () => {
         setFavLoading(true);
         try {
-            const res = await userService.getUserAnimeList(targetUsername);
-            const data = res.data;
-            const allAnime = [
-              ...(data.watching || []), ...(data.completed || []),
-              ...(data.on_hold || []), ...(data.dropped || []), ...(data.plan_to_watch || [])
-            ];
-            setFavoriteList(allAnime.filter((anime: any) => anime.isFavorite === true)); 
+          const res = await userService.getUserAnimeList(targetUsername);
+          const data = res.data;
+          const allAnime = [
+            ...(data.watching || []), ...(data.completed || []),
+            ...(data.on_hold || []), ...(data.dropped || []), ...(data.plan_to_watch || [])
+          ];
+          setFavoriteList(allAnime.filter((anime: any) => anime.isFavorite === true));
         } catch (err) {
-            console.error("Failed to fetch favorites:", err);
-            setFavoriteList([]);
+          console.error("Failed to fetch favorites:", err);
+          setFavoriteList([]);
         } finally {
-            setFavLoading(false);
+          setFavLoading(false);
         }
       };
       fetchFavorites();
@@ -154,16 +154,79 @@ const getAvatarUrl = useCallback((url?: string | null) => {
     setSelectedDate(null);
   }, [activeTab, fetchCustomLists, fetchLikedLists, isOwnProfile]);
 
-  // --- 5. HANDLERS ---
-
   const handleUpdateSuccess = (updatedUser: UserProfile_ProfilePage) => {
-    if (userProfile && updatedUser.username !== userProfile.username) {
-        localStorage.setItem('username', updatedUser.username);
-        callbacks?.onNavigateToUserProfile(updatedUser.username);
-    } else {
-        setUserProfile(prev => prev ? ({ ...prev, ...updatedUser }) : updatedUser);
+
+
+    const oldUsername = userProfile?.username;
+    const newUsername = updatedUser.username;
+
+
+    // ✅ 1. Cập nhật localStorage NGAY LẬP TỨC (quan trọng nhất!)
+    if (newUsername) {
+      localStorage.setItem('username', newUsername);
     }
-    updateUserInState(updatedUser);
+
+    // ✅ 2. Cập nhật state local (UI phản ánh ngay lập tức)
+    setUserProfile(prev => {
+      if (!prev) return updatedUser;
+
+      // Merge đầy đủ data, đảm bảo không mất field nào
+      const merged = {
+        ...prev,
+        ...updatedUser,
+        // Đảm bảo các field quan trọng không bị undefined
+        avatar_url: updatedUser.avatar_url ?? prev.avatar_url,
+        date_joined: updatedUser.date_joined ?? prev.date_joined,
+        is_staff: updatedUser.is_staff ?? prev.is_staff,
+      };
+
+      return merged;
+    });
+
+    // ✅ 3. Cập nhật AuthContext (Header và các component khác)
+    const usernameToFetch = newUsername || oldUsername;
+
+    if (usernameToFetch) {
+      userService.getUserProfile(usernameToFetch)
+        .then((res) => {
+
+          // Cập nhật cả local state và AuthContext
+          setUserProfile(res.data);
+          updateUserInState(res.data);
+
+
+        })
+        .catch((err) => {
+          console.error("Failed to refresh user info:", err);
+          // Fallback: update với data hiện tại
+
+          // Fallback: update với data hiện tại
+          updateUserInState(updatedUser);
+        });
+    }
+
+
+    // ✅ 4. Nếu username thay đổi → navigate và re-fetch
+    if (oldUsername && newUsername && oldUsername !== newUsername) {
+
+
+
+      // Navigate to new profile URL
+      if (callbacks?.onNavigateToUserProfile) {
+        callbacks.onNavigateToUserProfile(newUsername);
+      }
+
+      // Re-fetch profile để đảm bảo data đồng bộ hoàn toàn
+      setTimeout(() => {
+        userService.getUserProfile(newUsername)
+          .then((res) => {
+
+            setUserProfile(res.data);
+            updateUserInState(res.data);
+          })
+
+      }, 100); // Small delay để đảm bảo localStorage đã update
+    }
   };
 
   const handleTabChange = (tabName: string) => setActiveTab(tabName);
@@ -190,9 +253,9 @@ const getAvatarUrl = useCallback((url?: string | null) => {
   const handleNewListInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
     const checked = (e.target as HTMLInputElement).checked;
-    setNewListData(prev => ({ 
-      ...prev, 
-      [name]: type === 'checkbox' ? checked : value 
+    setNewListData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
     }));
   };
 
@@ -235,7 +298,7 @@ const getAvatarUrl = useCallback((url?: string | null) => {
     showEditModal,
     setShowEditModal,
     handleUpdateSuccess,
-    
+
     // Create List Form
     showCreateModal,
     setShowCreateModal,

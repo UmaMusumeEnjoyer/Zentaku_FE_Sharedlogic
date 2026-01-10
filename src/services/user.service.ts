@@ -8,7 +8,7 @@ export const userService = {
   },
 
   updateUserProfile: (userData: Partial<User>) => {
-    return apiClient.put<User>('/user/profile/update/', userData);
+    return apiClient.put<{ user: User } | User>('/user/profile/update/', userData);
   },
 
   uploadAvatar: (file: any) => {

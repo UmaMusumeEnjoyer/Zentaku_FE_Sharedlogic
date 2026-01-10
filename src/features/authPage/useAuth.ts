@@ -38,9 +38,9 @@ export const useAuth = (): UseAuthReturn => {
     try {
       setIsLoading(true);
       setError(null);
-      
+
       const response = await authService.login(credentials);
-      
+
       const accessToken = response.data.tokens.access;
       const refreshToken = response.data.tokens.refresh;
       const username = response.data.user?.username;
@@ -52,7 +52,7 @@ export const useAuth = (): UseAuthReturn => {
           localStorage.setItem('username', username);
           await fetchUserInfo(username);
         }
-        
+
         return { success: true, message: 'Login successful!' };
       } else {
         return { success: false, message: 'Token not found in response' };
@@ -75,7 +75,22 @@ export const useAuth = (): UseAuthReturn => {
   }, []);
 
   const updateUserInState = useCallback((userData: Partial<User>) => {
-    setUser(prev => prev ? { ...prev, ...userData } : null);
+    setUser(prev => {
+      if (!prev) {
+        return userData as User;
+      }
+      // ✅ Create completely new object to ensure React detects change
+      const updated = {
+        ...prev,
+        ...userData,
+        // Ensure important fields are properly updated
+        avatar_url: userData.avatar_url !== undefined ? userData.avatar_url : prev.avatar_url,
+        username: userData.username !== undefined ? userData.username : prev.username,
+        first_name: userData.first_name !== undefined ? userData.first_name : prev.first_name,
+        last_name: userData.last_name !== undefined ? userData.last_name : prev.last_name,
+      };
+      return updated;
+    });
   }, []);
 
   return {

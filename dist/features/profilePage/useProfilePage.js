@@ -136,16 +136,63 @@ export const useProfilePage = (routeUsername, callbacks) => {
         }
         setSelectedDate(null);
     }, [activeTab, fetchCustomLists, fetchLikedLists, isOwnProfile]);
-    // --- 5. HANDLERS ---
     const handleUpdateSuccess = (updatedUser) => {
-        if (userProfile && updatedUser.username !== userProfile.username) {
-            localStorage.setItem('username', updatedUser.username);
-            callbacks === null || callbacks === void 0 ? void 0 : callbacks.onNavigateToUserProfile(updatedUser.username);
+        console.log('🔥 handleUpdateSuccess called with:', updatedUser);
+        const oldUsername = userProfile === null || userProfile === void 0 ? void 0 : userProfile.username;
+        const newUsername = updatedUser.username;
+        // ✅ 1. Cập nhật localStorage NGAY LẬP TỨC (quan trọng nhất!)
+        if (newUsername) {
+            localStorage.setItem('username', newUsername);
         }
-        else {
-            setUserProfile(prev => prev ? (Object.assign(Object.assign({}, prev), updatedUser)) : updatedUser);
+        // ✅ 2. Cập nhật state local (UI phản ánh ngay lập tức)
+        setUserProfile(prev => {
+            var _a, _b, _c;
+            if (!prev)
+                return updatedUser;
+            // Merge đầy đủ data, đảm bảo không mất field nào
+            const merged = Object.assign(Object.assign(Object.assign({}, prev), updatedUser), { 
+                // Đảm bảo các field quan trọng không bị undefined
+                avatar_url: (_a = updatedUser.avatar_url) !== null && _a !== void 0 ? _a : prev.avatar_url, date_joined: (_b = updatedUser.date_joined) !== null && _b !== void 0 ? _b : prev.date_joined, is_staff: (_c = updatedUser.is_staff) !== null && _c !== void 0 ? _c : prev.is_staff });
+            console.log('📝 Merged profile state:', merged);
+            return merged;
+        });
+        // ✅ 3. Cập nhật AuthContext (Header và các component khác)
+        const usernameToFetch = newUsername || oldUsername;
+        console.log('🔄 Fetching user profile for:', usernameToFetch);
+        if (usernameToFetch) {
+            userService.getUserProfile(usernameToFetch)
+                .then((res) => {
+                console.log('✅ Fetched user data:', res.data);
+                console.log('🎯 Calling updateUserInState with:', res.data);
+                // Cập nhật cả local state và AuthContext
+                setUserProfile(res.data);
+                updateUserInState(res.data);
+                console.log('✅ updateUserInState called successfully');
+            })
+                .catch((err) => {
+                console.error("Failed to refresh user info:", err);
+                // Fallback: update với data hiện tại
+                console.log('⚠️ Fallback: updating with current data');
+                // Fallback: update với data hiện tại
+                updateUserInState(updatedUser);
+            });
         }
-        updateUserInState(updatedUser);
+        // ✅ 4. Nếu username thay đổi → navigate và re-fetch
+        if (oldUsername && newUsername && oldUsername !== newUsername) {
+            console.log('🔀 Username changed, navigating...');
+            // Navigate to new profile URL
+            if (callbacks === null || callbacks === void 0 ? void 0 : callbacks.onNavigateToUserProfile) {
+                callbacks.onNavigateToUserProfile(newUsername);
+            }
+            // Re-fetch profile để đảm bảo data đồng bộ hoàn toàn
+            setTimeout(() => {
+                userService.getUserProfile(newUsername)
+                    .then((res) => {
+                    setUserProfile(res.data);
+                    updateUserInState(res.data);
+                });
+            }, 100); // Small delay để đảm bảo localStorage đã update
+        }
     };
     const handleTabChange = (tabName) => setActiveTab(tabName);
     const handleDateSelect = (date) => {
