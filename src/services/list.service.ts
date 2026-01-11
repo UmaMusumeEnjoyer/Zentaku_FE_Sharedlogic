@@ -19,6 +19,51 @@ export const listService = {
     return apiClient.post(`/list/${listId}/request-join/`, { request_type: "join", message });
   },
 
+  getListRequests : (listId : string) => {
+  return apiClient.get(`/list/${listId}/requests/`);
+  },
+
+  getCustomListItems : (listId : string) => {
+  return apiClient.get(`/list/anime/${listId}/`);
+  },
+
+  respondToJoinRequest : (listId : string | number, requestId : string | number, action : {}) => {
+  return apiClient.post(`/list/${listId}/join-requests/${requestId}/respond/`, {
+    action: action, 
+    can_edit: false // Fix cứng theo yêu cầu
+  });
+  },
+
+  respondToEditRequest : (listId : string | number, requestId : string | number, action : {}) => {
+   return apiClient.post(`/list/${listId}/edit-requests/${requestId}/respond/`, {
+    action: action, 
+    can_edit: true // Fix cứng theo yêu cầu
+  });
+  },
+
+  deleteCustomList : (listId : string) => {
+  return apiClient.delete(`/list/${listId}/delete/`);
+  },
+
+  requestEdit : (listId : string, message : string) => {
+    return apiClient.post(`/list/${listId}/request-edit/`, {
+    request_type: "edit_permission", // Fix cứng theo yêu cầu
+    message: message      // Nội dung message truyền từ giao diện
+  });
+  },
+
+  addAnimeToCustomList : (listId : string, animeData : {}) => {
+  return apiClient.post(`/list/anime/${listId}/add/`, animeData);
+  },
+
+  removeAnimeFromCustomList : (listId : string, anilistId : string | number) => {
+  return apiClient.delete(`/list/anime/${listId}/${anilistId}/remove/`);
+  },
+
+  removeMemberFromList : (listId:string, username:string) => {
+  return apiClient.delete(`/list/member/${listId}/remove/`, { params: { username } });
+  },
+
   // --- Likes & Trending ---
   toggleLike: (listId: string) => apiClient.post(`/list/${listId}/like/`),
   getTrending: () => apiClient.post('/list/likes/trending/'),
@@ -40,5 +85,25 @@ export const listService = {
     query: keyword,
     limit: 20 // Limit được fix cứng là 20 theo yêu cầu
   });
+  },
+
+  updateCustomList : (listId: string, listData : {}) => {
+  return apiClient.put(`/list/${listId}/update/`, listData);
+  },
+
+  getListLikeStatus : (listId : string) => {
+  return apiClient.get(`/list/${listId}/like/status/`);
+  },
+
+  getListLikers : (listId : string, data : {}) => {
+  return apiClient.post(`/list/${listId}/likers/`, data);
+  },
+
+  addMemberToList : (listId : string, userData : {}) => {
+  return apiClient.post(`/list/member/${listId}/add/`, userData);
+  },
+
+  updateMemberPermission : (listId : string, permissionData : {}) => {
+  return apiClient.put(`/list/member/${listId}/permission/`, permissionData);
   },
 };

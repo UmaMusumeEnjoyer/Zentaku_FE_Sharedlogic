@@ -21,15 +21,15 @@ export const userService = {
   },
 
   // --- Tracking / Follow ---
-  updateAnimeStatus: (animeId: string, data: any) => {
+  updateAnimeStatus: (animeId: number | string, data: any) => {
     return apiClient.post(`/follow/${animeId}/create/`, data);
   },
   
-  getAnimeStatus: (animeId: string) => {
+  getAnimeStatus: (animeId: number | string) => {
     return apiClient.get(`/follow/${animeId}/get`);
   },
 
-  deleteAnimeStatus: (animeId: string) => {
+  deleteAnimeStatus: (animeId: number | string) => {
   return apiClient.delete(`/follow/${animeId}/delete/`);
   },
 

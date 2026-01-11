@@ -1,5 +1,5 @@
 export interface AnimeItem_SectionGrid {
-    id: number | undefined;
+    id: number | string;
     [key: string]: any;
     cover_image: string;
 }

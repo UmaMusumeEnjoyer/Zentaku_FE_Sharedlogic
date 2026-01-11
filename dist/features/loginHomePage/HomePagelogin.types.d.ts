@@ -1,5 +1,5 @@
 export interface AnimeItem_HomePage {
-    id: number | undefined;
+    id: number | string;
     cover_image: string;
     [key: string]: any;
 }

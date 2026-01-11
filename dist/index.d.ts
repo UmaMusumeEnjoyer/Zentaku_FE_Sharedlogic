@@ -14,6 +14,7 @@ export * from './features/animeSearch';
 export * from './features/loginHomePage';
 export * from './features/animeListSearch';
 export * from './features/profilePage';
+export * from './features/animeListPage';
 export * from './shared/i18n';
 export { default as commonEn } from './shared/i18n/locales/en/common.json';
 export { default as homePageEn } from './shared/i18n/locales/en/HomePage.json';

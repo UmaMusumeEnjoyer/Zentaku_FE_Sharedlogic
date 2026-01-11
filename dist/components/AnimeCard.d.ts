@@ -1,6 +1,6 @@
 export interface AnimeData {
-    id?: number;
-    anilist_id?: number;
+    id?: number | string;
+    anilist_id?: number | string;
     title_romaji?: string;
     name_romaji?: string;
     name_native?: string;
@@ -14,6 +14,6 @@ export interface AnimeData {
     };
 }
 export declare const getAnimeTitle: (anime: AnimeData, language?: "en" | "jp") => string;
-export declare const getAnimeLinkId: (anime: AnimeData) => string | number;
+export declare const getAnimeLinkId: (anime: AnimeData) => number | string;
 export declare const getAnimeDisplayInfo: (anime: AnimeData) => string | null;
 //# sourceMappingURL=AnimeCard.d.ts.map

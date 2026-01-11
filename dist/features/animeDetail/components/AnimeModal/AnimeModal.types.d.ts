@@ -1,5 +1,5 @@
 export interface Anime_Modal {
-    id: string;
+    id: number | string;
     cover_image: string;
     name_romaji: string;
     title?: {

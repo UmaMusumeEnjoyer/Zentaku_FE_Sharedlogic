@@ -2,8 +2,8 @@
 
 // 1. Định nghĩa Interface cho dữ liệu Anime đầu vào
 export interface AnimeData {
-  id?: number;
-  anilist_id?: number;
+  id?: number | string;
+  anilist_id?: number | string;
   title_romaji?: string;
   name_romaji?: string;
   name_native?: string;
@@ -29,7 +29,7 @@ export const getAnimeTitle = (anime: AnimeData, language: 'en' | 'jp' = 'en'): s
 };
 
 // 3. Logic lấy ID cho Link
-export const getAnimeLinkId = (anime: AnimeData): string | number => {
+export const getAnimeLinkId = (anime: AnimeData): number | string => {
   return anime.anilist_id || anime.id || "";
 };
 

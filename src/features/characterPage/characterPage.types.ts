@@ -1,6 +1,6 @@
 // Định nghĩa cấu trúc Media (Anime/Manga liên quan)
 export interface MediaItem {
-  id: number;
+  id: number | string;
   title_romaji: string;
   cover_image: string;
 }

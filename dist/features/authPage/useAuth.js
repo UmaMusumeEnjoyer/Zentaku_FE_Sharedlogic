@@ -70,19 +70,14 @@ export const useAuth = () => {
         setError(null);
     }, []);
     const updateUserInState = useCallback((userData) => {
-        console.log('🔵 updateUserInState called with:', userData);
         setUser(prev => {
-            console.log('🔵 Previous user state:', prev);
             if (!prev) {
-                console.log('🔵 No previous user, returning new data as User');
                 return userData;
             }
             // ✅ Create completely new object to ensure React detects change
             const updated = Object.assign(Object.assign(Object.assign({}, prev), userData), { 
                 // Ensure important fields are properly updated
                 avatar_url: userData.avatar_url !== undefined ? userData.avatar_url : prev.avatar_url, username: userData.username !== undefined ? userData.username : prev.username, first_name: userData.first_name !== undefined ? userData.first_name : prev.first_name, last_name: userData.last_name !== undefined ? userData.last_name : prev.last_name });
-            console.log('🔵 Updated user state:', updated);
-            console.log('🔵 Avatar URL changed from', prev.avatar_url, 'to', updated.avatar_url);
             return updated;
         });
     }, []);

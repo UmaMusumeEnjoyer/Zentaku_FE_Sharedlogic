@@ -1,5 +1,5 @@
 export interface AnimeItem_AnimeSection {
-  id: number | undefined;
+  id: number | string;
   cover_image: string;
   [key: string]: any; // Cho phép các thuộc tính khác để truyền xuống AnimeCard
 }

@@ -1,7 +1,7 @@
 // src/features/home/types/home.types.ts
 
 export interface AnimeItem {
-  id: number;
+  id: number | string;
   title: string;
   img: string;
   desc: string;

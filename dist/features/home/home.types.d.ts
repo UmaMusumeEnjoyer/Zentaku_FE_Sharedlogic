@@ -1,5 +1,5 @@
 export interface AnimeItem {
-    id: number;
+    id: number | string;
     title: string;
     img: string;
     desc: string;

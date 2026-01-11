@@ -5,9 +5,9 @@ export interface ActivityMetadata {
 }
 
 export interface ActivityItem {
-  id: string | number;
+  id: number | string;
   action_type: 'followed_anime' | 'create_list' | 'updated_followed_anime' | string;
-  target_id: string | number;
+  target_id: number | string;
   ago_seconds: number;
   metadata?: ActivityMetadata;
   created_at?: string; 

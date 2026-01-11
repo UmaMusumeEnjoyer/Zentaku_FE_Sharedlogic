@@ -5,9 +5,9 @@ export declare const userService: {
         user: User;
     }, any, {}>>;
     uploadAvatar: (file: any) => Promise<import("axios").AxiosResponse<any, any, {}>>;
-    updateAnimeStatus: (animeId: string, data: any) => Promise<import("axios").AxiosResponse<any, any, {}>>;
-    getAnimeStatus: (animeId: string) => Promise<import("axios").AxiosResponse<any, any, {}>>;
-    deleteAnimeStatus: (animeId: string) => Promise<import("axios").AxiosResponse<any, any, {}>>;
+    updateAnimeStatus: (animeId: number | string, data: any) => Promise<import("axios").AxiosResponse<any, any, {}>>;
+    getAnimeStatus: (animeId: number | string) => Promise<import("axios").AxiosResponse<any, any, {}>>;
+    deleteAnimeStatus: (animeId: number | string) => Promise<import("axios").AxiosResponse<any, any, {}>>;
     getHeatmap: (username: string) => Promise<import("axios").AxiosResponse<any, any, {}> | {
         data: {};
     }>;

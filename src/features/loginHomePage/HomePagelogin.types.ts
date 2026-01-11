@@ -1,6 +1,6 @@
 // Định nghĩa item cơ bản (có thể tái sử dụng từ các file trước)
 export interface AnimeItem_HomePage {
-  id: number | undefined;
+  id: number | string;
   cover_image: string;
   [key: string]: any;
 }

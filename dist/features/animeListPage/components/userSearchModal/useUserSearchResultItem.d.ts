@@ -1,0 +1,9 @@
+import { SearchUser, ListMember_userSearchModal as ListMember, ButtonState } from './userSearchModal.types';
+export declare const useUserSearchResultItem: (user: SearchUser, currentMembers: ListMember[], isEditorMode: boolean, isProcessing: boolean) => {
+    displayAvatar: string;
+    existingMember: ListMember | undefined;
+    isOwner: boolean | undefined;
+    buttonState: ButtonState;
+    statusText: string;
+};
+//# sourceMappingURL=useUserSearchResultItem.d.ts.map

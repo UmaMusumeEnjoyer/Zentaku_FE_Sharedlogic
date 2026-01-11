@@ -11,8 +11,8 @@ export interface AnimeFilters {
 // Định nghĩa cấu trúc Anime sau khi đã map dữ liệu
 // Định nghĩa cấu trúc Anime sau khi đã map dữ liệu
 export interface AnimeData_animeSearch {
-  id: number | undefined;
-  anilist_id: number | undefined;
+  id: number | string;
+  anilist_id: number | string;
   title_romaji?: string;
   name_romaji?: string;
   name_english?: string;

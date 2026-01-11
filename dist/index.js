@@ -17,6 +17,7 @@ export * from './features/animeSearch';
 export * from './features/loginHomePage';
 export * from './features/animeListSearch';
 export * from './features/profilePage';
+export * from './features/animeListPage';
 // Export i18n configuration và translations
 export * from './shared/i18n';
 export { default as commonEn } from './shared/i18n/locales/en/common.json';
