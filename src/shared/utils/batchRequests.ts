@@ -1,8 +1,8 @@
 // shared-logic/src/utils/batchRequests.ts
 export async function batchWithLimit<T, R>(
   items: T[],
-  fn: (item: T) => Promise<R>,
-  limit: number = 10
+  limit: number,
+  fn: (item: T) => Promise<R>
 ): Promise<R[]> {
   const results: R[] = [];
   

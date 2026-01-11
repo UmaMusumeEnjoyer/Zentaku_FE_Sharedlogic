@@ -8,8 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 // shared-logic/src/utils/batchRequests.ts
-export function batchWithLimit(items_1, fn_1) {
-    return __awaiter(this, arguments, void 0, function* (items, fn, limit = 10) {
+export function batchWithLimit(items, limit, fn) {
+    return __awaiter(this, void 0, void 0, function* () {
         const results = [];
         for (let i = 0; i < items.length; i += limit) {
             const batch = items.slice(i, i + limit);

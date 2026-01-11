@@ -7,11 +7,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { listService } from '../../services/list.service';
 import { animeService } from '../../services/anime.service';
+import { batchWithLimit } from '../../shared/utils/batchRequests';
 export const useAnimeListPage = (listId, locationState, onNavigate) => {
-    // Fallback navigate implementation
+    const animeDetailsCache = useRef(new Map());
+    const isFetchingRef = useRef(false);
     const navigate = useCallback(((to, options) => {
         if (onNavigate) {
             if (typeof to === 'number') {
@@ -42,7 +44,6 @@ export const useAnimeListPage = (listId, locationState, onNavigate) => {
     const [currentPermission, setCurrentPermission] = useState(typeof localStorage !== 'undefined' ? localStorage.getItem("permission_level") : null);
     const canEdit = currentPermission === "owner" || currentPermission === "edit";
     const isViewer = currentPermission === "view" || currentPermission === "viewer";
-    // --- LIST INFO STATE ---
     const [listInfo, setListInfo] = useState((locationState === null || locationState === void 0 ? void 0 : locationState.listData) || {
         list_name: "Loading...",
         description: "",
@@ -50,14 +51,11 @@ export const useAnimeListPage = (listId, locationState, onNavigate) => {
         color: "#3db4f2",
         is_owner: false
     });
-    // --- CONTENT STATE ---
     const [groupedAnime, setGroupedAnime] = useState({});
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
-    // --- MEMBER & REQUEST STATE ---
     const [members, setMembers] = useState([]);
     const [pendingRequests, setPendingRequests] = useState([]);
-    // --- MODAL STATES ---
     const [showEditModal, setShowEditModal] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
     const [showUserModal, setShowUserModal] = useState(false);
@@ -65,23 +63,17 @@ export const useAnimeListPage = (listId, locationState, onNavigate) => {
     const [showRequestModal, setShowRequestModal] = useState(false);
     const [requestType, setRequestType] = useState('join');
     const [isSubmittingRequest, setIsSubmittingRequest] = useState(false);
-    // --- DELETE LOGIC STATES ---
     const [deleteMode, setDeleteMode] = useState(false);
     const [selectedAnimeIds, setSelectedAnimeIds] = useState([]);
     const [isDeleting, setIsDeleting] = useState(false);
-    // All anime in list (flat array)
     const allAnimeInList = useMemo(() => {
         return Object.values(groupedAnime).flat();
     }, [groupedAnime]);
-    // Current user has items
     const currentUserHasItems = useMemo(() => {
         return currentUsername ?
             (groupedAnime[currentUsername] && groupedAnime[currentUsername].length > 0) :
             false;
     }, [groupedAnime, currentUsername]);
-    // =================================================================
-    // DATA FETCHING
-    // =================================================================
     const fetchMembersData = useCallback(() => __awaiter(void 0, void 0, void 0, function* () {
         if (!listId)
             return;
@@ -123,8 +115,9 @@ export const useAnimeListPage = (listId, locationState, onNavigate) => {
         }
     }), [listInfo.is_owner, listId]);
     const fetchListDetails = useCallback(() => __awaiter(void 0, void 0, void 0, function* () {
-        if (!listId)
+        if (!listId || isFetchingRef.current)
             return;
+        isFetchingRef.current = true;
         setDeleteMode(false);
         setSelectedAnimeIds([]);
         try {
@@ -132,18 +125,35 @@ export const useAnimeListPage = (listId, locationState, onNavigate) => {
             const data = res.data;
             setListInfo(prev => (Object.assign(Object.assign({}, prev), { list_name: data.list_name || prev.list_name, description: data.description !== undefined ? data.description : prev.description, is_private: data.is_private !== undefined ? data.is_private : prev.is_private, color: data.color || prev.color })));
             const items = data.anime_items || [];
-            const detailedPromises = items.map((item) => animeService.getById(item.anilist_id)
-                .then((animeRes) => (Object.assign(Object.assign({}, animeRes.data), { _added_by: item.added_by, _added_date: item.added_date, _note: item.note, _anilist_id: item.anilist_id })))
-                .catch(() => null));
-            const detailedAnimeList = yield Promise.all(detailedPromises);
-            const groups = {};
-            detailedAnimeList.forEach((anime) => {
-                if (anime) {
-                    const user = anime._added_by || "Unknown";
-                    if (!groups[user])
-                        groups[user] = [];
-                    groups[user].push(anime);
+            const uniqueIds = Array.from(new Set(items.map((item) => item.anilist_id)));
+            const idsToFetch = uniqueIds.filter(id => !animeDetailsCache.current.has(id));
+            if (idsToFetch.length > 0) {
+                yield batchWithLimit(idsToFetch, 5, (id) => __awaiter(void 0, void 0, void 0, function* () {
+                    try {
+                        const animeRes = yield animeService.getById(id);
+                        if (animeRes === null || animeRes === void 0 ? void 0 : animeRes.data) {
+                            animeDetailsCache.current.set(id, animeRes.data);
+                        }
+                    }
+                    catch (err) {
+                        console.error(`Failed to fetch anime ${id}`, err);
+                        animeDetailsCache.current.set(id, null);
+                    }
+                }));
+            }
+            const processedAnimeList = [];
+            items.forEach((item) => {
+                const detail = animeDetailsCache.current.get(item.anilist_id);
+                if (detail) {
+                    processedAnimeList.push(Object.assign(Object.assign({}, detail), { _added_by: item.added_by, _added_date: item.added_date, _note: item.note, _anilist_id: item.anilist_id }));
                 }
+            });
+            const groups = {};
+            processedAnimeList.forEach((anime) => {
+                const user = anime._added_by || "Unknown";
+                if (!groups[user])
+                    groups[user] = [];
+                groups[user].push(anime);
             });
             setGroupedAnime(groups);
         }
@@ -158,19 +168,17 @@ export const useAnimeListPage = (listId, locationState, onNavigate) => {
         }
         finally {
             setLoading(false);
+            isFetchingRef.current = false;
         }
-    }), [listId]);
+    }), [listId, navigate]);
     useEffect(() => {
         setLoading(true);
         fetchListDetails();
         fetchMembersData();
-    }, [listId]);
+    }, [listId, fetchListDetails, fetchMembersData]);
     useEffect(() => {
         fetchRequestsData();
     }, [fetchRequestsData]);
-    // =================================================================
-    // HANDLERS
-    // =================================================================
     const handleAcceptRequest = useCallback((request) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             if (request.request_type === 'join') {
@@ -264,6 +272,10 @@ export const useAnimeListPage = (listId, locationState, onNavigate) => {
                 note: ""
             };
             yield listService.addAnimeToCustomList(listId, payload);
+            const animeId = payload.anilist_id;
+            if (!animeDetailsCache.current.has(animeId)) {
+                animeDetailsCache.current.set(animeId, anime);
+            }
             const newAnimeItem = Object.assign(Object.assign({}, anime), { _added_by: currentUsername, _added_date: new Date().toISOString(), _note: "", _anilist_id: payload.anilist_id });
             setGroupedAnime(prev => {
                 const updated = Object.assign({}, prev);
@@ -273,7 +285,6 @@ export const useAnimeListPage = (listId, locationState, onNavigate) => {
                 updated[currentUsername].push(newAnimeItem);
                 return updated;
             });
-            //fetchListDetails();
         }
         catch (error) {
             console.error("Failed to add anime:", error);
@@ -296,7 +307,6 @@ export const useAnimeListPage = (listId, locationState, onNavigate) => {
         setIsDeleting(true);
         try {
             yield Promise.all(selectedAnimeIds.map(aid => listService.removeAnimeFromCustomList(listId, aid)));
-            //fetchListDetails();
             setGroupedAnime(prev => {
                 const updated = Object.assign({}, prev);
                 Object.keys(updated).forEach(user => {
@@ -313,7 +323,7 @@ export const useAnimeListPage = (listId, locationState, onNavigate) => {
             setDeleteMode(false);
             setSelectedAnimeIds([]);
         }
-    }), [selectedAnimeIds, listId, currentUsername]);
+    }), [selectedAnimeIds, listId]);
     const filterAnime = useCallback((list) => {
         if (!searchTerm)
             return list;
@@ -344,9 +354,8 @@ export const useAnimeListPage = (listId, locationState, onNavigate) => {
         }
     }), [listId, fetchMembersData]);
     return {
-        // State
         currentUsername,
-        currentPermission, // [FIX] Export currentPermission
+        currentPermission,
         canEdit,
         isViewer,
         listInfo,
@@ -367,13 +376,11 @@ export const useAnimeListPage = (listId, locationState, onNavigate) => {
         isDeleting,
         allAnimeInList,
         currentUserHasItems,
-        // Setters
         setSearchTerm,
         setShowAddModal,
         setShowEditModal,
         setShowUserModal,
         setShowRequestModal,
-        // Methods
         filterAnime,
         handleAcceptRequest,
         handleRejectRequest,
