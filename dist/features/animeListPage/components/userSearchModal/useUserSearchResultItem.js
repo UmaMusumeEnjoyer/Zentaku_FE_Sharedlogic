@@ -1,17 +1,16 @@
 import { useState, useEffect, useMemo } from 'react';
 import { userService } from '../../../../services/user.service';
-import { SharedConfig } from '../../../../api/config';
-const BACKEND_DOMAIN = SharedConfig.VITE_BACKEND_DOMAIN;
-const DEFAULT_AVATAR = "https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg";
-export const useUserSearchResultItem = (user, currentMembers, isEditorMode, isProcessing) => {
-    const [displayAvatar, setDisplayAvatar] = useState(DEFAULT_AVATAR);
+export const useUserSearchResultItem = (user, currentMembers, isEditorMode, isProcessing, defaultAvatar, backendDomain) => {
+    const fallbackAvatar = defaultAvatar || "https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg";
+    const domain = backendDomain || "";
+    const [displayAvatar, setDisplayAvatar] = useState(fallbackAvatar);
     // Helper xử lý URL
     const getAvatarUrl = (url) => {
         if (!url)
-            return DEFAULT_AVATAR;
+            return fallbackAvatar;
         if (url.startsWith('http'))
             return url;
-        return `${BACKEND_DOMAIN}${url}`;
+        return `${domain}${url}`;
     };
     // Fetch avatar
     useEffect(() => {
@@ -29,7 +28,7 @@ export const useUserSearchResultItem = (user, currentMembers, isEditorMode, isPr
                 .catch((err) => console.error(err));
         }
         return () => { isMounted = false; };
-    }, [user.username, user.avatar, user.avatar_url]);
+    }, [user.username, user.avatar, user.avatar_url, fallbackAvatar, domain]);
     // Tính toán trạng thái member
     const existingMember = useMemo(() => {
         return currentMembers.find(m => m.username === user.username);

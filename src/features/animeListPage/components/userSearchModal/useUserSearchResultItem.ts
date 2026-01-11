@@ -3,22 +3,27 @@ import { userService } from '../../../../services/user.service';
 import { SearchUser, ListMember_userSearchModal as ListMember, ButtonState } from './userSearchModal.types';
 import { SharedConfig } from '../../../../api/config';
 
-const BACKEND_DOMAIN = SharedConfig.VITE_BACKEND_DOMAIN;
-const DEFAULT_AVATAR = "https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg";
+
 
 export const useUserSearchResultItem = (
   user: SearchUser,
   currentMembers: ListMember[],
   isEditorMode: boolean,
-  isProcessing: boolean
+  isProcessing: boolean,
+  defaultAvatar?: string,
+  backendDomain?: string
 ) => {
-  const [displayAvatar, setDisplayAvatar] = useState(DEFAULT_AVATAR);
+  const fallbackAvatar = defaultAvatar || "https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg";
+  const domain = backendDomain || "";
+  const [displayAvatar, setDisplayAvatar] = useState(fallbackAvatar);
+
+
 
   // Helper xử lý URL
   const getAvatarUrl = (url?: string): string => {
-    if (!url) return DEFAULT_AVATAR;
+    if (!url) return fallbackAvatar;
     if (url.startsWith('http')) return url;
-    return `${BACKEND_DOMAIN}${url}`;
+    return `${domain}${url}`;
   };
 
   // Fetch avatar
@@ -40,7 +45,7 @@ export const useUserSearchResultItem = (
     }
     
     return () => { isMounted = false; };
-  }, [user.username, user.avatar, user.avatar_url]);
+  }, [user.username, user.avatar, user.avatar_url, fallbackAvatar, domain]);
 
   // Tính toán trạng thái member
   const existingMember = useMemo(() => {

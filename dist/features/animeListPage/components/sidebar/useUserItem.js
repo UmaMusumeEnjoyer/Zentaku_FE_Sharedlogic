@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { userService } from '../../../../services/user.service';
-const DEFAULT_AVATAR = "https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg";
 export const useUserItem = (username, initialAvatar, defaultAvatar, backendDomain) => {
     const fallbackAvatar = defaultAvatar || "https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg";
     const domain = backendDomain || "";
