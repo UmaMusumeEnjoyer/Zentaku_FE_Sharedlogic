@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
 import { userService } from '../../../../services/user.service';
-import { SharedConfig } from '../../../../api/config';
-const BACKEND_DOMAIN = SharedConfig.VITE_BACKEND_DOMAIN;
 const DEFAULT_AVATAR = "https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg";
-export const useUserItem = (username, initialAvatar) => {
-    const [displayAvatar, setDisplayAvatar] = useState(DEFAULT_AVATAR);
+export const useUserItem = (username, initialAvatar, defaultAvatar, backendDomain) => {
+    const fallbackAvatar = defaultAvatar || "https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg";
+    const domain = backendDomain || "";
+    const [displayAvatar, setDisplayAvatar] = useState(fallbackAvatar);
     // Hàm xử lý URL ảnh
     const getAvatarUrl = (url) => {
         if (!url)
-            return DEFAULT_AVATAR;
+            return fallbackAvatar;
         if (url.startsWith('http'))
             return url;
-        return `${BACKEND_DOMAIN}${url}`;
+        return `${domain}${url}`;
     };
     useEffect(() => {
         let isMounted = true;
@@ -32,7 +32,7 @@ export const useUserItem = (username, initialAvatar) => {
             });
         }
         return () => { isMounted = false; };
-    }, [username, initialAvatar]);
+    }, [username, initialAvatar, fallbackAvatar, domain]);
     return {
         displayAvatar,
     };

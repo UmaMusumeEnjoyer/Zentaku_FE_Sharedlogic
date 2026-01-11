@@ -1,21 +1,25 @@
 import { useState, useEffect } from 'react';
 import { userService } from '../../../../services/user.service';
-import { SharedConfig } from '../../../../api/config';
 
-const BACKEND_DOMAIN = SharedConfig.VITE_BACKEND_DOMAIN;
+
+
 const DEFAULT_AVATAR = "https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg";
 
 export const useUserItem = (
   username: string,
-  initialAvatar?: string
+  initialAvatar?: string,
+  defaultAvatar?: string,
+  backendDomain?: string
 ) => {
-  const [displayAvatar, setDisplayAvatar] = useState(DEFAULT_AVATAR);
+  const fallbackAvatar = defaultAvatar || "https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg";
+  const domain = backendDomain || "";
+  const [displayAvatar, setDisplayAvatar] = useState(fallbackAvatar);
 
   // Hàm xử lý URL ảnh
   const getAvatarUrl = (url?: string): string => {
-    if (!url) return DEFAULT_AVATAR;
+    if (!url) return fallbackAvatar;
     if (url.startsWith('http')) return url;
-    return `${BACKEND_DOMAIN}${url}`;
+    return `${domain}${url}`;
   };
 
   useEffect(() => {
@@ -40,7 +44,7 @@ export const useUserItem = (
     }
 
     return () => { isMounted = false; };
-  }, [username, initialAvatar]);
+  }, [username, initialAvatar, fallbackAvatar, domain]);
 
   return {
     displayAvatar,

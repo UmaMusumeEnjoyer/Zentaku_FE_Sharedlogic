@@ -159,12 +159,12 @@ export const useAnimeListPage = (listId, locationState, onNavigate) => {
         finally {
             setLoading(false);
         }
-    }), [listId, navigate]);
+    }), [listId]);
     useEffect(() => {
         setLoading(true);
         fetchListDetails();
         fetchMembersData();
-    }, [fetchListDetails, fetchMembersData]);
+    }, [listId]);
     useEffect(() => {
         fetchRequestsData();
     }, [fetchRequestsData]);
@@ -264,13 +264,22 @@ export const useAnimeListPage = (listId, locationState, onNavigate) => {
                 note: ""
             };
             yield listService.addAnimeToCustomList(listId, payload);
-            fetchListDetails();
+            const newAnimeItem = Object.assign(Object.assign({}, anime), { _added_by: currentUsername, _added_date: new Date().toISOString(), _note: "", _anilist_id: payload.anilist_id });
+            setGroupedAnime(prev => {
+                const updated = Object.assign({}, prev);
+                if (!updated[currentUsername]) {
+                    updated[currentUsername] = [];
+                }
+                updated[currentUsername].push(newAnimeItem);
+                return updated;
+            });
+            //fetchListDetails();
         }
         catch (error) {
             console.error("Failed to add anime:", error);
             throw error;
         }
-    }), [listId, fetchListDetails]);
+    }), [listId, currentUsername]);
     const toggleDeleteMode = useCallback(() => {
         if (deleteMode)
             setSelectedAnimeIds([]);
@@ -287,7 +296,14 @@ export const useAnimeListPage = (listId, locationState, onNavigate) => {
         setIsDeleting(true);
         try {
             yield Promise.all(selectedAnimeIds.map(aid => listService.removeAnimeFromCustomList(listId, aid)));
-            fetchListDetails();
+            //fetchListDetails();
+            setGroupedAnime(prev => {
+                const updated = Object.assign({}, prev);
+                Object.keys(updated).forEach(user => {
+                    updated[user] = updated[user].filter(anime => !selectedAnimeIds.includes(anime._anilist_id || anime.id));
+                });
+                return updated;
+            });
         }
         catch (error) {
             alert("Some items could not be removed.");
@@ -297,7 +313,7 @@ export const useAnimeListPage = (listId, locationState, onNavigate) => {
             setDeleteMode(false);
             setSelectedAnimeIds([]);
         }
-    }), [selectedAnimeIds, listId, fetchListDetails]);
+    }), [selectedAnimeIds, listId, currentUsername]);
     const filterAnime = useCallback((list) => {
         if (!searchTerm)
             return list;

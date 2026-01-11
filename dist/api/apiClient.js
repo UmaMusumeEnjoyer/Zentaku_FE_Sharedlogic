@@ -11,8 +11,8 @@ import axios from 'axios';
 import { SharedConfig } from './config';
 // --- CACHING UTILITIES (Giữ nguyên) ---
 const simpleCache = {};
-export const TTL_DEFAULT = 1000 * 60 * 20;
-export const TTL_SHORT = 1000 * 60 * 5;
+export const TTL_DEFAULT = 1000 * 60 * 60;
+export const TTL_SHORT = 1000 * 60 * 60;
 export function getCached(key) {
     const entry = simpleCache[key];
     if (!entry)
