@@ -282,7 +282,10 @@ export const useAnimeListPage = (listId, locationState, onNavigate) => {
                 if (!updated[currentUsername]) {
                     updated[currentUsername] = [];
                 }
-                updated[currentUsername].push(newAnimeItem);
+                const isExist = updated[currentUsername].some(item => String(item._anilist_id || item.id) === String(newAnimeItem._anilist_id));
+                if (!isExist) {
+                    updated[currentUsername].push(newAnimeItem);
+                }
                 return updated;
             });
         }
