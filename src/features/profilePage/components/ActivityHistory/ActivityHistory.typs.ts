@@ -8,6 +8,7 @@ export interface ActivityDay {
 
 // Định nghĩa props cho component
 export interface ActivityHistoryProps {
+  username: string;
   onTotalCountChange?: (total: number) => void;
   selectedDate?: string | null;
   onDateSelect?: (date: string) => void;

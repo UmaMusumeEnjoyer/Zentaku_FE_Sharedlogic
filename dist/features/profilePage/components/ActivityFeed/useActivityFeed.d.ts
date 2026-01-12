@@ -1,10 +1,11 @@
 import { ActivityItem } from './ActivityFeed.types';
 interface UseActivityFeedParams {
+    username: string;
     filterDate?: string;
     t: (key: string, options?: any) => string;
 }
-export declare const useActivityFeed: ({ filterDate, t }: UseActivityFeedParams) => {
-    username: string | null;
+export declare const useActivityFeed: ({ username, filterDate, t }: UseActivityFeedParams) => {
+    username: string;
     loading: boolean;
     displayItems: ActivityItem[];
     canLoadMore: boolean;

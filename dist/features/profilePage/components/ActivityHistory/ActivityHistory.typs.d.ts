@@ -5,6 +5,7 @@ export interface ActivityDay {
     isFuture: boolean;
 }
 export interface ActivityHistoryProps {
+    username: string;
     onTotalCountChange?: (total: number) => void;
     selectedDate?: string | null;
     onDateSelect?: (date: string) => void;

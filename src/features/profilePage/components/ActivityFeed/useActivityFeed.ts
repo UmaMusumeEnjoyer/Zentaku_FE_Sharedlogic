@@ -3,16 +3,17 @@ import { userService } from '../../../../services/user.service';
 import { ActivityItem } from './ActivityFeed.types';
 
 interface UseActivityFeedParams {
+  username: string;
   filterDate?: string;
   t: (key: string, options?: any) => string; // Thêm hàm dịch
 }
 
-export const useActivityFeed = ({ filterDate, t }: UseActivityFeedParams) => {
+export const useActivityFeed = ({ username, filterDate, t }: UseActivityFeedParams) => {
   const [activities, setActivities] = useState<ActivityItem[]>([]);
   const [visibleCount, setVisibleCount] = useState(10);
   const [loading, setLoading] = useState(true);
   
-  const username = localStorage.getItem('username');
+  
 
   // --- 1. FETCH DATA ---
   useEffect(() => {

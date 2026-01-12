@@ -13,5 +13,6 @@ export interface ActivityItem {
 }
 export interface ActivityFeedProps {
     filterDate?: string;
+    username: string;
 }
 //# sourceMappingURL=ActivityFeed.types.d.ts.map

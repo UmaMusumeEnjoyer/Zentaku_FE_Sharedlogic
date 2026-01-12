@@ -9,11 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { useState, useEffect, useMemo } from 'react';
 import { userService } from '../../../../services/user.service';
-export const useActivityFeed = ({ filterDate, t }) => {
+export const useActivityFeed = ({ username, filterDate, t }) => {
     const [activities, setActivities] = useState([]);
     const [visibleCount, setVisibleCount] = useState(10);
     const [loading, setLoading] = useState(true);
-    const username = localStorage.getItem('username');
     // --- 1. FETCH DATA ---
     useEffect(() => {
         const fetchData = () => __awaiter(void 0, void 0, void 0, function* () {

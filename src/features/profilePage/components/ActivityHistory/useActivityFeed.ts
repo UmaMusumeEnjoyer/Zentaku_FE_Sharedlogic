@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { userService } from '../../../../services/user.service';
 import { HeatmapCounts, ActivityDay } from './ActivityHistory.typs';
 
-export const useActivityHistory = (onTotalCountChange?: (total: number) => void) => {
+export const useActivityHistory = (username: string, onTotalCountChange?: (total: number) => void) => {
   const [heatmapCounts, setHeatmapCounts] = useState<HeatmapCounts>({});
   const [loading, setLoading] = useState(true);
 
@@ -44,7 +44,7 @@ export const useActivityHistory = (onTotalCountChange?: (total: number) => void)
   // --- LOGIC: FETCH DATA ---
   useEffect(() => {
     const fetchData = async () => {
-      const username = localStorage.getItem('username');
+      
       if (!username) { 
         setLoading(false); 
         return; 
@@ -83,7 +83,7 @@ export const useActivityHistory = (onTotalCountChange?: (total: number) => void)
 
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Giữ dependencies rỗng như file gốc để chỉ chạy 1 lần
+  }, [username, onTotalCountChange]); // Giữ dependencies rỗng như file gốc để chỉ chạy 1 lần
 
   // --- LOGIC: HELPER CLASS ---
   const getLevelClass = useCallback((count: number) => {

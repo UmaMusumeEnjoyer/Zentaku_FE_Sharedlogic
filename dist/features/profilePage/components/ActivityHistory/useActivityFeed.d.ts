@@ -1,5 +1,5 @@
 import { HeatmapCounts, ActivityDay } from './ActivityHistory.typs';
-export declare const useActivityHistory: (onTotalCountChange?: (total: number) => void) => {
+export declare const useActivityHistory: (username: string, onTotalCountChange?: (total: number) => void) => {
     heatmapCounts: HeatmapCounts;
     loading: boolean;
     yearWeeks: ActivityDay[][];
