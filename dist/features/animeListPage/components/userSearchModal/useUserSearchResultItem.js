@@ -36,7 +36,7 @@ export const useUserSearchResultItem = (user, currentMembers, isEditorMode, isPr
     const isOwner = existingMember === null || existingMember === void 0 ? void 0 : existingMember.is_owner;
     // Tính toán trạng thái nút
     const buttonState = useMemo(() => {
-        let btnText = "Invite";
+        let btnText = "invite";
         let btnIcon = "person_add";
         let isDisabled = isProcessing || !!isOwner;
         let btnClass = isEditorMode ? 'editor' : 'viewer';
@@ -44,23 +44,23 @@ export const useUserSearchResultItem = (user, currentMembers, isEditorMode, isPr
             if (isEditorMode) {
                 // Mode Add Editor
                 if (existingMember.can_edit) {
-                    btnText = "Joined";
+                    btnText = "joined";
                     btnIcon = "check";
                     isDisabled = true;
                 }
                 else {
-                    btnText = "Promote";
+                    btnText = "promote";
                     btnIcon = "arrow_upward";
                 }
             }
             else {
                 // Mode Add Viewer
                 if (existingMember.can_edit) {
-                    btnText = "Demote";
+                    btnText = "demote";
                     btnIcon = "arrow_downward";
                 }
                 else {
-                    btnText = "Joined";
+                    btnText = "joined";
                     btnIcon = "check";
                     isDisabled = true;
                 }
@@ -72,9 +72,9 @@ export const useUserSearchResultItem = (user, currentMembers, isEditorMode, isPr
     const statusText = useMemo(() => {
         if (existingMember) {
             const role = isOwner ? 'Owner' : (existingMember.can_edit ? 'Editor' : 'Viewer');
-            return `Currently: ${role}`;
+            return role;
         }
-        return `Assign: ${isEditorMode ? 'Editor' : 'Viewer'}`;
+        return null;
     }, [existingMember, isOwner, isEditorMode]);
     return {
         displayAvatar,

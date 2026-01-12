@@ -1,0 +1,9 @@
+{
+    "listHeader": {
+        "private": "非公開",
+        "like": "いいね",
+        "unlike": "いいね解除",
+        "viewLikers": "このリストをいいねした人を表示",
+        "likesLabel": "いいね数"
+    }
+}

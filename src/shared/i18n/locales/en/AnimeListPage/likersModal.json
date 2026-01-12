@@ -1,0 +1,8 @@
+{
+  "likersModal": {
+    "title": "Liked by",
+    "noLikes": "No likes yet.",
+    "verified": "Verified",
+    "showingInfo": "Showing {{displayCount}} of {{totalLikes}} likes"
+  }
+}

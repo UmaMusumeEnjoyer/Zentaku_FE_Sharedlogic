@@ -1,0 +1,15 @@
+{
+  "editListModal": {
+    "title": "リスト詳細の編集",
+    "listName": "リスト名",
+    "listNamePlaceholder": "リスト名を入力...",
+    "description": "説明",
+    "descriptionPlaceholder": "説明を入力...",
+    "themeColor": "テーマカラー",
+    "privateList": "非公開リスト",
+    "cancel": "キャンセル",
+    "saving": "保存中...",
+    "saveChanges": "変更を保存",
+    "updateError": "リストの更新中にエラーが発生しました。"
+  }
+}

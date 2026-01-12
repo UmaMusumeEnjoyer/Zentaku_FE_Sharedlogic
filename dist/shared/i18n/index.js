@@ -5,7 +5,9 @@ export const NAMESPACES = ['common', 'HomePage', 'NewsDetailPage', 'RankingSecti
     'AnimeModal', 'MainContentArea', 'AnimeDetail', 'Header',
     'GlobalSearch', 'Auth', 'StaffPage', 'AnimeSearch', 'HomePageLogin', 'AnimeSection',
     'HomePageLogin', 'AnimeListSearchPage', 'ActivityFeed', 'ActivityHistory',
-    'EditProfileModal', 'ProfilePage'
+    'EditProfileModal', 'ProfilePage',
+    'addAnimeModal', ' editListModal', 'likersModal', 'listHeader', 'requestList', 'requestModal', 'sidebar',
+    'userAnimeGroup', 'userItem', 'userSearchModal', 'animeListPage'
 ];
 // 2. Định nghĩa danh sách Ngôn ngữ
 export const LANGUAGES = ['en', 'jp'];

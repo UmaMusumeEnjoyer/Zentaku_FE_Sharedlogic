@@ -1,0 +1,9 @@
+{
+  "requestList": {
+    "pendingRequests": "Pending Requests",
+    "joinRequests": "Join Requests",
+    "editAccessRequests": "Edit Access Requests",
+    "accept": "Accept",
+    "reject": "Reject"
+  }
+}

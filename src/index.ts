@@ -100,6 +100,39 @@ export {default as ProfilePagePageJP} from './shared/i18n/locales/jp/ProfilePage
 export {default as ActivityFeedEN} from './shared/i18n/locales/en/ProfilePage/ActivityFeed.json';
 export {default as ActivityFeedJP} from './shared/i18n/locales/jp/ProfilePage/ActivityFeed.json';
 
+/////AnimeListpage/////
+export {default as addAnimeModalEN} from './shared/i18n/locales/en/AnimeListPage/addAnimeModal.json';
+export {default as addAnimeModalJP} from './shared/i18n/locales/jp/AnimeListPage/addAnimeModal.json';
+
+export {default as editListModalEN} from './shared/i18n/locales/en/AnimeListPage/editListModal.json';
+export {default as editListModalJP} from './shared/i18n/locales/jp/AnimeListPage/editListModal.json';
+
+export {default as likersModalEN} from './shared/i18n/locales/en/AnimeListPage/likersModal.json';
+export {default as likersModalJP} from './shared/i18n/locales/jp/AnimeListPage/likersModal.json';
+
+export {default as listHeaderEN} from './shared/i18n/locales/en/AnimeListPage/listHeader.json';
+export {default as listHeaderJP} from './shared/i18n/locales/jp/AnimeListPage/listHeader.json';
+
+export {default as requestListEN} from './shared/i18n/locales/en/AnimeListPage/requestList.json';
+export {default as requestListJP} from './shared/i18n/locales/jp/AnimeListPage/requestList.json';
+
+export {default as requestModalEN} from './shared/i18n/locales/en/AnimeListPage/requestModal.json';
+export {default as requestModalJP} from './shared/i18n/locales/jp/AnimeListPage/requestModal.json';
+
+export {default as sidebarEN} from './shared/i18n/locales/en/AnimeListPage/sidebar.json';
+export {default as sidebarJP} from './shared/i18n/locales/jp/AnimeListPage/sidebar.json';
+
+export {default as userAnimeGroupEN} from './shared/i18n/locales/en/AnimeListPage/userAnimeGroup.json';
+export {default as userAnimeGroupJP} from './shared/i18n/locales/jp/AnimeListPage/userAnimeGroup.json';
+
+export {default as userItemEN} from './shared/i18n/locales/en/AnimeListPage/userItem.json';
+export {default as userItemJP} from './shared/i18n/locales/jp/AnimeListPage/userItem.json';
+
+export {default as userSearchModalEN} from './shared/i18n/locales/en/AnimeListPage/userSearchModal.json';
+export {default as userSearchModalJP} from './shared/i18n/locales/jp/AnimeListPage/userSearchModal.json';
+
+export {default as animeListPageEN} from './shared/i18n/locales/en/AnimeListPage/animeListPage.json';
+export {default as animeListPageJP} from './shared/i18n/locales/jp/AnimeListPage/animeListPage.json';
 /////////Components///////////////
 export * from './components/AnimeCard';
 export * from './components/GlobalSearch/GlobalSearch.types';

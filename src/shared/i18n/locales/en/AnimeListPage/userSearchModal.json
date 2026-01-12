@@ -1,0 +1,25 @@
+{
+  "userSearchModal": {
+    "placeholder": "Search user to add as {{role}}...",
+    "searching": "Searching users...",
+    "instruction": "Type a username to invite them as a <bold> {{role}}</bold>.",
+    "noResults": "No users found."
+  },
+  "userSearchResultItem": {
+    "verifiedEmail": "Verified Email",
+    "cannotModifyOwner": "Cannot modify Owner",
+    "currently": "Currently",
+    "assign": "Assign",
+    "status": {
+      "owner": "Owner",
+      "editor": "Editor",
+      "viewer": "Viewer"
+    },
+    "actions":{
+        "invite": "Invite",
+        "promote": "Promote",
+        "demote": "Demote",
+        "joined": "Joined"
+    }
+  }
+}

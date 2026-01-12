@@ -1,0 +1,15 @@
+{
+  "editListModal": {
+    "title": "Edit List Details",
+    "listName": "List Name",
+    "listNamePlaceholder": "Enter list name...",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter a description...",
+    "themeColor": "Theme Color",
+    "privateList": "Private List",
+    "cancel": "Cancel",
+    "saving": "Saving...",
+    "saveChanges": "Save Changes",
+    "updateError": "An error occurred while updating the list."
+  }
+}

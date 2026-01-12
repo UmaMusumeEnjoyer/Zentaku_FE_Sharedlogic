@@ -44,19 +44,39 @@ const processQueue = (error, token = null) => {
     });
     failedQueue = [];
 };
-// Request interceptor
 apiClient.interceptors.request.use((config) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     // 1. Cập nhật BaseURL nếu chưa đúng
     if (SharedConfig.apiBaseUrl && config.baseURL !== SharedConfig.apiBaseUrl) {
         config.baseURL = SharedConfig.apiBaseUrl;
     }
-    // 2. Lấy Token từ Storage
-    if (SharedConfig.storage) {
-        const token = yield SharedConfig.storage.getItem('authToken');
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
+    // 2. Lấy Token từ Storage (SỬA ĐỔI QUAN TRỌNG)
+    let token = null;
+    try {
+        if (SharedConfig.storage) {
+            // Ưu tiên lấy từ SharedConfig (ví dụ dùng cho Mobile/AsyncStorage)
+            token = yield SharedConfig.storage.getItem('authToken');
+        }
+        else if (typeof localStorage !== 'undefined') {
+            // Fallback: Lấy từ localStorage (cho Web)
+            token = localStorage.getItem('authToken');
         }
     }
+    catch (err) {
+        console.error("Error retrieving token:", err);
+    }
+    // 3. Gắn Token vào Header
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    else {
+        console.warn("⚠️ No auth token found via SharedConfig or localStorage");
+    }
+    // Debug: Log để xem request gửi đi có Token chưa
+    console.log(`🚀 [API Request] ${(_a = config.method) === null || _a === void 0 ? void 0 : _a.toUpperCase()} ${config.url}`, {
+        hasToken: !!token,
+        authHeader: config.headers.Authorization
+    });
     return config;
 }), (error) => Promise.reject(error));
 // Response interceptor - Tự động refresh token khi 401

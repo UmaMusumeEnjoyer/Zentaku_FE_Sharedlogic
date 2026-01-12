@@ -1,0 +1,24 @@
+{
+    "animeListPage": {
+        "searchPlaceholder": "このリストで検索...",
+        "loading": "アニメの詳細を読み込み中...",
+        "emptyState": {
+            "userTitle": "{{user}}によって追加されました",
+            "noAnimeYet": "このリストにはまだアニメが追加されていません。",
+            "addAnimeButton": "今すぐアニメを追加",
+            "listEmpty": "このリストは空です。"
+        },
+        "sidebarActions": {
+            "editDetails": "リスト詳細を編集",
+            "deleteList": "リストを削除",
+            "requestEdit": "編集アクセスをリクエスト",
+            "joinRequest": "参加リクエスト"
+        },
+        "requestModal": {
+            "joinTitle": "参加リクエスト",
+            "editTitle": "編集権限リクエスト",
+            "joinPlaceholder": "こんにちは、このリストの編集者として参加したいのですが...",
+            "editPlaceholder": "編集権限が必要な理由を説明してください..."
+        }
+    }
+}

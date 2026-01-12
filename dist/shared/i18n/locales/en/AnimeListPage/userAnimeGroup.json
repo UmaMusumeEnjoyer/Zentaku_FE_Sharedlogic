@@ -1,0 +1,11 @@
+{
+    "userAnimeGroup": {
+        "addedBy": "Added by {{user}}",
+        "addAnimeTitle": "Add Anime to this list",
+        "deleteItemsTitle": "Delete items",
+        "selectedCount": "{{count}} selected",
+        "cancelTitle": "Cancel",
+        "confirmDeleteTitle": "Confirm Delete",
+        "confirmText": "Confirm"
+    }
+}

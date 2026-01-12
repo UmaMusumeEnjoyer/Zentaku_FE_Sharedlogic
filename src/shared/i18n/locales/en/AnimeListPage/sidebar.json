@@ -1,0 +1,16 @@
+{
+  "sidebar": {
+    "members": "Members",
+    "loading": "Loading members...",
+    "owner": "Owner",
+    "ownerRole": "List Owner",
+    "editorsHeader": "Editors ({{count}})",
+    "inviteEditor": "Invite new Editor",
+    "editorRole": "Can edit content",
+    "noEditors": "No editors yet.",
+    "viewersHeader": "Viewers ({{count}})",
+    "inviteViewer": "Invite new Viewer",
+    "viewerRole": "Can view only",
+    "noViewers": "No viewers yet."
+  }
+}

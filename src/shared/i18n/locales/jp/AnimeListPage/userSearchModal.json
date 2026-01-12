@@ -1,0 +1,25 @@
+{
+  "userSearchModal": {
+    "placeholder": "{{role}}として追加するユーザーを検索...",
+    "searching": "ユーザーを検索中...",
+    "instruction": "ユーザー名を入力して、<bold> {{role}}</bold>として招待してください。",
+    "noResults": "ユーザーが見つかりません。"
+  },
+  "userSearchResultItem": {
+    "verifiedEmail": "確認済みメールアドレス",
+    "cannotModifyOwner": "オーナーを変更できません",
+    "currently": "現在",
+    "assign": "割り当てる",
+    "status": {
+      "owner": "オーナー",
+      "editor": "編集者",
+      "viewer": "閲覧者"
+    },
+    "actions":{
+        "invite": "招待",
+        "promote": "昇格",
+        "demote": "降格",
+        "joined": "参加"
+    }
+  }
+}

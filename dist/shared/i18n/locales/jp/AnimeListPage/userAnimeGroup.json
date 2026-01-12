@@ -1,0 +1,11 @@
+{
+    "userAnimeGroup": {
+        "addedBy": "{{user}} によって追加されました",
+        "addAnimeTitle": "このリストにアニメを追加",
+        "deleteItemsTitle": "アイテムを削除",
+        "selectedCount": "{{count}} 選択済み",
+        "cancelTitle": "キャンセル",
+        "confirmDeleteTitle": "削除を確認",
+        "confirmText": "確認"
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "listHeader": {
+        "private": "Private",
+        "like": "Like",
+        "unlike": "Unlike",
+        "viewLikers": "View who liked this list",
+        "likesLabel": "Likes"
+    }
+}

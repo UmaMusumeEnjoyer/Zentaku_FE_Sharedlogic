@@ -1,0 +1,16 @@
+{
+    "sidebar": {
+        "members": "メンバー",
+        "loading": "メンバーを読み込み中...",
+        "owner": "オーナー",
+        "ownerRole": "リスト所有者",
+        "editorsHeader": "編集者 ({{count}})",
+        "inviteEditor": "新しい編集者を招待",
+        "editorRole": "コンテンツを編集できます",
+        "noEditors": "編集者はまだいません。",
+        "viewersHeader": "閲覧者 ({{count}})",
+        "inviteViewer": "新しい閲覧者を招待",
+        "viewerRole": "閲覧のみ可能",
+        "noViewers": "まだ閲覧者はいません。"
+    }
+}

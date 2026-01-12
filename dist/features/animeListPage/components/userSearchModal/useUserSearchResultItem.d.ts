@@ -4,6 +4,6 @@ export declare const useUserSearchResultItem: (user: SearchUser, currentMembers:
     existingMember: ListMember | undefined;
     isOwner: boolean | undefined;
     buttonState: ButtonState;
-    statusText: string;
+    statusText: string | null;
 };
 //# sourceMappingURL=useUserSearchResultItem.d.ts.map
