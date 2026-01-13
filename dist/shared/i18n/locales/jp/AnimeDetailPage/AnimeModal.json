@@ -15,7 +15,8 @@
         "watching": "視聴中",
         "completed": "完了",
         "dropped": "中断",
-        "on_hold": "保留中"
+        "on_hold": "保留中",
+        "default": "リストに追加"
     },
     "placeholders": {
         "no_custom_lists": "カスタムリストなし"

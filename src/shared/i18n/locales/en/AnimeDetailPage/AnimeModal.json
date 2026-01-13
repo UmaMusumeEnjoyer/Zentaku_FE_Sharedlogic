@@ -15,7 +15,8 @@
     "watching": "Watching",
     "completed": "Completed",
     "dropped": "Dropped",
-    "on_hold": "On hold"
+    "on_hold": "On hold",
+    "default": "Add to List"
   },
   "placeholders": {
     "no_custom_lists": "No custom lists"
