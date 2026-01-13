@@ -9,13 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { useState, useEffect, useMemo } from 'react';
 import { userService } from '../../../../services/user.service';
-const statusMap = {
-    'watching': 'Watching',
-    'plan_to_watch': 'Plan to Watch',
-    'completed': 'Completed',
-    'dropped': 'Dropped',
-    'on_hold': 'On Hold'
-};
 export const useSummarySection = (anime) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentStatusData, setCurrentStatusData] = useState(null);
@@ -46,14 +39,12 @@ export const useSummarySection = (anime) => {
     const isFollowing = useMemo(() => {
         return currentStatusData && currentStatusData.is_following;
     }, [currentStatusData]);
-    const buttonLabel = useMemo(() => {
-        if (isLoadingStatus)
-            return 'Loading...';
+    const watchStatus = useMemo(() => {
         if (isFollowing && currentStatusData) {
-            return statusMap[currentStatusData.watch_status] || 'Unknown';
+            return currentStatusData.watch_status; // Trả về key gốc: 'plan_to_watch', 'watching',...
         }
-        return 'Add to List';
-    }, [isLoadingStatus, isFollowing, currentStatusData]);
+        return null; // Chưa follow
+    }, [isFollowing, currentStatusData]);
     // 3. Các hàm xử lý sự kiện (Event Handlers)
     const handleBtnClick = () => {
         const authToken = localStorage.getItem('authToken');
@@ -94,7 +85,9 @@ export const useSummarySection = (anime) => {
     return {
         isModalOpen,
         currentStatusData,
-        buttonLabel,
+        watchStatus,
+        isLoadingStatus,
+        isFollowing,
         handleBtnClick,
         handleCloseModal,
         handleSave,
