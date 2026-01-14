@@ -78,7 +78,6 @@ export const useEditorModal = (
         onSave(updatePayload, true);
       } catch (error) {
         console.error("Failed to update anime status:", error);
-        alert("Có lỗi xảy ra khi cập nhật!");
       }
 
     } else {
@@ -99,10 +98,6 @@ export const useEditorModal = (
   };
 
   const handleDeleteClick = async () => {
-    const title = anime.title?.romaji || anime.title?.english || 'anime này';
-    if (!window.confirm(`Bạn có chắc chắn muốn xóa "${title}" khỏi danh sách?`)) {
-      return;
-    }
 
     try {
       await userService.deleteAnimeStatus(anime.id);
@@ -112,7 +107,6 @@ export const useEditorModal = (
       onClose();
     } catch (error) {
       console.error("Failed to delete anime:", error);
-      alert("Có lỗi xảy ra khi xóa anime!");
     }
   };
 

@@ -68,7 +68,6 @@ export const useSummarySection = (anime) => {
                 yield userService.updateAnimeStatus(anime.id, apiPayload);
                 // Update local state: Set is_following = true
                 setCurrentStatusData(Object.assign(Object.assign({}, apiPayload), { anime: anime.id, is_following: true }));
-                alert("Thêm vào danh sách thành công!");
             }
             setIsModalOpen(false);
         }

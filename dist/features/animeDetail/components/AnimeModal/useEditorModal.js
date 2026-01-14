@@ -69,7 +69,6 @@ export const useEditorModal = (anime, initialData, onSave, onDelete, onClose) =>
             }
             catch (error) {
                 console.error("Failed to update anime status:", error);
-                alert("Có lỗi xảy ra khi cập nhật!");
             }
         }
         else {
@@ -88,11 +87,6 @@ export const useEditorModal = (anime, initialData, onSave, onDelete, onClose) =>
         }
     });
     const handleDeleteClick = () => __awaiter(void 0, void 0, void 0, function* () {
-        var _a, _b;
-        const title = ((_a = anime.title) === null || _a === void 0 ? void 0 : _a.romaji) || ((_b = anime.title) === null || _b === void 0 ? void 0 : _b.english) || 'anime này';
-        if (!window.confirm(`Bạn có chắc chắn muốn xóa "${title}" khỏi danh sách?`)) {
-            return;
-        }
         try {
             yield userService.deleteAnimeStatus(anime.id);
             if (onDelete) {
@@ -102,7 +96,6 @@ export const useEditorModal = (anime, initialData, onSave, onDelete, onClose) =>
         }
         catch (error) {
             console.error("Failed to delete anime:", error);
-            alert("Có lỗi xảy ra khi xóa anime!");
         }
     });
     return {

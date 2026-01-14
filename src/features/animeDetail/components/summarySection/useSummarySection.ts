@@ -75,7 +75,6 @@ const watchStatus = useMemo(() => {
             anime: anime.id,
             is_following: true
         });
-        alert("Thêm vào danh sách thành công!");
       }
       setIsModalOpen(false);
     } catch (error) {
