@@ -6,6 +6,6 @@ export * from './components/EditProfileModal/EditProfileModal.types';
 export * from './components/EditProfileModal/useEditProfileModal';
 export * from './components/ProfileBanner/ProfileBanner.types';
 export * from './components/ProfileBanner/useProfileBanner';
-export * from './ProfilePage.types';
+export type * from './ProfilePage.types';
 export * from './useProfilePage';
 //# sourceMappingURL=index.d.ts.map

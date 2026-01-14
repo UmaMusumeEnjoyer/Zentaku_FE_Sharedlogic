@@ -8,7 +8,8 @@
         "sign_up": "Sign Up",
         "learn_more": "Learn More",
         "read_more": "Read More",
-        "view_all": "View All"
+        "view_all": "View All",
+        "show_less": "Show Less"
     },
     "staff": {
         "loading": "Loading staff...",
