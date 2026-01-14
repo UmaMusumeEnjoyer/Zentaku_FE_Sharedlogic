@@ -6,6 +6,8 @@
         "selectedCount": "{{count}} selected",
         "cancelTitle": "Cancel",
         "confirmDeleteTitle": "Confirm Delete",
-        "confirmText": "Confirm"
+        "confirmText": "Confirm",
+        "viewMore": "View More",
+        "viewLess": "View Less"
     }
 }
