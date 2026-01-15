@@ -8,39 +8,59 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 // src/pages/AnimeDetail/useAnimeDetail.ts
-import { useState, useEffect, useMemo } from 'react';
-import { animeService } from '../../../services/anime.service'; // Đường dẫn import tùy thuộc cấu trúc của bạn
+import { useState, useEffect, useMemo, useRef } from 'react';
+import { animeService } from '../../../services/anime.service';
 export const useAnimeDetail = (animeId) => {
+    // 1. Khai báo state cho stats
+    const [stats, setStats] = useState(null);
     const [anime, setAnime] = useState(null);
+    const [staffList, setStaffList] = useState([]);
+    const [characterList, setCharacterList] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    // Ref chặn gọi 2 lần (đã làm ở bước trước)
+    const lastFetchedId = useRef(undefined);
     useEffect(() => {
-        const fetchAnime = () => __awaiter(void 0, void 0, void 0, function* () {
+        if (animeId === lastFetchedId.current)
+            return;
+        const fetchAllData = () => __awaiter(void 0, void 0, void 0, function* () {
+            var _a, _b;
             if (!animeId) {
                 setError("Anime ID is missing");
                 setLoading(false);
                 return;
             }
+            lastFetchedId.current = animeId;
             try {
                 setLoading(true);
                 setError(null);
-                const response = yield animeService.getById(animeId);
-                setAnime(response.data);
+                // 2. Gọi song song 4 API cùng lúc (bao gồm stats)
+                const [animeRes, staffRes, charRes, statsRes] = yield Promise.all([
+                    animeService.getById(animeId),
+                    animeService.getAnimeStaff(animeId),
+                    animeService.getCharacters(animeId),
+                    animeService.getAnimeStats(animeId) // <-- Thêm dòng này
+                ]);
+                setAnime(animeRes.data);
+                setStaffList(((_a = staffRes.data) === null || _a === void 0 ? void 0 : _a.staff) || []);
+                setCharacterList(((_b = charRes.data) === null || _b === void 0 ? void 0 : _b.characters) || []);
+                // 3. Lưu dữ liệu stats vào state
+                setStats(statsRes.data);
             }
             catch (err) {
-                console.error("Lỗi khi lấy chi tiết anime:", err);
+                console.error("Lỗi khi tải dữ liệu:", err);
                 setError("Failed to load anime details.");
             }
             finally {
                 setLoading(false);
             }
         });
-        fetchAnime();
+        fetchAllData();
     }, [animeId]);
-    // Logic tính toán derived state (state dẫn xuất)
     const hasBanner = useMemo(() => {
         return !!(anime && anime.banner_image);
     }, [anime]);
-    return { anime, loading, error, hasBanner };
+    // 4. Trả về stats
+    return { anime, loading, error, hasBanner, staffList, characterList, stats };
 };
 //# sourceMappingURL=useAnimeDetailPage.js.map

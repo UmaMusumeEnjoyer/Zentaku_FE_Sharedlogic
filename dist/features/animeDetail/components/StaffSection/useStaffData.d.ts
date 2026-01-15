@@ -1,7 +1,5 @@
 import { StaffMember } from './staffSection.types';
-export declare const useStaffData: (animeId: number | string) => {
+export declare const useStaffData: (fullStaffList: StaffMember[]) => {
     staff: StaffMember[];
-    loading: boolean;
-    error: unknown;
 };
 //# sourceMappingURL=useStaffData.d.ts.map

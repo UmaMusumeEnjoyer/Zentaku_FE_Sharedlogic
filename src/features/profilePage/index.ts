@@ -1,13 +1,13 @@
-export * from './components/ActivityFeed/ActivityFeed.types';
+export type * from './components/ActivityFeed/ActivityFeed.types';
 export * from './components/ActivityFeed/useActivityFeed';
 
-export * from './components/ActivityHistory/ActivityHistory.typs';
+export type * from './components/ActivityHistory/ActivityHistory.types';
 export * from './components/ActivityHistory/useActivityFeed';
 
-export * from './components/EditProfileModal/EditProfileModal.types';
+export type * from './components/EditProfileModal/EditProfileModal.types';
 export * from './components/EditProfileModal/useEditProfileModal';
 
-export * from './components/ProfileBanner/ProfileBanner.types';
+export type * from './components/ProfileBanner/ProfileBanner.types';
 export * from './components/ProfileBanner/useProfileBanner';
 
 export type * from './ProfilePage.types';

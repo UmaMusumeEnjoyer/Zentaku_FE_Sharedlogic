@@ -1,4 +1,4 @@
-import { HeatmapCounts, ActivityDay } from './ActivityHistory.typs';
+import { HeatmapCounts, ActivityDay } from './ActivityHistory.types';
 export declare const useActivityHistory: (username: string, onTotalCountChange?: (total: number) => void) => {
     heatmapCounts: HeatmapCounts;
     loading: boolean;

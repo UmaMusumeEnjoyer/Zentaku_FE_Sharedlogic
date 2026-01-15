@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { userService } from '../../../../services/user.service';
-import { HeatmapCounts, ActivityDay } from './ActivityHistory.typs';
+import { HeatmapCounts, ActivityDay } from './ActivityHistory.types';
 
 export const useActivityHistory = (username: string, onTotalCountChange?: (total: number) => void) => {
   const [heatmapCounts, setHeatmapCounts] = useState<HeatmapCounts>({});

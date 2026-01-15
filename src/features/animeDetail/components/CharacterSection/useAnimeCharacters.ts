@@ -1,35 +1,14 @@
 // src/hooks/useAnimeCharacters.ts
-import { useState, useEffect } from 'react';
-import { animeService } from '../../../../services/anime.service'; // Giữ đường dẫn import cũ của bạn
-import { Character } from './characterSection.types'; // Import type vừa tạo
+import { useMemo } from 'react';
+import { Character } from './characterSection.types';
 
-export const useAnimeCharacters = (animeId: number | string | undefined) => {
-  const [characters, setCharacters] = useState<Character[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<unknown>(null);
+// Input bây giờ là list dữ liệu đã có
+export const useAnimeCharacters = (fullCharacterList: Character[]) => {
 
-  useEffect(() => {
-    const fetchCharacters = async () => {
-      if (!animeId) return;
+  // Logic nghiệp vụ: Lấy tối đa 6 nhân vật đầu tiên
+  const characters = useMemo(() => {
+    return fullCharacterList.slice(0, 6);
+  }, [fullCharacterList]);
 
-      try {
-        setLoading(true);
-        const response = await animeService.getCharacters(animeId);
-        
-        // Logic nghiệp vụ: Lấy tối đa 6 nhân vật đầu tiên
-        // Kiểm tra an toàn để đảm bảo response.data.characters tồn tại
-        const charList = response.data?.characters || [];
-        setCharacters(charList.slice(0, 6));
-      } catch (err) {
-        console.error(err);
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCharacters();
-  }, [animeId]);
-
-  return { characters, loading, error };
+  return { characters };
 };

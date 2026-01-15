@@ -1,5 +1,4 @@
 export * from './hooks/useAnimeDetailPage';
-export * from './components/mainContentArea/useAnimeStats';
 
 // Types
 export * from './components/mainContentArea/animeStats.types';
