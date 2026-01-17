@@ -50,7 +50,8 @@ export const useAuth = (): UseAuthReturn => {
         localStorage.setItem('refreshToken', refreshToken);
         if (username) {
           localStorage.setItem('username', username);
-          await fetchUserInfo(username);
+          //await fetchUserInfo(username);
+          fetchUserInfo(username).catch(err => console.error(err));
         }
 
         return { success: true, message: 'Login successful!' };
