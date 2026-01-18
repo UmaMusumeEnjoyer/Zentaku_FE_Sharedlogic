@@ -70,7 +70,12 @@ export const useEditorModal = (
         episode_progress: Number(formData.progress) || 0,
         watch_status: formData.status,
         isFavorite: formData.isFavorite,
-        user_note: formData.notes
+        user_note: formData.notes,
+        score: Number(formData.score) || 0,
+        start_date: formData.startDate || null,
+        finish_date: formData.finishDate || null,
+        total_rewatch: Number(formData.rewatches) || 0,
+        private: formData.private
       };
 
       try {
