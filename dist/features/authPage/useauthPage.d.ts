@@ -1,6 +1,7 @@
 import { RegisterData } from './auth.types';
 export interface UseAuthPageReturn {
     isActive: boolean;
+    isLoading: boolean;
     registerData: RegisterData & {
         confirm_password: string;
     };

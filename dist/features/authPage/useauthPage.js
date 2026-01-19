@@ -23,6 +23,8 @@ import { useState, useEffect } from 'react';
 import { authService } from '../../services/auth.service';
 export const useAuthPage = (callbacks, initialPath, verificationToken) => {
     const [isActive, setIsActive] = useState(initialPath === 'signup');
+    const [isLoading, setIsLoading] = useState(false); // 2. Khởi tạo state isLoading
+    // ... (Giữ nguyên phần useState data và useEffect) ...
     const [registerData, setRegisterData] = useState({
         username: '',
         email: '',
@@ -33,11 +35,12 @@ export const useAuthPage = (callbacks, initialPath, verificationToken) => {
         email: '',
         password: '',
     });
-    // Email verification logic on mount
+    // Email verification logic on mount (Giữ nguyên)
     useEffect(() => {
         const verifyToken = () => __awaiter(void 0, void 0, void 0, function* () {
             var _a, _b;
             if (verificationToken) {
+                setIsLoading(true); // Có thể thêm loading khi verify
                 try {
                     yield authService.verifyEmail(verificationToken);
                     callbacks.onVerifySuccess("Email verified successfully! Please login.");
@@ -47,6 +50,9 @@ export const useAuthPage = (callbacks, initialPath, verificationToken) => {
                     const errorMsg = ((_b = (_a = error.response) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.error) || "Verification failed.";
                     callbacks.onVerifyError(errorMsg);
                     callbacks.onNavigateToLogin();
+                }
+                finally {
+                    setIsLoading(false);
                 }
             }
         });
@@ -65,6 +71,7 @@ export const useAuthPage = (callbacks, initialPath, verificationToken) => {
             callbacks.onRegisterError("Passwords do not match!");
             return;
         }
+        setIsLoading(true); // 3. Bật loading
         try {
             const { confirm_password } = registerData, dataToSend = __rest(registerData, ["confirm_password"]);
             const response = yield authService.register(dataToSend);
@@ -72,6 +79,7 @@ export const useAuthPage = (callbacks, initialPath, verificationToken) => {
             callbacks.onNavigateToLogin();
         }
         catch (error) {
+            // ... (Giữ nguyên logic xử lý lỗi) ...
             if ((_a = error.response) === null || _a === void 0 ? void 0 : _a.data) {
                 const errorData = error.response.data;
                 if (errorData.details) {
@@ -90,15 +98,27 @@ export const useAuthPage = (callbacks, initialPath, verificationToken) => {
                 callbacks.onRegisterError('Unable to connect to the server.');
             }
         }
+        finally {
+            setIsLoading(false); // 4. Tắt loading
+        }
     });
     const handleLoginSubmit = (e) => __awaiter(void 0, void 0, void 0, function* () {
         e.preventDefault();
-        const result = yield callbacks.loginCallback(loginData.email, loginData.password);
-        if (result.success) {
-            callbacks.onLoginSuccess(result.message);
+        setIsLoading(true); // 5. Bật loading
+        try {
+            const result = yield callbacks.loginCallback(loginData.email, loginData.password);
+            if (result.success) {
+                callbacks.onLoginSuccess(result.message);
+            }
+            else {
+                callbacks.onLoginError(result.message);
+            }
         }
-        else {
-            callbacks.onLoginError(result.message);
+        catch (error) {
+            callbacks.onLoginError("Login failed unexpectedly.");
+        }
+        finally {
+            setIsLoading(false); // 6. Tắt loading
         }
     });
     const handleRegisterClick = () => {
@@ -111,6 +131,7 @@ export const useAuthPage = (callbacks, initialPath, verificationToken) => {
     };
     return {
         isActive,
+        isLoading, // 7. Return isLoading
         registerData,
         loginData,
         handleRegisterChange,

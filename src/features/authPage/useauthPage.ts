@@ -5,6 +5,7 @@ import { RegisterData } from './auth.types';
 
 export interface UseAuthPageReturn {
   isActive: boolean;
+  isLoading: boolean; // 1. Thêm kiểu dữ liệu cho isLoading
   registerData: RegisterData & { confirm_password: string };
   loginData: { email: string; password: string };
   handleRegisterChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -15,6 +16,7 @@ export interface UseAuthPageReturn {
   handleLoginClick: () => void;
 }
 
+// ... (Giữ nguyên phần UseAuthPageCallbacks) ...
 export interface UseAuthPageCallbacks {
   onLoginSuccess: (message: string) => void;
   onLoginError: (message: string) => void;
@@ -33,7 +35,9 @@ export const useAuthPage = (
   verificationToken?: string | null
 ): UseAuthPageReturn => {
   const [isActive, setIsActive] = useState(initialPath === 'signup');
+  const [isLoading, setIsLoading] = useState(false); // 2. Khởi tạo state isLoading
 
+  // ... (Giữ nguyên phần useState data và useEffect) ...
   const [registerData, setRegisterData] = useState({
     username: '',
     email: '',
@@ -45,11 +49,12 @@ export const useAuthPage = (
     email: '',
     password: '',
   });
-
-  // Email verification logic on mount
+  
+  // Email verification logic on mount (Giữ nguyên)
   useEffect(() => {
     const verifyToken = async () => {
       if (verificationToken) {
+        setIsLoading(true); // Có thể thêm loading khi verify
         try {
           await authService.verifyEmail(verificationToken);
           callbacks.onVerifySuccess("Email verified successfully! Please login.");
@@ -58,6 +63,8 @@ export const useAuthPage = (
           const errorMsg = error.response?.data?.error || "Verification failed.";
           callbacks.onVerifyError(errorMsg);
           callbacks.onNavigateToLogin();
+        } finally {
+            setIsLoading(false);
         }
       }
     };
@@ -79,12 +86,15 @@ export const useAuthPage = (
       return;
     }
 
+    setIsLoading(true); // 3. Bật loading
+
     try {
       const { confirm_password, ...dataToSend } = registerData;
       const response = await authService.register(dataToSend);
       callbacks.onRegisterSuccess(response.data.message || 'Registration successful!');
       callbacks.onNavigateToLogin();
     } catch (error: any) {
+      // ... (Giữ nguyên logic xử lý lỗi) ...
       if (error.response?.data) {
         const errorData = error.response.data;
         if (errorData.details) {
@@ -99,16 +109,27 @@ export const useAuthPage = (
       } else {
         callbacks.onRegisterError('Unable to connect to the server.');
       }
+    } finally {
+      setIsLoading(false); // 4. Tắt loading
     }
   };
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const result = await callbacks.loginCallback(loginData.email, loginData.password);
-    if (result.success) {
-      callbacks.onLoginSuccess(result.message);
-    } else {
-      callbacks.onLoginError(result.message);
+    
+    setIsLoading(true); // 5. Bật loading
+
+    try {
+        const result = await callbacks.loginCallback(loginData.email, loginData.password);
+        if (result.success) {
+            callbacks.onLoginSuccess(result.message);
+        } else {
+            callbacks.onLoginError(result.message);
+        }
+    } catch (error) {
+        callbacks.onLoginError("Login failed unexpectedly.");
+    } finally {
+        setIsLoading(false); // 6. Tắt loading
     }
   };
 
@@ -124,6 +145,7 @@ export const useAuthPage = (
 
   return {
     isActive,
+    isLoading, // 7. Return isLoading
     registerData,
     loginData,
     handleRegisterChange,
