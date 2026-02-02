@@ -20,5 +20,12 @@
     },
     "placeholders": {
         "no_custom_lists": "カスタムリストなし"
+    },
+    "navBar": {
+        "Overview": "概要",
+        "Watch": "視聴",
+        "Characters": "キャラクター",
+        "Staff": "スタッフ",
+        "Stats": "統計"
     }
 }

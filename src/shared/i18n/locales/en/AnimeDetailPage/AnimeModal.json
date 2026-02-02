@@ -20,5 +20,12 @@
   },
   "placeholders": {
     "no_custom_lists": "No custom lists"
+  },
+  "navBar": {
+    "Overview": "Overview",
+    "Watch": "Watch",
+    "Characters": "Characters",
+    "Staff": "Staff",
+    "Stats": "Stats"
   }
 }
