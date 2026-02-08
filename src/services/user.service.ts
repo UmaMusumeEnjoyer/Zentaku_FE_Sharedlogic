@@ -1,7 +1,9 @@
 import { apiClient, getCached, setCached, TTL_SHORT } from '../api/apiClient';
 import { User } from '../features/authPage/auth.types';
-
+const animeStatusCache = new Map<string | number, any>();
+const pendingRequests = new Map<string | number, Promise<any>>();
 export const userService = {
+  
   // --- Profile ---
   getUserProfile: (username: string) => {
     return apiClient.get<User>(`/user/${username}/profile/`);
@@ -22,15 +24,61 @@ export const userService = {
 
   // --- Tracking / Follow ---
   updateAnimeStatus: (animeId: number | string, data: any) => {
+    const cacheKey = `anime_status_${animeId}`;
+    animeStatusCache.delete(cacheKey);
+    
     return apiClient.post(`/follow/${animeId}/create/`, data);
   },
   
-  getAnimeStatus: (animeId: number | string) => {
-    return apiClient.get(`/follow/${animeId}/get`);
+  getAnimeStatus: async (animeId: number | string) => {
+    const cacheKey = `anime_status_${animeId}`;
+    
+
+    if (animeStatusCache.has(cacheKey)) {
+      const cachedData = animeStatusCache.get(cacheKey);
+      const now = Date.now();
+      
+      if (cachedData.timestamp && now - cachedData.timestamp < TTL_SHORT) {
+        console.log('📦 [Cache HIT] Returning cached anime status for:', animeId);
+        return cachedData.response;
+      } else {
+        // Cache hết hạn
+        animeStatusCache.delete(cacheKey);
+      }
+    }
+    
+    if (pendingRequests.has(cacheKey)) {
+      console.log('⏳ [Dedup] Request already pending for:', animeId);
+      return pendingRequests.get(cacheKey);
+    }
+    
+    console.log('🚀 [New Request] Fetching anime status for:', animeId);
+    const requestPromise = apiClient.get(`/follow/${animeId}/get`)
+      .then(response => {
+        animeStatusCache.set(cacheKey, {
+          response,
+          timestamp: Date.now()
+        });
+        
+        pendingRequests.delete(cacheKey);
+        
+        return response;
+      })
+      .catch(error => {
+        pendingRequests.delete(cacheKey);
+        throw error;
+      });
+
+    pendingRequests.set(cacheKey, requestPromise);
+    
+    return requestPromise;
   },
 
   deleteAnimeStatus: (animeId: number | string) => {
-  return apiClient.delete(`/follow/${animeId}/delete/`);
+    const cacheKey = `anime_status_${animeId}`;
+    animeStatusCache.delete(cacheKey);
+    
+    return apiClient.delete(`/follow/${animeId}/delete/`);
   },
 
   // --- Stats (Heatmap/Activity) ---

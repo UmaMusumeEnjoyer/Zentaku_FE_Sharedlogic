@@ -8,6 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { apiClient, getCached, setCached, TTL_SHORT } from '../api/apiClient';
+const animeStatusCache = new Map();
+const pendingRequests = new Map();
 export const userService = {
     // --- Profile ---
     getUserProfile: (username) => {
@@ -26,12 +28,48 @@ export const userService = {
     },
     // --- Tracking / Follow ---
     updateAnimeStatus: (animeId, data) => {
+        const cacheKey = `anime_status_${animeId}`;
+        animeStatusCache.delete(cacheKey);
         return apiClient.post(`/follow/${animeId}/create/`, data);
     },
-    getAnimeStatus: (animeId) => {
-        return apiClient.get(`/follow/${animeId}/get`);
-    },
+    getAnimeStatus: (animeId) => __awaiter(void 0, void 0, void 0, function* () {
+        const cacheKey = `anime_status_${animeId}`;
+        if (animeStatusCache.has(cacheKey)) {
+            const cachedData = animeStatusCache.get(cacheKey);
+            const now = Date.now();
+            if (cachedData.timestamp && now - cachedData.timestamp < TTL_SHORT) {
+                console.log('📦 [Cache HIT] Returning cached anime status for:', animeId);
+                return cachedData.response;
+            }
+            else {
+                // Cache hết hạn
+                animeStatusCache.delete(cacheKey);
+            }
+        }
+        if (pendingRequests.has(cacheKey)) {
+            console.log('⏳ [Dedup] Request already pending for:', animeId);
+            return pendingRequests.get(cacheKey);
+        }
+        console.log('🚀 [New Request] Fetching anime status for:', animeId);
+        const requestPromise = apiClient.get(`/follow/${animeId}/get`)
+            .then(response => {
+            animeStatusCache.set(cacheKey, {
+                response,
+                timestamp: Date.now()
+            });
+            pendingRequests.delete(cacheKey);
+            return response;
+        })
+            .catch(error => {
+            pendingRequests.delete(cacheKey);
+            throw error;
+        });
+        pendingRequests.set(cacheKey, requestPromise);
+        return requestPromise;
+    }),
     deleteAnimeStatus: (animeId) => {
+        const cacheKey = `anime_status_${animeId}`;
+        animeStatusCache.delete(cacheKey);
         return apiClient.delete(`/follow/${animeId}/delete/`);
     },
     // --- Stats (Heatmap/Activity) ---
