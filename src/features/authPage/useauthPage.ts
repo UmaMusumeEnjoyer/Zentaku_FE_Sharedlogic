@@ -89,8 +89,12 @@ export const useAuthPage = (
     setIsLoading(true); // 3. Bật loading
 
     try {
-      
-      const response = await authService.register(registerData);
+      const response = await authService.register({
+        username: registerData.username,
+        email: registerData.email,
+        password: registerData.password,
+        confirmPassword: registerData.confirm_password,
+      });
       callbacks.onRegisterSuccess(response.data.message || 'Registration successful!');
       callbacks.onNavigateToLogin();
     } catch (error: any) {

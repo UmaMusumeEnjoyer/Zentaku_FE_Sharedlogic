@@ -2,12 +2,16 @@
 import { apiClient } from '../api/apiClient';
 import { LoginCredentials, LoginResponse, RegisterData } from '../features/authPage/auth.types';
 
+type RegisterRequest = RegisterData & {
+  confirmPassword: string;
+};
+
 export const authService = {
   login: (credentials: LoginCredentials) => {
     return apiClient.post<LoginResponse>('/auth/login/', credentials);
   },
 
-  register: (userData: RegisterData) => {
+  register: (userData: RegisterRequest) => {
     return apiClient.post('/auth/register/', userData);
   },
 

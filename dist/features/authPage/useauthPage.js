@@ -62,7 +62,12 @@ export const useAuthPage = (callbacks, initialPath, verificationToken) => {
         }
         setIsLoading(true); // 3. Bật loading
         try {
-            const response = yield authService.register(registerData);
+            const response = yield authService.register({
+                username: registerData.username,
+                email: registerData.email,
+                password: registerData.password,
+                confirmPassword: registerData.confirm_password,
+            });
             callbacks.onRegisterSuccess(response.data.message || 'Registration successful!');
             callbacks.onNavigateToLogin();
         }
