@@ -40,14 +40,17 @@ export const useAuth = (): UseAuthReturn => {
       setError(null);
 
       const response = await authService.login(credentials);
+      const responseData = response.data;
 
-      const accessToken = response.data.tokens.access;
-      const refreshToken = response.data.tokens.refresh;
-      const username = response.data.user?.username;
+      const accessToken = responseData.accessToken ?? responseData.tokens?.access;
+      const refreshToken = responseData.refreshToken ?? responseData.tokens?.refresh;
+      const username = responseData.user?.username;
 
       if (accessToken) {
         localStorage.setItem('authToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
+        if (refreshToken) {
+          localStorage.setItem('refreshToken', refreshToken);
+        }
         if (username) {
           localStorage.setItem('username', username);
           //await fetchUserInfo(username);

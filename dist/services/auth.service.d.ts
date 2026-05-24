@@ -6,9 +6,9 @@ export declare const authService: {
     login: (credentials: LoginCredentials) => Promise<import("axios").AxiosResponse<LoginResponse, any, {}>>;
     register: (userData: RegisterRequest) => Promise<import("axios").AxiosResponse<any, any, {}>>;
     verifyEmail: (token: string) => Promise<import("axios").AxiosResponse<any, any, {}>>;
-    refreshToken: (refreshToken: string) => Promise<import("axios").AxiosResponse<{
-        access: string;
-        refresh: string;
+    refreshToken: () => Promise<import("axios").AxiosResponse<{
+        accessToken: string;
+        expiresIn: number;
     }, any, {}>>;
 };
 export {};

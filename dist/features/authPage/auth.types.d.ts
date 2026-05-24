@@ -25,7 +25,10 @@ export interface AuthTokens {
     refresh: string;
 }
 export interface LoginResponse {
-    tokens: AuthTokens;
+    accessToken?: string;
+    refreshToken?: string;
+    expiresIn?: number;
+    tokens?: AuthTokens;
     user: {
         username: string;
         email: string;

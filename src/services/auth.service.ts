@@ -19,10 +19,7 @@ export const authService = {
     return apiClient.get(`/auth/verify-email/?token=${token}`);
   },
 
-  // Thêm API refresh token
-  refreshToken: (refreshToken: string) => {
-    return apiClient.post<{ access: string; refresh: string }>('/auth/token/refresh/', {
-      refresh: refreshToken
-    });
+  refreshToken: () => {
+    return apiClient.post<{ accessToken: string; expiresIn: number }>('/auth/refresh-token', {});
   }
 };

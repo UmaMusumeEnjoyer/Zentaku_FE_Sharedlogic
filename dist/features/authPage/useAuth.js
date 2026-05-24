@@ -32,17 +32,20 @@ export const useAuth = () => {
         }
     }), []);
     const login = useCallback((credentials) => __awaiter(void 0, void 0, void 0, function* () {
-        var _a, _b, _c;
+        var _a, _b, _c, _d, _e, _f, _g;
         try {
             setIsLoading(true);
             setError(null);
             const response = yield authService.login(credentials);
-            const accessToken = response.data.tokens.access;
-            const refreshToken = response.data.tokens.refresh;
-            const username = (_a = response.data.user) === null || _a === void 0 ? void 0 : _a.username;
+            const responseData = response.data;
+            const accessToken = (_a = responseData.accessToken) !== null && _a !== void 0 ? _a : (_b = responseData.tokens) === null || _b === void 0 ? void 0 : _b.access;
+            const refreshToken = (_c = responseData.refreshToken) !== null && _c !== void 0 ? _c : (_d = responseData.tokens) === null || _d === void 0 ? void 0 : _d.refresh;
+            const username = (_e = responseData.user) === null || _e === void 0 ? void 0 : _e.username;
             if (accessToken) {
                 localStorage.setItem('authToken', accessToken);
-                localStorage.setItem('refreshToken', refreshToken);
+                if (refreshToken) {
+                    localStorage.setItem('refreshToken', refreshToken);
+                }
                 if (username) {
                     localStorage.setItem('username', username);
                     //await fetchUserInfo(username);
@@ -55,7 +58,7 @@ export const useAuth = () => {
             }
         }
         catch (err) {
-            const message = ((_c = (_b = err.response) === null || _b === void 0 ? void 0 : _b.data) === null || _c === void 0 ? void 0 : _c.message) || 'Login failed. Please try again.';
+            const message = ((_g = (_f = err.response) === null || _f === void 0 ? void 0 : _f.data) === null || _g === void 0 ? void 0 : _g.message) || 'Login failed. Please try again.';
             setError(message);
             return { success: false, message };
         }

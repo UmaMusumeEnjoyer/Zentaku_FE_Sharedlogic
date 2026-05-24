@@ -23,6 +23,7 @@ export function setCached(key: string, val: any, ttl = TTL_DEFAULT) {
 // --- AXIOS INSTANCE ---
 export const apiClient = axios.create({
   baseURL: SharedConfig.apiBaseUrl,
+  withCredentials: true,
 });
 
 // Biến để tránh refresh nhiều lần đồng thời
@@ -99,22 +100,19 @@ apiClient.interceptors.response.use(
       isRefreshing = true;
 
       try {
+        // Gọi API refresh
         const refreshToken = SharedConfig.storage 
           ? await SharedConfig.storage.getItem('refreshToken')
           : localStorage.getItem('refreshToken');
 
-        if (!refreshToken) {
-          throw new Error('No refresh token available');
-        }
-
-        // Gọi API refresh
         const response = await axios.post(
-          `${SharedConfig.apiBaseUrl}/auth/token/refresh/`,
-          { refresh: refreshToken }
+          `${SharedConfig.apiBaseUrl}/auth/refresh-token`,
+          refreshToken ? { refreshToken } : {},
+          { withCredentials: true }
         );
 
-        const newAccessToken = response.data.access;
-        const newRefreshToken = response.data.refresh;
+        const newAccessToken = response.data.accessToken ?? response.data.access;
+        const newRefreshToken = response.data.refreshToken ?? response.data.refresh;
 
         // Lưu token mới
         if (SharedConfig.storage) {

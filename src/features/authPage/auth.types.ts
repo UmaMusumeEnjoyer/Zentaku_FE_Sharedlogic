@@ -30,7 +30,10 @@ export interface AuthTokens {
 }
 
 export interface LoginResponse {
-  tokens: AuthTokens;
+  accessToken?: string;
+  refreshToken?: string;
+  expiresIn?: number;
+  tokens?: AuthTokens;
   user: {
     username: string;
     email: string;

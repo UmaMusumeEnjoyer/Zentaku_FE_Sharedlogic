@@ -29,6 +29,7 @@ export function setCached(key, val, ttl = TTL_DEFAULT) {
 // --- AXIOS INSTANCE ---
 export const apiClient = axios.create({
     baseURL: SharedConfig.apiBaseUrl,
+    withCredentials: true,
 });
 // Biến để tránh refresh nhiều lần đồng thời
 let isRefreshing = false;
@@ -81,7 +82,7 @@ apiClient.interceptors.request.use((config) => __awaiter(void 0, void 0, void 0,
 }), (error) => Promise.reject(error));
 // Response interceptor - Tự động refresh token khi 401
 apiClient.interceptors.response.use((response) => response, (error) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _a, _b, _c;
     const originalRequest = error.config;
     // Kiểm tra nếu lỗi 401 và chưa retry
     if (((_a = error.response) === null || _a === void 0 ? void 0 : _a.status) === 401 && !originalRequest._retry) {
@@ -97,16 +98,13 @@ apiClient.interceptors.response.use((response) => response, (error) => __awaiter
         originalRequest._retry = true;
         isRefreshing = true;
         try {
+            // Gọi API refresh
             const refreshToken = SharedConfig.storage
                 ? yield SharedConfig.storage.getItem('refreshToken')
                 : localStorage.getItem('refreshToken');
-            if (!refreshToken) {
-                throw new Error('No refresh token available');
-            }
-            // Gọi API refresh
-            const response = yield axios.post(`${SharedConfig.apiBaseUrl}/auth/token/refresh/`, { refresh: refreshToken });
-            const newAccessToken = response.data.access;
-            const newRefreshToken = response.data.refresh;
+            const response = yield axios.post(`${SharedConfig.apiBaseUrl}/auth/refresh-token`, refreshToken ? { refreshToken } : {}, { withCredentials: true });
+            const newAccessToken = (_b = response.data.accessToken) !== null && _b !== void 0 ? _b : response.data.access;
+            const newRefreshToken = (_c = response.data.refreshToken) !== null && _c !== void 0 ? _c : response.data.refresh;
             // Lưu token mới
             if (SharedConfig.storage) {
                 yield SharedConfig.storage.setItem('authToken', newAccessToken);
