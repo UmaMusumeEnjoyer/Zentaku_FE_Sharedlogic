@@ -79,7 +79,7 @@ export const useEditorModal = (
       };
 
       try {
-        await userService.updateAnimeStatus(anime.id, updatePayload);
+        await userService.updateAnimeStatus(anime.id, updatePayload, true);
         onSave(updatePayload, true);
       } catch (error) {
         console.error("Failed to update anime status:", error);

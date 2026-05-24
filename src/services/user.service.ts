@@ -181,13 +181,37 @@ export const userService = {
 
   // ===========================
   // TRACKING / FOLLOW MEDIA
-  // (Giữ nguyên - sẽ cập nhật ở Phase 2 Task 5)
   // ===========================
 
-  updateAnimeStatus: (animeId: number | string, data: any) => {
+  updateAnimeStatus: (animeId: number | string, data: any, isUpdate: boolean = false) => {
     const cacheKey = `anime_status_${animeId}`;
     animeStatusCache.delete(cacheKey);
-    return apiClient.post(`/follow/${animeId}/create/`, data);
+
+    // Map old snake_case payload to new camelCase payload
+    const mapStatus = (status: string) => {
+      if (!status) return status;
+      const s = status.toUpperCase();
+      if (s === 'WATCHING' || s === 'READING') return 'CURRENT';
+      return s;
+    };
+
+    const mappedData = {
+      status: mapStatus(data.watch_status || data.read_status || data.status),
+      progress: Number(data.episode_progress || data.chapter_progress || data.progress) || 0,
+      progressVolumes: Number(data.volume_progress) || 0,
+      score: Number(data.score) || 0,
+      notes: data.user_note || data.note || data.notes || '',
+      isPrivate: data.private !== undefined ? data.private : (data.isPrivate || false),
+      rewatchCount: Number(data.total_rewatch || data.total_reread || data.rewatches) || 0,
+      startDate: data.start_date || data.startDate || null,
+      finishDate: data.finish_date || data.finishDate || null,
+    };
+
+    if (isUpdate) {
+      return apiClient.patch(`/follows/media/${animeId}`, mappedData);
+    } else {
+      return apiClient.post(`/follows/media/${animeId}`, mappedData);
+    }
   },
 
   getAnimeStatus: async (animeId: number | string) => {
@@ -208,8 +232,34 @@ export const userService = {
       return pendingRequests.get(cacheKey);
     }
 
-    const requestPromise = apiClient.get(`/follow/${animeId}/get`)
+    const requestPromise = apiClient.get(`/follows/media/${animeId}`)
       .then(response => {
+        // Map new camelCase response to old snake_case format for backward compatibility
+        if (response && response.data) {
+          const d = response.data;
+          
+          // Map CURRENT back to watching/reading for frontend
+          let oldStatus = d.status?.toLowerCase();
+          if (oldStatus === 'current') oldStatus = 'watching'; // Assuming anime by default
+
+          response.data = {
+            ...d,
+            watch_status: oldStatus,
+            read_status: oldStatus,
+            episode_progress: d.progress,
+            chapter_progress: d.progress,
+            volume_progress: d.progressVolumes,
+            score: d.score,
+            user_note: d.notes,
+            note: d.notes,
+            private: d.isPrivate,
+            total_rewatch: d.rewatchCount,
+            start_date: d.startDate,
+            finish_date: d.finishDate,
+            is_following: true
+          };
+        }
+
         animeStatusCache.set(cacheKey, {
           response,
           timestamp: Date.now()
@@ -229,7 +279,23 @@ export const userService = {
   deleteAnimeStatus: (animeId: number | string) => {
     const cacheKey = `anime_status_${animeId}`;
     animeStatusCache.delete(cacheKey);
-    return apiClient.delete(`/follow/${animeId}/delete/`);
+    return apiClient.delete(`/follows/media/${animeId}`);
+  },
+
+  // ===========================
+  // USER FOLLOW (MỚI)
+  // ===========================
+
+  followUser: (targetUserId: string | number) => {
+    return apiClient.post(`/follows/users/${targetUserId}`);
+  },
+
+  unfollowUser: (targetUserId: string | number) => {
+    return apiClient.delete(`/follows/users/${targetUserId}`);
+  },
+
+  checkUserFollow: (targetUserId: string | number) => {
+    return apiClient.get(`/follows/users/${targetUserId}`);
   },
 
   // ===========================

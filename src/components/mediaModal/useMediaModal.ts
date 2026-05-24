@@ -99,7 +99,7 @@ export const useMediaModal = (
           ...(isEditMode ? {} : { notify_email: true })
         };
 
-        await userService.updateAnimeStatus(item.id, animePayload);
+        await userService.updateAnimeStatus(item.id, animePayload, isEditMode);
         onSave(animePayload, isEditMode);
       } 
       else {
