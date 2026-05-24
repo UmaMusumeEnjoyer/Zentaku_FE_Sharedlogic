@@ -1,12 +1,12 @@
 // src/features/authPage/useauthPage.ts
 import { useState, useEffect } from 'react';
 import { authService } from '../../services/auth.service';
-import { RegisterData } from './auth.types';
+import { RegisterData, RegisterRequest } from './auth.types';
 
 export interface UseAuthPageReturn {
   isActive: boolean;
   isLoading: boolean; // 1. Thêm kiểu dữ liệu cho isLoading
-  registerData: RegisterData & { confirm_password: string };
+  registerData: RegisterData & { confirm_password: string }; // UI vẫn dùng confirm_password cho input name
   loginData: { email: string; password: string };
   handleRegisterChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleLoginChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -89,13 +89,15 @@ export const useAuthPage = (
     setIsLoading(true); // 3. Bật loading
 
     try {
-      const response = await authService.register({
+      const requestData: RegisterRequest = {
         username: registerData.username,
         email: registerData.email,
         password: registerData.password,
         confirmPassword: registerData.confirm_password,
-      });
-      callbacks.onRegisterSuccess(response.data.message || 'Registration successful!');
+      };
+      const response = await authService.register(requestData);
+      // Zentaku_BE response đã unwrap: response.data = { message: "..." }
+      callbacks.onRegisterSuccess(response.data?.message || 'Registration successful!');
       callbacks.onNavigateToLogin();
     } catch (error: any) {
       // ... (Giữ nguyên logic xử lý lỗi) ...

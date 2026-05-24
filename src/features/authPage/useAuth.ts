@@ -1,7 +1,6 @@
 // shared-logic/src/shared/hooks/useAuth.ts
 import { useState, useCallback } from 'react';
 import { authService } from '../../services/auth.service';
-import { userService } from '../../services/user.service';
 import { User, LoginCredentials } from './auth.types';
 
 export interface UseAuthReturn {
@@ -19,12 +18,34 @@ export const useAuth = (): UseAuthReturn => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchUserInfo = useCallback(async (username: string) => {
+  /**
+   * Lấy thông tin user - ưu tiên GET /auth/me (Zentaku_BE),
+   * fallback sang getUserProfile nếu cần
+   */
+  const fetchUserInfo = useCallback(async (_username?: string) => {
     try {
       setIsLoading(true);
-      const response = await userService.getUserProfile(username);
+      // Zentaku_BE: Dùng /auth/me để lấy thông tin user hiện tại qua accessToken
+      const response = await authService.getCurrentUser();
       if (response.data) {
-        setUser(response.data);
+        const userData = response.data;
+        setUser({
+          id: userData.id,
+          username: userData.username,
+          email: userData.email,
+          displayName: userData.displayName,
+          avatar: userData.avatar,
+          bio: userData.bio,
+          gender: userData.gender,
+          birthday: userData.birthday,
+          location: userData.location,
+          website: userData.website,
+          banner: userData.banner,
+          createdAt: userData.createdAt,
+          // Backward compatibility: map sang trường cũ cho các UI chưa cập nhật
+          avatar_url: userData.avatar,
+          first_name: userData.displayName,
+        });
       }
     } catch (err) {
       console.error('Failed to fetch user info:', err);
@@ -34,6 +55,11 @@ export const useAuth = (): UseAuthReturn => {
     }
   }, []);
 
+  /**
+   * Đăng nhập - Zentaku_BE response:
+   * { accessToken, expiresIn?, user: { username, email, displayName? } }
+   * Refresh token được set qua HTTP-only cookie tự động
+   */
   const login = useCallback(async (credentials: LoginCredentials) => {
     try {
       setIsLoading(true);
@@ -42,18 +68,17 @@ export const useAuth = (): UseAuthReturn => {
       const response = await authService.login(credentials);
       const responseData = response.data;
 
-      const accessToken = responseData.accessToken ?? responseData.tokens?.access;
-      const refreshToken = responseData.refreshToken ?? responseData.tokens?.refresh;
+      // Zentaku_BE trả về accessToken trực tiếp (không qua tokens object)
+      const accessToken = responseData.accessToken;
       const username = responseData.user?.username;
 
       if (accessToken) {
         localStorage.setItem('accessToken', accessToken);
-        if (refreshToken) {
-          localStorage.setItem('refreshToken', refreshToken);
-        }
+        // Zentaku_BE: refreshToken lưu qua HTTP-only cookie, không cần lưu thủ công
+
         if (username) {
           localStorage.setItem('username', username);
-          //await fetchUserInfo(username);
+          // Gọi /auth/me để lấy full user info
           fetchUserInfo(username).catch(err => console.error(err));
         }
 
@@ -70,7 +95,15 @@ export const useAuth = (): UseAuthReturn => {
     }
   }, [fetchUserInfo]);
 
+  /**
+   * Đăng xuất - Gọi API logout của Zentaku_BE để xóa cookie phía server,
+   * sau đó xóa token và state phía client
+   */
   const logout = useCallback(() => {
+    // Gọi API logout để xóa cookie/session phía BE (fire-and-forget)
+    authService.logout().catch(err => console.error('Logout API error:', err));
+
+    // Xóa state phía client
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('username');
@@ -87,11 +120,13 @@ export const useAuth = (): UseAuthReturn => {
       const updated = {
         ...prev,
         ...userData,
-        // Ensure important fields are properly updated
-        avatar_url: userData.avatar_url !== undefined ? userData.avatar_url : prev.avatar_url,
+        // Ensure important fields are properly updated (camelCase Zentaku_BE fields)
+        avatar: userData.avatar !== undefined ? userData.avatar : prev.avatar,
         username: userData.username !== undefined ? userData.username : prev.username,
-        first_name: userData.first_name !== undefined ? userData.first_name : prev.first_name,
-        last_name: userData.last_name !== undefined ? userData.last_name : prev.last_name,
+        displayName: userData.displayName !== undefined ? userData.displayName : prev.displayName,
+        // Backward compatibility: đồng bộ trường cũ
+        avatar_url: userData.avatar !== undefined ? userData.avatar : (userData.avatar_url !== undefined ? userData.avatar_url : prev.avatar_url),
+        first_name: userData.displayName !== undefined ? userData.displayName : (userData.first_name !== undefined ? userData.first_name : prev.first_name),
       };
       return updated;
     });
