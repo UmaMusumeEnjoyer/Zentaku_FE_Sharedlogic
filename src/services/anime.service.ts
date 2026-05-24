@@ -1,4 +1,5 @@
 import { apiClient, getCached, setCached, TTL_DEFAULT } from '../api/apiClient';
+import { searchService, SearchQueryParams } from './search.service';
 
 // ====================================================================
 // MAPPING FUNCTIONS (Backward Compatibility)
@@ -215,24 +216,44 @@ export const animeService = {
   },
 
   // ====================================================================
-  // SEARCH APIs (Tạm giữ nguyên chờ Task 4)
+  // SEARCH APIs (Chuyển sang search.service.ts, giữ wrapper cho tương thích ngược)
+  // Sẽ được gỡ bỏ sau khi cập nhật hooks ở Phase 4
   // ====================================================================
   
-  searchByName: (keyword: string) => {
-    return apiClient.post('/anilist/search/name/', { name: keyword, manual: true });
+  searchByName: async (keyword: string): Promise<any> => {
+    // Map sang API mới
+    const res = await searchService.searchAnime({ q: keyword });
+    // Zentaku_BE trả về { data: Anime[] }
+    // API cũ yêu cầu { data: { candidates: Anime[] } }
+    const mappedData = { candidates: mapCharacters(res.data?.data || res.data) };
+    return { ...res, data: mappedData };
   },
 
-  getTrending: async () => {
+  getTrending: async (): Promise<any> => {
     const key = `search:trending`;
     const cached = getCached(key);
     if (cached) return { data: cached };
 
-    const res = await apiClient.get('/anilist/search/trending/');
-    setCached(key, res.data);
-    return res;
+    // Lấy trending anime qua API mới
+    const res = await searchService.getTrending('ANIME');
+    // API cũ yêu cầu { data: { trending: Anime[] } }
+    const mappedData = { trending: mapCharacters(res.data?.data || res.data) };
+    setCached(key, mappedData, TTL_DEFAULT);
+    return { ...res, data: mappedData };
   },
 
-  searchAnimeByCriteria: (criteria: any) => {
-    return apiClient.post('/anilist/search/criteria/', criteria);
+  searchAnimeByCriteria: async (criteria: any): Promise<any> => {
+    // Map old body params (search, perpage) to new query params (q, perPage)
+    const params: SearchQueryParams = {
+      ...criteria,
+      q: criteria.search,
+      perPage: criteria.perpage || criteria.perPage
+    };
+    
+    const res = await searchService.searchAnime(params);
+    // API cũ yêu cầu { data: { results: Anime[] } }
+    // Zentaku_BE trả về { data: Anime[], pagination: {...} }
+    const mappedData = { results: mapCharacters(res.data?.data || res.data) };
+    return { ...res, data: mappedData };
   }
 };
