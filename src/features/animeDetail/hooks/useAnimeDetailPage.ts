@@ -12,6 +12,8 @@ interface UseAnimeDetailReturn extends AnimeDetailHook {
   staffList: StaffMember[];
   characterList: Character[];
   stats: AnimeStats | null; // Thêm type cho stats
+  handleCharacterClick: () => void;
+  handleStaffClick: () => void;
 }
 
 export const useAnimeDetail = (animeId: string | undefined): UseAnimeDetailReturn => {
@@ -73,6 +75,15 @@ export const useAnimeDetail = (animeId: string | undefined): UseAnimeDetailRetur
     return !!(anime && anime.banner_image);
   }, [anime]);
 
+  // Fallback clicks since API is removed in Zentaku_BE
+  const handleCharacterClick = () => {
+    alert("Character detail API has been removed in Zentaku_BE.");
+  };
+
+  const handleStaffClick = () => {
+    alert("Staff detail API has been removed in Zentaku_BE.");
+  };
+
   // 4. Trả về stats
-  return { anime, loading, error, hasBanner, staffList, characterList, stats };
+  return { anime, loading, error, hasBanner, staffList, characterList, stats, handleCharacterClick, handleStaffClick };
 };

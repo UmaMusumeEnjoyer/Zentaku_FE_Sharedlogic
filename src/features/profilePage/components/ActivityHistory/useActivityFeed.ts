@@ -52,8 +52,20 @@ export const useActivityHistory = (username: string, onTotalCountChange?: (total
 
       try {
         const res = await userService.getHeatmap(username);
-        if (res.data && res.data.counts) {
-          const counts = res.data.counts;
+        if (res.data) {
+          const rawData = res.data;
+          const counts: Record<string, number> = {};
+          
+          if (Array.isArray(rawData)) {
+            rawData.forEach((item: any) => {
+              if (item.date && item.count !== undefined) {
+                counts[item.date] = item.count;
+              }
+            });
+          } else if (rawData.counts) {
+            Object.assign(counts, rawData.counts);
+          }
+
           setHeatmapCounts(counts);
 
           // Tính tổng activity trong 1 năm qua

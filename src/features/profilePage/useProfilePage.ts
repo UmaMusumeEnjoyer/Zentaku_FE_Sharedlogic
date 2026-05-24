@@ -88,7 +88,7 @@ export const useProfilePage = (
     if (!targetUsername) return;
 
     setProfileLoading(true);
-    userService.getUserProfile(targetUsername)
+    userService.getMyProfile()
       .then((res) => {
         setUserProfile(res.data);
       })
@@ -187,7 +187,7 @@ export const useProfilePage = (
     const usernameToFetch = newUsername || oldUsername;
 
     if (usernameToFetch) {
-      userService.getUserProfile(usernameToFetch)
+      userService.getMyProfile()
         .then((res) => {
 
           // Cập nhật cả local state và AuthContext
@@ -218,7 +218,7 @@ export const useProfilePage = (
 
       // Re-fetch profile để đảm bảo data đồng bộ hoàn toàn
       setTimeout(() => {
-        userService.getUserProfile(newUsername)
+        userService.getMyProfile()
           .then((res) => {
 
             setUserProfile(res.data);

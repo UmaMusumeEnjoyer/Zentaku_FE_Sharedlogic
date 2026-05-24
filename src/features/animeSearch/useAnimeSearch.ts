@@ -3,6 +3,7 @@ import { AnimeData_animeSearch, AnimeFilters, SearchSessionState } from './anime
 
 // Import API & Utils (Giữ nguyên đường dẫn như logic cũ)
 import { animeService } from '../../services/anime.service';
+import { searchService } from '../../services/search.service';
 import { getCurrentSeasonInfo, getNextSeasonInfo } from '../../shared/utils/seasonUtils';
 
 const SESSION_KEY = 'ANIME_SEARCH_STATE';
@@ -125,25 +126,25 @@ export const useAnimeSearchPage = () => {
 
       // Case 1: Search by Criteria (Filter or Sort)
       if (hasFilter || (sort && sort !== 'POPULARITY_DESC')) {
-        const criteriaBody: any = { page: 1, perpage: 20 };
+        const queryParams: any = { page: 1, perPage: 20 };
 
-        if (year && year !== 'Any') criteriaBody.year = parseInt(year.toString());
-        if (season && season !== 'Any') criteriaBody.season = season;
-        if (format && format !== 'Any') criteriaBody.format = format;
-        if (genre && genre !== 'Any') criteriaBody.genres = genre;
-        if (status && status !== 'Any') criteriaBody.status = status;
-        if (sort) criteriaBody.sort = sort;
-        if (keyword && keyword.trim() !== "") criteriaBody.search = keyword;
+        if (year && year !== 'Any') queryParams.year = parseInt(year.toString());
+        if (season && season !== 'Any') queryParams.season = season;
+        if (format && format !== 'Any') queryParams.format = format;
+        if (genre && genre !== 'Any') queryParams.genres = genre;
+        if (status && status !== 'Any') queryParams.status = status;
+        if (sort) queryParams.sort = sort;
+        if (keyword && keyword.trim() !== "") queryParams.q = keyword;
 
-        const response = await animeService.searchAnimeByCriteria(criteriaBody);
-        const rawResults = response.data.results || [];
+        const response = await searchService.searchAnime(queryParams);
+        const rawResults = response.data.data || response.data || [];
         mappedResults = rawResults.map(mapAnimeData);
         setCanLoadMore(rawResults.length === 20);
       } 
       // Case 2: Simple Name Search
       else if (keyword && keyword.trim() !== "") {
-        const response = await animeService.searchByName(keyword);
-        const rawCandidates = response.data.candidates || [];
+        const response = await searchService.searchAnime({ q: keyword });
+        const rawCandidates = response.data.data || response.data || [];
         mappedResults = rawCandidates.map(mapAnimeData);
         setCanLoadMore(false);
       }
@@ -171,8 +172,8 @@ export const useAnimeSearchPage = () => {
       setCurrentFilters(null);
 
       try {
-        const response = await animeService.getTrending();
-        const rawResults = response.data.trending || [];
+        const response = await searchService.getTrending('ANIME');
+        const rawResults = response.data.data || response.data || [];
         setSearchResults(rawResults.map(mapAnimeData));
         setCanLoadMore(false);
       } catch (error) {
@@ -215,17 +216,17 @@ export const useAnimeSearchPage = () => {
       const { filters } = currentFilters;
       const { genre, year, season, format, status, sort } = filters;
 
-      const criteriaBody: any = { page: nextPage, perpage: 20 };
+      const queryParams: any = { page: nextPage, perPage: 20 };
 
-      if (year && year !== 'Any') criteriaBody.year = parseInt(year.toString());
-      if (season && season !== 'Any') criteriaBody.season = season;
-      if (format && format !== 'Any') criteriaBody.format = format;
-      if (genre && genre !== 'Any') criteriaBody.genres = genre;
-      if (status && status !== 'Any') criteriaBody.status = status;
-      if (sort) criteriaBody.sort = sort;
+      if (year && year !== 'Any') queryParams.year = parseInt(year.toString());
+      if (season && season !== 'Any') queryParams.season = season;
+      if (format && format !== 'Any') queryParams.format = format;
+      if (genre && genre !== 'Any') queryParams.genres = genre;
+      if (status && status !== 'Any') queryParams.status = status;
+      if (sort) queryParams.sort = sort;
 
-      const response = await animeService.searchAnimeByCriteria(criteriaBody);
-      const rawResults = response.data.results || [];
+      const response = await searchService.searchAnime(queryParams);
+      const rawResults = response.data.data || response.data || [];
       const newMappedResults = rawResults.map(mapAnimeData);
 
       setSearchResults((prev) => [...prev, ...newMappedResults]);

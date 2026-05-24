@@ -3,11 +3,11 @@ export interface AnimeListPageParams {
 }
 
 export interface ListInfo {
-  list_name: string;
+  name: string;
   description: string;
-  is_private: boolean;
+  privacy: 'public' | 'private';
   color: string;
-  is_owner: boolean;
+  isOwner: boolean;
 }
 
 export interface GroupedAnime {
@@ -32,22 +32,20 @@ export interface AnimeItemDetail {
 }
 
 export interface ListMember {
-  user_id?: number | string;
+  userId?: number | string;
   username: string;
-  is_owner?: boolean;
-  permission_level?: 'owner' | 'edit' | 'view' | 'viewer';
-  can_edit?: boolean;
+  isOwner?: boolean;
+  permission?: 'owner' | 'editor' | 'viewer';
   avatar?: string;
-  avatar_url?: string;
 }
 
 export interface ListRequest {
-  request_id: string | number;
+  id: string | number;
   username: string;
-  request_type: 'join' | 'edit_permission' | 'edit';
-  status: 'pending' | 'approved' | 'rejected';
+  type: 'join' | 'edit';
+  status: 'PENDING' | 'ACCEPT' | 'REJECT';
   message?: string;
-  requested_at: string;
+  createdAt: string;
 }
 
 export type RequestType = 'join' | 'edit';

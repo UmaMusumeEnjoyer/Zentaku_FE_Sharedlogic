@@ -63,11 +63,11 @@ export const useAnimeListPage = (
   const isViewer = currentPermission === "view" || currentPermission === "viewer";
 
   const [listInfo, setListInfo] = useState<ListInfo>(locationState?.listData || {
-    list_name: "Loading...",
+    name: "Loading...",
     description: "",
-    is_private: false,
+    privacy: 'public',
     color: "#3db4f2",
-    is_owner: false
+    isOwner: false
   });
 
   const [groupedAnime, setGroupedAnime] = useState<GroupedAnime>({});
@@ -110,16 +110,16 @@ export const useAnimeListPage = (
         const currentUserData = memberList.find((m: ListMember) => m.username === currentUsername);
         if (currentUserData) {
           if (typeof localStorage !== 'undefined') {
-            localStorage.setItem("permission_level", currentUserData.permission_level || '');
+            localStorage.setItem("permission_level", currentUserData.permission || '');
           }
-          setCurrentPermission(currentUserData.permission_level || null);
-          setListInfo(prev => ({ ...prev, is_owner: currentUserData.is_owner || false }));
+          setCurrentPermission(currentUserData.permission || null);
+          setListInfo(prev => ({ ...prev, isOwner: currentUserData.isOwner || false }));
         } else {
           if (typeof localStorage !== 'undefined') {
             localStorage.removeItem("permission_level");
           }
           setCurrentPermission(null);
-          setListInfo(prev => ({ ...prev, is_owner: false }));
+          setListInfo(prev => ({ ...prev, isOwner: false }));
         }
       }
     } catch (error) {
@@ -128,7 +128,7 @@ export const useAnimeListPage = (
   }, [listId, currentUsername]);
 
   const fetchRequestsData = useCallback(async () => {
-    if (listInfo.is_owner && listId) {
+    if (listInfo.isOwner && listId) {
       try {
         const res = await listService.getListRequests(listId);
         setPendingRequests(res.data.requests || []);
@@ -136,7 +136,7 @@ export const useAnimeListPage = (
         console.error("Failed to fetch requests", err);
       }
     }
-  }, [listInfo.is_owner, listId]);
+  }, [listInfo.isOwner, listId]);
 
   const fetchListDetails = useCallback(async () => {
     if (!listId || isFetchingRef.current) return;
@@ -151,9 +151,9 @@ export const useAnimeListPage = (
       
       setListInfo(prev => ({
         ...prev,
-        list_name: data.list_name || prev.list_name,
+        name: data.name || data.list_name || prev.name,
         description: data.description !== undefined ? data.description : prev.description,
-        is_private: data.is_private !== undefined ? data.is_private : prev.is_private,
+        privacy: data.privacy || (data.is_private ? 'private' : 'public') || prev.privacy,
         color: data.color || prev.color
       }));
 
@@ -222,11 +222,11 @@ export const useAnimeListPage = (
 
   const handleAcceptRequest = useCallback(async (request: ListRequest) => {
     try {
-      if (request.request_type === 'join') {
-        await listService.respondToJoinRequest(listId, request.request_id, 'approve');
+      if (request.type === 'join') {
+        await listService.respondToJoinRequest(listId, request.id, 'approve');
         alert(`User @${request.username} has joined the list.`);
-      } else if (request.request_type === 'edit_permission' || request.request_type === 'edit') {
-        await listService.respondToEditRequest(listId, request.request_id, 'approve');
+      } else if (request.type === 'edit') {
+        await listService.respondToEditRequest(listId, request.id, 'approve');
         alert(`User @${request.username} is now an Editor.`);
       }
       fetchRequestsData();
@@ -239,10 +239,10 @@ export const useAnimeListPage = (
 
   const handleRejectRequest = useCallback(async (request: ListRequest) => {
     try {
-      if (request.request_type === 'join') {
-        await listService.respondToJoinRequest(listId, request.request_id, 'reject');
-      } else if (request.request_type === 'edit_permission' || request.request_type === 'edit') {
-        await listService.respondToEditRequest(listId, request.request_id, 'reject');
+      if (request.type === 'join') {
+        await listService.respondToJoinRequest(listId, request.id, 'reject');
+      } else if (request.type === 'edit') {
+        await listService.respondToEditRequest(listId, request.id, 'reject');
       }
       fetchRequestsData();
     } catch (error) {
