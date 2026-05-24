@@ -10,9 +10,12 @@ export const useEditProfileModal = (
 ) => {
   // --- STATE ---
   const [formData, setFormData] = useState<EditProfileFormData>({
-    first_name: '',
-    last_name: '',
-    username: ''
+    displayName: '',
+    bio: '',
+    location: '',
+    website: '',
+    gender: '',
+    birthday: '',
   });
 
   const [loading, setLoading] = useState(false);
@@ -26,9 +29,12 @@ export const useEditProfileModal = (
   useEffect(() => {
     if (isOpen && currentUser) {
       setFormData({
-        first_name: currentUser.first_name || '',
-        last_name: currentUser.last_name || '',
-        username: currentUser.username || ''
+        displayName: currentUser.displayName || currentUser.first_name || '',
+        bio: currentUser.bio || '',
+        location: currentUser.location || '',
+        website: currentUser.website || '',
+        gender: currentUser.gender || '',
+        birthday: currentUser.birthday || '',
       });
       setError(null); // Reset error khi mở lại modal
     }
@@ -63,9 +69,12 @@ export const useEditProfileModal = (
 
       // Cập nhật UI cha ngay lập tức với avatar mới
       if (currentUser) {
+        // Zentaku_BE trả về: { avatar: "url" } hoặc { avatar_url: "url" }
+        const newAvatarUrl = res.data?.avatar || res.data?.avatar_url;
         onUpdateSuccess({
           ...currentUser,
-          avatar_url: res.data.avatar_url
+          avatar: newAvatarUrl,
+          avatar_url: newAvatarUrl, // backward compatibility
         });
       }
 
@@ -89,7 +98,8 @@ export const useEditProfileModal = (
       if (currentUser) {
         onUpdateSuccess({
           ...currentUser,
-          avatar_url: undefined
+          avatar: undefined,
+          avatar_url: undefined, // backward compatibility
         });
       }
 
@@ -102,28 +112,35 @@ export const useEditProfileModal = (
   };
 
   // --- HANDLERS: SUBMIT ---
-  // --- HANDLERS: SUBMIT ---
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
     try {
-      const res = await userService.updateUserProfile(formData);
+      // Zentaku_BE: PATCH /user/me với body { displayName, bio, location, ... }
+      const res = await userService.updateUserProfile({
+        displayName: formData.displayName,
+        bio: formData.bio,
+        location: formData.location,
+        website: formData.website,
+        gender: formData.gender,
+        birthday: formData.birthday,
+      });
 
-      // ✅ FIX: API trả về { user: {...} } chứ không phải trực tiếp data
-      const updatedUserData = 'user' in res.data ? res.data.user : res.data;
+      // Zentaku_BE response đã unwrap: res.data = User object
+      const updatedUserData = res.data;
 
       if (updatedUserData) {
-        // ✅ Cập nhật localStorage TRƯỚC KHI gọi callback
+        // Cập nhật localStorage nếu username thay đổi
         if (updatedUserData.username) {
           localStorage.setItem('username', updatedUserData.username);
         }
 
-        // ✅ Gọi callback với đầy đủ thông tin
+        // Gọi callback với đầy đủ thông tin
         onUpdateSuccess(updatedUserData as UserProfile);
 
-        // ✅ Đóng modal
+        // Đóng modal
         onClose();
       }
     } catch (err: any) {
@@ -135,7 +152,7 @@ export const useEditProfileModal = (
       } else if (err.response?.status === 400) {
         const errorMsg = err.response?.data?.username?.[0] ||
           err.response?.data?.message ||
-          "Username might be taken or invalid.";
+          "Invalid data. Please check your inputs.";
         setError(errorMsg);
       } else if (err.response?.data?.message) {
         setError(err.response.data.message);

@@ -1,67 +1,220 @@
+// shared-logic/src/services/user.service.ts
 import { apiClient, getCached, setCached, TTL_SHORT } from '../api/apiClient';
 import { User } from '../features/authPage/auth.types';
+
+// ====================================================================
+// TYPE DEFINITIONS cho Zentaku_BE User Service
+// ====================================================================
+
+/** Dữ liệu cập nhật profile gửi lên PATCH /api/user/me */
+export interface UpdateProfileData {
+  displayName?: string;
+  bio?: string;
+  location?: string;
+  website?: string;
+  gender?: string;
+  birthday?: string;
+}
+
+/** Cấu hình preferences gửi lên PATCH /api/user/me/preferences */
+export interface UserPreferences {
+  preferences?: {
+    theme?: string;
+    language?: string;
+    timezone?: string;
+    titleLanguage?: string;
+    adultContent?: boolean;
+  };
+  notificationSettings?: {
+    email?: boolean;
+    push?: boolean;
+    follows?: boolean;
+    comments?: boolean;
+    listUpdates?: boolean;
+  };
+}
+
+/** Cấu hình privacy gửi lên PATCH /api/user/me/privacy */
+export interface UserPrivacySettings {
+  profileVisibility?: 'public' | 'private' | 'friends';
+}
+
+/** Zentaku_BE heatmap item: mảng { date, count } */
+export interface HeatmapDataItem {
+  date: string;   // "YYYY-MM-DD"
+  count: number;
+}
+
+/** Zentaku_BE activity item (camelCase) */
+export interface ActivityDataItem {
+  id: string | number;
+  actionType: string;
+  targetId: string | number;
+  agoSeconds?: number;
+  metadata?: Record<string, any>;
+  createdAt?: string;
+}
+
+/** Zentaku_BE paginated response */
+export interface PaginatedResponse<T> {
+  data: T[];
+  pagination: {
+    page: number;
+    perPage: number;
+    total: number;
+    totalPages: number;
+  };
+}
+
+// ====================================================================
+// CACHING (giữ nguyên cơ chế cũ)
+// ====================================================================
 const animeStatusCache = new Map<string | number, any>();
 const pendingRequests = new Map<string | number, Promise<any>>();
+
+// ====================================================================
+// USER SERVICE - Cập nhật cho Zentaku_BE
+// ====================================================================
 export const userService = {
-  
-  // --- Profile ---
+
+  // ===========================
+  // PROFILE
+  // ===========================
+
+  /**
+   * Lấy profile của user hiện tại
+   * GET /user/me
+   * Zentaku_BE: sử dụng accessToken thay vì username trong path
+   */
+  getMyProfile: () => {
+    return apiClient.get<User>('/user/me');
+  },
+
+  /**
+   * Lấy profile theo username (public)
+   * GET /users/{userId} hoặc tương tự
+   * 
+   * @deprecated Zentaku_BE ưu tiên dùng getMyProfile() cho user hiện tại.
+   *             Giữ lại để backward compatibility cho các hook chưa cập nhật (Phase 4/5).
+   *             Sẽ cần userId thay vì username trong tương lai.
+   */
   getUserProfile: (username: string) => {
-    return apiClient.get<User>(`/user/${username}/profile/`);
+    // Backward compatibility: vẫn gọi endpoint cũ cho đến khi tất cả hooks được cập nhật
+    return apiClient.get<User>(`/user/${username}/profile`);
   },
 
-  updateUserProfile: (userData: Partial<User>) => {
-    return apiClient.put<{ user: User } | User>('/user/profile/update/', userData);
+  /**
+   * Cập nhật profile của user hiện tại
+   * PATCH /user/me
+   * Body: { displayName, bio, location, website, gender, birthday }
+   */
+  updateUserProfile: (userData: UpdateProfileData) => {
+    return apiClient.patch<User>('/user/me', userData);
   },
 
+  // ===========================
+  // PREFERENCES & PRIVACY (MỚI)
+  // ===========================
+
+  /**
+   * Cập nhật cấu hình hiển thị và thông báo
+   * PATCH /user/me/preferences
+   */
+  updatePreferences: (data: UserPreferences) => {
+    return apiClient.patch('/user/me/preferences', data);
+  },
+
+  /**
+   * Cập nhật quyền riêng tư
+   * PATCH /user/me/privacy
+   */
+  updatePrivacy: (data: UserPrivacySettings) => {
+    return apiClient.patch('/user/me/privacy', data);
+  },
+
+  // ===========================
+  // AVATAR / BANNER UPLOAD
+  // ===========================
+
+  /**
+   * Upload avatar
+   * POST /user/me/avatar
+   * Multipart key: 'file' (thay vì 'avatar' như cũ)
+   */
   uploadAvatar: (file: any) => {
     const formData = new FormData();
-    // Lưu ý: React Native xử lý file hơi khác Web, nhưng FormData là chuẩn chung
-    formData.append('avatar', file); 
-    return apiClient.post('/user/avatar/upload/', formData, {
+    formData.append('file', file); // Zentaku_BE: key = 'file'
+    return apiClient.post('/user/me/avatar', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
   },
 
-  // --- Tracking / Follow ---
+  /**
+   * Upload banner (MỚI)
+   * POST /user/me/banner
+   * Multipart key: 'file'
+   */
+  uploadBanner: (file: any) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return apiClient.post('/user/me/banner', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  },
+
+  /**
+   * Xóa avatar
+   * DELETE /user/me/avatar
+   * (Cập nhật endpoint từ /user/avatar/delete/)
+   */
+  deleteUserAvatar: () => {
+    return apiClient.delete('/user/me/avatar');
+  },
+
+  /**
+   * Xóa banner (MỚI)
+   * DELETE /user/me/banner
+   */
+  deleteUserBanner: () => {
+    return apiClient.delete('/user/me/banner');
+  },
+
+  // ===========================
+  // TRACKING / FOLLOW MEDIA
+  // (Giữ nguyên - sẽ cập nhật ở Phase 2 Task 5)
+  // ===========================
+
   updateAnimeStatus: (animeId: number | string, data: any) => {
     const cacheKey = `anime_status_${animeId}`;
     animeStatusCache.delete(cacheKey);
-    
     return apiClient.post(`/follow/${animeId}/create/`, data);
   },
-  
+
   getAnimeStatus: async (animeId: number | string) => {
     const cacheKey = `anime_status_${animeId}`;
-    
 
     if (animeStatusCache.has(cacheKey)) {
       const cachedData = animeStatusCache.get(cacheKey);
       const now = Date.now();
-      
+
       if (cachedData.timestamp && now - cachedData.timestamp < TTL_SHORT) {
-        console.log('📦 [Cache HIT] Returning cached anime status for:', animeId);
         return cachedData.response;
       } else {
-        // Cache hết hạn
         animeStatusCache.delete(cacheKey);
       }
     }
-    
+
     if (pendingRequests.has(cacheKey)) {
-      console.log('⏳ [Dedup] Request already pending for:', animeId);
       return pendingRequests.get(cacheKey);
     }
-    
-    console.log('🚀 [New Request] Fetching anime status for:', animeId);
+
     const requestPromise = apiClient.get(`/follow/${animeId}/get`)
       .then(response => {
         animeStatusCache.set(cacheKey, {
           response,
           timestamp: Date.now()
         });
-        
         pendingRequests.delete(cacheKey);
-        
         return response;
       })
       .catch(error => {
@@ -70,51 +223,128 @@ export const userService = {
       });
 
     pendingRequests.set(cacheKey, requestPromise);
-    
     return requestPromise;
   },
 
   deleteAnimeStatus: (animeId: number | string) => {
     const cacheKey = `anime_status_${animeId}`;
     animeStatusCache.delete(cacheKey);
-    
     return apiClient.delete(`/follow/${animeId}/delete/`);
   },
 
-  // --- Stats (Heatmap/Activity) ---
-  getHeatmap: async (username: string) => {
-    const key = `user:${username}:heatmap`;
+  // ===========================
+  // HEATMAP ACTIVITY
+  // ===========================
+
+  /**
+   * Lấy dữ liệu heatmap theo userId
+   * GET /users/{userId}/activities/heatmap?year=YYYY
+   * Zentaku_BE trả về: { data: [{ date, count }] }
+   * 
+   * Hàm này tự động convert sang format cũ (counts object) cho backward compatibility
+   * cho đến khi hooks/components được cập nhật ở Phase 4/5.
+   */
+  getHeatmap: async (userIdOrUsername: string, year?: number) => {
+    const currentYear = year || new Date().getFullYear();
+    const key = `user:${userIdOrUsername}:heatmap:${currentYear}`;
     const cached = getCached(key);
     if (cached) return { data: cached };
 
-    const res = await apiClient.get(`/user/${username}/overview/heatmap`);
-    setCached(key, res.data, TTL_SHORT);
-    return res;
-  },
-
-  searchUsers: (keyword: string) => {
-    return apiClient.get('/user/search/', { 
-      params: { q: keyword } 
+    const res = await apiClient.get(`/users/${userIdOrUsername}/activities/heatmap`, {
+      params: { year: currentYear }
     });
+
+    const rawData = res.data;
+
+    // Zentaku_BE trả về mảng [{ date, count }]
+    // Convert sang format cũ { counts: { "YYYY-MM-DD": number } } cho backward compatibility
+    let normalizedData: any;
+    if (Array.isArray(rawData)) {
+      // Response là mảng trực tiếp (đã unwrap)
+      const counts: Record<string, number> = {};
+      rawData.forEach((item: HeatmapDataItem) => {
+        counts[item.date] = item.count;
+      });
+      normalizedData = { counts };
+    } else if (rawData?.data && Array.isArray(rawData.data)) {
+      // Response có thêm wrapper { data: [...] }
+      const counts: Record<string, number> = {};
+      rawData.data.forEach((item: HeatmapDataItem) => {
+        counts[item.date] = item.count;
+      });
+      normalizedData = { counts };
+    } else if (rawData?.counts) {
+      // Đã ở format cũ (fallback)
+      normalizedData = rawData;
+    } else {
+      normalizedData = { counts: {} };
+    }
+
+    setCached(key, normalizedData, TTL_SHORT);
+    return { data: normalizedData };
   },
 
-  getUserActivity: async (username: string) => {
-  const key = `user:${username}:activity`;
-  const cached = getCached(key);
-  if (cached) return{ data: cached };
+  // ===========================
+  // ACTIVITY LIST
+  // ===========================
 
-  const res = await apiClient.get(`/user/${username}/overview/activity`)
-    setCached(key, res.data, TTL_SHORT); // Cache 5 phút
-    return res;
+  /**
+   * Lấy danh sách activities theo userId
+   * GET /users/{userId}/activities?page=&perPage=&sort=
+   * Zentaku_BE trả về: { data: Activity[], pagination: { ... } }
+   * 
+   * Tự động convert sang format cũ cho backward compatibility
+   */
+  getUserActivity: async (userIdOrUsername: string, page = 1, perPage = 50, sort = 'desc') => {
+    const key = `user:${userIdOrUsername}:activity:${page}`;
+    const cached = getCached(key);
+    if (cached) return { data: cached };
+
+    const res = await apiClient.get(`/users/${userIdOrUsername}/activities`, {
+      params: { page, perPage, sort }
+    });
+
+    const rawData = res.data;
+
+    // Zentaku_BE trả về { data: Activity[], pagination: {...} }
+    // Convert sang format cũ { items: [...] } cho backward compatibility
+    let normalizedData: any;
+    if (Array.isArray(rawData)) {
+      // Mảng trực tiếp
+      normalizedData = { items: rawData, pagination: null };
+    } else if (rawData?.data && Array.isArray(rawData.data)) {
+      normalizedData = { items: rawData.data, pagination: rawData.pagination };
+    } else if (rawData?.items) {
+      // Đã ở format cũ (fallback)
+      normalizedData = rawData;
+    } else {
+      normalizedData = { items: [], pagination: null };
+    }
+
+    setCached(key, normalizedData, TTL_SHORT);
+    return { data: normalizedData };
   },
 
-  getUserAnimeList : (username: string) => {
-  // KHÔNG CACHE: List thay đổi thường xuyên khi user update
-  return apiClient.get(`/user/${username}/animelist`);
+  // ===========================
+  // USER ANIME LIST
+  // (Giữ nguyên - sẽ cập nhật ở phase sau nếu cần)
+  // ===========================
+
+  getUserAnimeList: (username: string) => {
+    // KHÔNG CACHE: List thay đổi thường xuyên khi user update
+    return apiClient.get(`/user/${username}/animelist`);
   },
 
-  deleteUserAvatar : () => {
-  return apiClient.delete('/user/avatar/delete/');
-  },
+  // ===========================
+  // USER SEARCH (ĐÃ XÓA BỎ)
+  // ===========================
 
+  /**
+   * @deprecated Zentaku_BE không còn hỗ trợ tìm kiếm user công khai.
+   * Giữ lại stub để không break build, sẽ xóa khi UI components được cập nhật.
+   */
+  searchUsers: (_keyword: string) => {
+    console.warn('⚠️ searchUsers() is deprecated. Zentaku_BE does not support public user search.');
+    return Promise.resolve({ data: { results: [] } });
+  },
 };
