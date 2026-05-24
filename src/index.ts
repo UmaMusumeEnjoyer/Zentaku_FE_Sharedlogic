@@ -9,6 +9,7 @@ export * from './services/list.service';
 export * from './services/notification.service';
 export * from './services/streaming.service';
 export * from './services/media.service';
+export * from './services/chat.service';
 
 // Export features
 export * from './features/home';
