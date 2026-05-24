@@ -7,6 +7,7 @@ export * from './services/anime.service';
 export * from './services/user.service';
 export * from './services/list.service';
 export * from './services/notification.service';
+export * from './services/streaming.service';
 
 // Export features
 export * from './features/home';
