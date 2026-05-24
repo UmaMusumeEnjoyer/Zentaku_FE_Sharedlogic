@@ -8,6 +8,7 @@ export * from './services/user.service';
 export * from './services/list.service';
 export * from './services/notification.service';
 export * from './services/streaming.service';
+export * from './services/media.service';
 
 // Export features
 export * from './features/home';

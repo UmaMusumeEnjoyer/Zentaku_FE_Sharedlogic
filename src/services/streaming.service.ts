@@ -25,4 +25,12 @@ export const streamingService = {
   syncStreaming: (anilistId: string | number) => {
     return apiClient.post(`/streaming/${anilistId}/sync`);
   },
+
+  /**
+   * Lấy trạng thái của một background task (vd: sync streaming)
+   * GET /streaming/tasks/{taskId}
+   */
+  getTaskStatus: (taskId: string) => {
+    return apiClient.get(`/streaming/tasks/${taskId}`);
+  },
 };
