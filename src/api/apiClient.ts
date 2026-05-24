@@ -1,4 +1,4 @@
-import axios, { InternalAxiosRequestConfig, AxiosError } from 'axios';
+import axios, { InternalAxiosRequestConfig, AxiosError, AxiosResponse } from 'axios';
 import { SharedConfig } from './config';
 
 // --- CACHING UTILITIES (Giữ nguyên) ---
@@ -23,7 +23,7 @@ export function setCached(key: string, val: any, ttl = TTL_DEFAULT) {
 // --- AXIOS INSTANCE ---
 export const apiClient = axios.create({
   baseURL: SharedConfig.apiBaseUrl,
-  withCredentials: true,
+  withCredentials: true, // Gửi cookie HTTP-only cho refresh token
 });
 
 // Biến để tránh refresh nhiều lần đồng thời
@@ -41,51 +41,114 @@ const processQueue = (error: any, token: string | null = null) => {
   failedQueue = [];
 };
 
+// --- Danh sách các route không cần Authorization header ---
+const PUBLIC_ROUTES = ['/auth/login', '/auth/register', '/auth/verify-email', '/auth/refresh-token'];
+
+/**
+ * Helper: Lấy token từ storage (SharedConfig.storage hoặc localStorage)
+ */
+async function getStorageItem(key: string): Promise<string | null> {
+  try {
+    if (SharedConfig.storage) {
+      return await SharedConfig.storage.getItem(key);
+    } else if (typeof localStorage !== 'undefined') {
+      return localStorage.getItem(key);
+    }
+  } catch (err) {
+    console.error(`Error retrieving "${key}" from storage:`, err);
+  }
+  return null;
+}
+
+/**
+ * Helper: Lưu item vào storage
+ */
+async function setStorageItem(key: string, value: string): Promise<void> {
+  try {
+    if (SharedConfig.storage) {
+      await SharedConfig.storage.setItem(key, value);
+    } else if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(key, value);
+    }
+  } catch (err) {
+    console.error(`Error saving "${key}" to storage:`, err);
+  }
+}
+
+/**
+ * Helper: Xóa item khỏi storage
+ */
+async function removeStorageItem(key: string): Promise<void> {
+  try {
+    if (SharedConfig.storage) {
+      await SharedConfig.storage.removeItem(key);
+    } else if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem(key);
+    }
+  } catch (err) {
+    console.error(`Error removing "${key}" from storage:`, err);
+  }
+}
+
+// ============================================================
+// REQUEST INTERCEPTOR
+// - Cập nhật baseURL nếu thay đổi
+// - Đính kèm Authorization: Bearer <accessToken> từ storage
+// ============================================================
 apiClient.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
   // 1. Cập nhật BaseURL nếu chưa đúng
   if (SharedConfig.apiBaseUrl && config.baseURL !== SharedConfig.apiBaseUrl) {
     config.baseURL = SharedConfig.apiBaseUrl;
   }
 
-  // 2. Lấy Token từ Storage (SỬA ĐỔI QUAN TRỌNG)
-  let token = null;
+  // 2. Bỏ qua gắn token cho các route public
+  const requestUrl = config.url || '';
+  const isPublicRoute = PUBLIC_ROUTES.some(route => requestUrl.startsWith(route));
 
-  try {
-    if (SharedConfig.storage) {
-      // Ưu tiên lấy từ SharedConfig (ví dụ dùng cho Mobile/AsyncStorage)
-      token = await SharedConfig.storage.getItem('authToken');
-    } else if (typeof localStorage !== 'undefined') {
-      // Fallback: Lấy từ localStorage (cho Web)
-      token = localStorage.getItem('authToken');
+  if (!isPublicRoute) {
+    // 3. Lấy accessToken từ Storage
+    const token = await getStorageItem('accessToken');
+
+    // 4. Gắn Token vào Header
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
-  } catch (err) {
-    console.error("Error retrieving token:", err);
   }
-
-  // 3. Gắn Token vào Header
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  } else {
-    console.warn("⚠️ No auth token found via SharedConfig or localStorage");
-  }
-
-  // Debug: Log để xem request gửi đi có Token chưa
-  console.log(`🚀 [API Request] ${config.method?.toUpperCase()} ${config.url}`, {
-    hasToken: !!token,
-    authHeader: config.headers.Authorization
-  });
 
   return config;
 }, (error) => Promise.reject(error));
 
-// Response interceptor - Tự động refresh token khi 401
+// ============================================================
+// RESPONSE INTERCEPTOR
+// - Tự động bóc tách envelope { success, data } của Zentaku_BE
+// - Tự động refresh token khi gặp 401
+// ============================================================
 apiClient.interceptors.response.use(
-  (response) => response,
+  (response: AxiosResponse) => {
+    // Zentaku_BE trả về cấu trúc: { success: boolean, data: ... }
+    // Tự động unwrap: gán response.data = response.data.data
+    // để các service nhận được dữ liệu trực tiếp thay vì phải .data.data
+    const body = response.data;
+    if (
+      body !== null &&
+      typeof body === 'object' &&
+      'success' in body &&
+      'data' in body
+    ) {
+      response.data = body.data;
+    }
+    return response;
+  },
   async (error: AxiosError) => {
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
 
     // Kiểm tra nếu lỗi 401 và chưa retry
     if (error.response?.status === 401 && !originalRequest._retry) {
+      // Không retry nếu chính request refresh-token bị 401
+      if (originalRequest.url?.includes('/auth/refresh-token')) {
+        return Promise.reject(error);
+      }
+
       if (isRefreshing) {
         // Nếu đang refresh, đợi và retry với token mới
         return new Promise((resolve, reject) => {
@@ -100,31 +163,40 @@ apiClient.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        // Gọi API refresh
-        const refreshToken = SharedConfig.storage 
-          ? await SharedConfig.storage.getItem('refreshToken')
-          : localStorage.getItem('refreshToken');
+        // Gọi API refresh-token
+        // Backend mới sử dụng HTTP-only cookie để gửi refresh token tự động.
+        // Fallback: gửi refreshToken trong body cho môi trường không hỗ trợ cookie (React Native).
+        const refreshToken = await getStorageItem('refreshToken');
 
-        const response = await axios.post(
+        const refreshResponse = await axios.post(
           `${SharedConfig.apiBaseUrl}/auth/refresh-token`,
           refreshToken ? { refreshToken } : {},
           { withCredentials: true }
         );
 
-        const newAccessToken = response.data.accessToken ?? response.data.access;
-        const newRefreshToken = response.data.refreshToken ?? response.data.refresh;
+        // Zentaku_BE trả về: { success: true, data: { accessToken: "..." } }
+        // hoặc trực tiếp: { accessToken: "..." }
+        const responseBody = refreshResponse.data;
+        const newAccessToken =
+          responseBody?.data?.accessToken ??
+          responseBody?.accessToken ??
+          responseBody?.data?.access ??
+          responseBody?.access;
+
+        if (!newAccessToken) {
+          throw new Error('No access token received from refresh endpoint');
+        }
+
+        // Zentaku_BE không trả về refreshToken mới qua body (dùng cookie),
+        // nhưng nếu có thì lưu lại (cho fallback)
+        const newRefreshToken =
+          responseBody?.data?.refreshToken ??
+          responseBody?.refreshToken;
 
         // Lưu token mới
-        if (SharedConfig.storage) {
-          await SharedConfig.storage.setItem('authToken', newAccessToken);
-          if (newRefreshToken) {
-            await SharedConfig.storage.setItem('refreshToken', newRefreshToken);
-          }
-        } else {
-          localStorage.setItem('authToken', newAccessToken);
-          if (newRefreshToken) {
-            localStorage.setItem('refreshToken', newRefreshToken);
-          }
+        await setStorageItem('accessToken', newAccessToken);
+        if (newRefreshToken) {
+          await setStorageItem('refreshToken', newRefreshToken);
         }
 
         // Cập nhật header và retry các request đang chờ
@@ -134,21 +206,17 @@ apiClient.interceptors.response.use(
         return apiClient(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError, null);
-        
-        // Xóa token và redirect về login
-        if (SharedConfig.storage) {
-          await SharedConfig.storage.removeItem('authToken');
-          await SharedConfig.storage.removeItem('refreshToken');
-          await SharedConfig.storage.removeItem('username');
-        } else {
-          localStorage.removeItem('authToken');
-          localStorage.removeItem('refreshToken');
-          localStorage.removeItem('username');
+
+        // Xóa token và thông báo logout
+        await removeStorageItem('accessToken');
+        await removeStorageItem('refreshToken');
+        await removeStorageItem('username');
+
+        // Trigger logout event (kiểm tra window tồn tại cho SSR/React Native)
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new Event('auth:logout'));
         }
 
-        // Trigger logout (có thể dispatch event hoặc redirect)
-        window.dispatchEvent(new Event('auth:logout'));
-        
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;

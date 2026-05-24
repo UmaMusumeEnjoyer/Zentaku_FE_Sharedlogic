@@ -1,8 +1,0 @@
-{
-    "likersModal": {
-        "title": "いいね！したユーザー",
-        "noLikes": "まだいいね！はありません。",
-        "verified": "認証済み",
-        "showingInfo": "{{displayCount}}件のいいね！を表示中（総数：{{totalLikes}}件）"
-    }
-}

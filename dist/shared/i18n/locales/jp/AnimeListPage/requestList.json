@@ -1,9 +1,0 @@
-{
-    "requestList": {
-        "pendingRequests": "保留中のリクエスト",
-        "joinRequests": "参加リクエスト",
-        "editAccessRequests": "アクセス権限編集リクエスト",
-        "accept": "承諾",
-        "reject": "拒否"
-    }
-}

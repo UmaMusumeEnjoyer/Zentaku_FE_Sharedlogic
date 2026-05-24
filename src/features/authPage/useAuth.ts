@@ -47,7 +47,7 @@ export const useAuth = (): UseAuthReturn => {
       const username = responseData.user?.username;
 
       if (accessToken) {
-        localStorage.setItem('authToken', accessToken);
+        localStorage.setItem('accessToken', accessToken);
         if (refreshToken) {
           localStorage.setItem('refreshToken', refreshToken);
         }
@@ -71,7 +71,7 @@ export const useAuth = (): UseAuthReturn => {
   }, [fetchUserInfo]);
 
   const logout = useCallback(() => {
-    localStorage.removeItem('authToken');
+    localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('username');
     setUser(null);

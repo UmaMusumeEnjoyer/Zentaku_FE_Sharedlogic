@@ -1,9 +1,0 @@
-{
-    "requestModal": {
-        "messageLabel": "Message (Optional):",
-        "defaultPlaceholder": "Why do you want to join/edit this list?",
-        "cancel": "Cancel",
-        "sending": "Sending...",
-        "sendRequest": "Send Request"
-    }
-}

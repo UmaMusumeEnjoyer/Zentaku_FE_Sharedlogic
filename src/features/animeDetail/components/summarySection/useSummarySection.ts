@@ -12,8 +12,8 @@ export const useSummarySection = (anime: Anime) => {
   // 1. Fetch dữ liệu khi anime thay đổi
   useEffect(() => {
     const fetchUserStatus = async () => {
-      const authToken = localStorage.getItem('authToken');
-      if (!authToken || !anime?.id) return;
+      const accessToken = localStorage.getItem('accessToken');
+      if (!accessToken || !anime?.id) return;
 
       setIsLoadingStatus(true);
       try {
@@ -45,8 +45,8 @@ const watchStatus = useMemo(() => {
 
   // 3. Các hàm xử lý sự kiện (Event Handlers)
   const handleBtnClick = () => {
-    const authToken = localStorage.getItem('authToken');
-    if (!authToken) {
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
       alert("Vui lòng đăng nhập để sử dụng tính năng này.");
       return;
     }

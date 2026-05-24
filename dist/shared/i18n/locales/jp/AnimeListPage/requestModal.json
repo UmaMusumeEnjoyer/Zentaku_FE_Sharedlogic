@@ -1,9 +1,0 @@
-{
-    "requestModal": {
-        "messageLabel": "メッセージ（任意）:",
-        "defaultPlaceholder": "このリストに参加/編集したい理由は何ですか？",
-        "cancel": "キャンセル",
-        "sending": "送信中...",
-        "sendRequest": "リクエストを送信"
-    }
-}
