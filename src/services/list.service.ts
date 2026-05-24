@@ -1,109 +1,175 @@
 import { apiClient } from '../api/apiClient';
 
+// ====================================================================
+// MAPPING FUNCTIONS (Backward Compatibility)
+// Tự động map dữ liệu từ Frontend cũ (snake_case) sang Zentaku_BE
+// ====================================================================
+
+const mapListPayload = (data: any) => {
+  if (!data) return data;
+  let privacy = data.privacy;
+  if (data.is_private === true) privacy = 'PRIVATE';
+  else if (data.is_private === false) privacy = 'PUBLIC';
+
+  return {
+    name: data.list_name || data.name,
+    description: data.description,
+    privacy: privacy,
+    bannerImage: data.color || data.bannerImage,
+  };
+};
+
+// ====================================================================
+// LIST SERVICE - Cập nhật cho Zentaku_BE
+// ====================================================================
+
 export const listService = {
   // --- CRUD ---
   getUserLists: (username?: string) => {
-    const url = username ? `/list/user/?username=${username}` : '/list/user/';
+    // Sửa URL không có slash ở cuối
+    const url = username ? `/list/user?username=${username}` : '/list/user';
     return apiClient.get(url);
   },
-  create: (data: any) => apiClient.post('/list/create/', data),
-  delete: (id: string) => apiClient.delete(`/list/${id}/delete/`),
-  
+
+  create: (data: any) => {
+    const payload = mapListPayload(data);
+    return apiClient.post('/list/create', payload);
+  },
+
+  delete: (id: string) => {
+    return apiClient.delete(`/list/${id}/delete`);
+  },
+
+  deleteCustomList: (listId: string) => {
+    return apiClient.delete(`/list/${listId}/delete`);
+  },
+
+  updateCustomList: (listId: string, listData: any) => {
+    const payload = mapListPayload(listData);
+    return apiClient.put(`/list/${listId}/update`, payload);
+  },
+
+  // --- List Detail (NEW) ---
+  /**
+   * API mới lấy chi tiết danh sách và các animeItems bên trong
+   * Zentaku_BE: GET /list/{listId}
+   */
+  getListDetail: (listId: string) => {
+    return apiClient.get(`/list/${listId}`);
+  },
+
   // --- Items in List ---
-  getItems: (listId: string) => apiClient.get(`/list/anime/${listId}/`),
-  addItem: (listId: string, animeData: any) => apiClient.post(`/list/anime/${listId}/add/`, animeData),
+  getItems: (listId: string) => {
+    // API cũ là /list/anime/{listId}/. Tạm giữ endpoint cũ nhưng bỏ slash, 
+    // hoặc có thể gọi getListDetail. 
+    // Theo task, GET /api/list/anime/{listId} vẫn được nhắc đến.
+    return apiClient.get(`/list/anime/${listId}`);
+  },
+  
+  getCustomListItems: (listId: string) => {
+    return apiClient.get(`/list/anime/${listId}`);
+  },
+
+  addItem: (listId: string, animeData: any) => {
+    return apiClient.post(`/list/anime/${listId}/add`, animeData);
+  },
+
+  addAnimeToCustomList: (listId: string, animeData: any) => {
+    return apiClient.post(`/list/anime/${listId}/add`, animeData);
+  },
+
+  removeAnimeFromCustomList: (listId: string, anilistId: string | number) => {
+    return apiClient.delete(`/list/anime/${listId}/${anilistId}/remove`);
+  },
 
   // --- Members & Request ---
-  getMembers: (listId: string) => apiClient.get(`/list/member/${listId}/list/`),
+  getMembers: (listId: string) => {
+    return apiClient.get(`/list/member/${listId}/list`);
+  },
+
+  addMemberToList: (listId: string, userData: any) => {
+    return apiClient.post(`/list/member/${listId}/add`, userData);
+  },
+
+  removeMemberFromList: (listId: string, username: string) => {
+    return apiClient.delete(`/list/member/${listId}/remove`, { params: { username } });
+  },
+
+  updateMemberPermission: (listId: string, permissionData: any) => {
+    // Chuyển can_edit thành permission_level
+    const payload = {
+      username: permissionData.username,
+      permission_level: permissionData.can_edit ? 'EDIT' : 'VIEW'
+    };
+    return apiClient.put(`/list/member/${listId}/permission`, payload);
+  },
+
   requestJoin: (listId: string, message: string) => {
-    return apiClient.post(`/list/${listId}/request-join/`, { request_type: "join", message });
+    return apiClient.post(`/list/${listId}/request-join`, { request_type: "join", message });
   },
 
-  getListRequests : (listId : string) => {
-  return apiClient.get(`/list/${listId}/requests/`);
+  requestEdit: (listId: string, message: string) => {
+    return apiClient.post(`/list/${listId}/request-edit`, { request_type: "edit_permission", message });
   },
 
-  getCustomListItems : (listId : string) => {
-  return apiClient.get(`/list/anime/${listId}/`);
+  getListRequests: (listId: string) => {
+    return apiClient.get(`/list/${listId}/requests`);
   },
 
-  respondToJoinRequest : (listId : string | number, requestId : string | number, action : {}) => {
-  return apiClient.post(`/list/${listId}/join-requests/${requestId}/respond/`, {
-    action: action, 
-    can_edit: false // Fix cứng theo yêu cầu
-  });
+  respondToJoinRequest: (listId: string | number, requestId: string | number, action: any) => {
+    const actionStr = typeof action === 'string' ? action.toUpperCase() : (action?.action || '').toUpperCase();
+    return apiClient.post(`/list/${listId}/join-requests/${requestId}/respond`, {
+      action: actionStr, 
+      can_edit: false 
+    });
   },
 
-  respondToEditRequest : (listId : string | number, requestId : string | number, action : {}) => {
-   return apiClient.post(`/list/${listId}/edit-requests/${requestId}/respond/`, {
-    action: action, 
-    can_edit: true // Fix cứng theo yêu cầu
-  });
+  respondToEditRequest: (listId: string | number, requestId: string | number, action: any) => {
+    const actionStr = typeof action === 'string' ? action.toUpperCase() : (action?.action || '').toUpperCase();
+    return apiClient.post(`/list/${listId}/edit-requests/${requestId}/respond`, {
+      action: actionStr, 
+      can_edit: true
+    });
   },
 
-  deleteCustomList : (listId : string) => {
-  return apiClient.delete(`/list/${listId}/delete/`);
+  // --- Search / Public Lists ---
+  search: (keyword: string) => {
+    return apiClient.post('/list/search', { query: keyword, limit: 20 });
   },
 
-  requestEdit : (listId : string, message : string) => {
-    return apiClient.post(`/list/${listId}/request-edit/`, {
-    request_type: "edit_permission", // Fix cứng theo yêu cầu
-    message: message      // Nội dung message truyền từ giao diện
-  });
+  searchCustomLists: (keyword: string) => {
+    return apiClient.post('/list/search', { query: keyword, limit: 20 });
   },
 
-  addAnimeToCustomList : (listId : string, animeData : {}) => {
-  return apiClient.post(`/list/anime/${listId}/add/`, animeData);
+  // --- Likes ---
+  toggleLike: (listId: string) => {
+    return apiClient.post(`/list/${listId}/like`);
   },
 
-  removeAnimeFromCustomList : (listId : string, anilistId : string | number) => {
-  return apiClient.delete(`/list/anime/${listId}/${anilistId}/remove/`);
+  getListLikeStatus: (listId: string) => {
+    return apiClient.get(`/list/${listId}/like/status`);
   },
 
-  removeMemberFromList : (listId:string, username:string) => {
-  return apiClient.delete(`/list/member/${listId}/remove/`, { params: { username } });
+  getListsLikedByUser: (data = {}) => {
+    return apiClient.post('/list/likes/user', data);
   },
 
-  // --- Likes & Trending ---
-  toggleLike: (listId: string) => apiClient.post(`/list/${listId}/like/`),
-  getTrending: () => apiClient.post('/list/likes/trending/'),
-  search: (keyword: string) => apiClient.post('/list/search/', { query: keyword, limit: 20 }),
-
-  getListsLikedByUser : (data = {}) => {
-  // data có thể chứa { username: "abc", page: 1, ... }
-  return apiClient.post('/list/likes/user/', data);
+  getMostLikedLists: () => {
+    return apiClient.post('/list/likes/most-liked', { limit: 20 });
   },
 
-  getMostLikedLists : () => {
-  return apiClient.post('/list/likes/most-liked/', { 
-    limit: 20 
-  });
+  // ====================================================================
+  // API ĐÃ XÓA BỎ / DEPRECATED
+  // Zentaku_BE không còn cung cấp các API lấy danh sách người thích hoặc trending likes
+  // ====================================================================
+
+  getTrending: () => {
+    console.warn("⚠️ getTrending likes API is removed in Zentaku_BE. Returning mock.");
+    return Promise.resolve({ data: [] });
   },
 
-  searchCustomLists : (keyword : string) => {
-  return apiClient.post('/list/search/', {
-    query: keyword,
-    limit: 20 // Limit được fix cứng là 20 theo yêu cầu
-  });
-  },
-
-  updateCustomList : (listId: string, listData : {}) => {
-  return apiClient.put(`/list/${listId}/update/`, listData);
-  },
-
-  getListLikeStatus : (listId : string) => {
-  return apiClient.get(`/list/${listId}/like/status/`);
-  },
-
-  getListLikers : (listId : string, data : {}) => {
-  return apiClient.post(`/list/${listId}/likers/`, data);
-  },
-
-  addMemberToList : (listId : string, userData : {}) => {
-  return apiClient.post(`/list/member/${listId}/add/`, userData);
-  },
-
-  updateMemberPermission : (listId : string, permissionData : {}) => {
-  return apiClient.put(`/list/member/${listId}/permission/`, permissionData);
+  getListLikers: (_listId: string, _data: any): Promise<any> => {
+    console.warn("⚠️ getListLikers API is removed in Zentaku_BE. Returning mock.");
+    return Promise.resolve({ data: {} as any });
   },
 };
