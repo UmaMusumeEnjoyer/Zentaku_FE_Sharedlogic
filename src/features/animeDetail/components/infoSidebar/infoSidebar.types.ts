@@ -6,6 +6,22 @@ export interface NextAiringEpisode {
 }
 
 export interface AnimeInfo {
+  // camelCase (Zentaku_BE format)
+  format?: string;
+  episodes?: number;
+  status?: string;
+  startDate?: string;
+  endDate?: string;
+  seasonYear?: number;
+  score?: number;
+  meanScore?: number;
+  title?: {
+    native?: string;
+    english?: string;
+  };
+  nextAiringEpisode?: NextAiringEpisode;
+
+  // snake_case (Old format)
   next_airing_ep?: NextAiringEpisode;
   airing_format?: string;
   airing_episodes?: number;
