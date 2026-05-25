@@ -124,8 +124,8 @@ export const useEditProfileModal = (
         bio: formData.bio,
         location: formData.location,
         website: formData.website,
-        gender: formData.gender,
-        birthday: formData.birthday,
+        gender: formData.gender || undefined,
+        birthday: formData.birthday || undefined,
       });
 
       // Zentaku_BE response đã unwrap: res.data = User object
