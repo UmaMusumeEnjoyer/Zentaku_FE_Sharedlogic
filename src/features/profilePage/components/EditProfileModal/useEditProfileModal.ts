@@ -114,19 +114,52 @@ export const useEditProfileModal = (
   // --- HANDLERS: SUBMIT ---
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    // Xây dựng payload bằng phương pháp Dirty Checking
+    const payload: any = {};
+
+    const originalDisplayName = currentUser?.displayName || currentUser?.first_name || '';
+    if (formData.displayName !== originalDisplayName) {
+      payload.displayName = formData.displayName;
+    }
+
+    const originalBio = currentUser?.bio || '';
+    if (formData.bio !== originalBio) {
+      payload.bio = formData.bio;
+    }
+
+    const originalLocation = currentUser?.location || '';
+    if (formData.location !== originalLocation) {
+      payload.location = formData.location;
+    }
+
+    const originalWebsite = currentUser?.website || '';
+    if (formData.website !== originalWebsite) {
+      payload.website = formData.website;
+    }
+
+    const originalGender = currentUser?.gender || '';
+    if (formData.gender !== originalGender) {
+      payload.gender = formData.gender || undefined;
+    }
+
+    const originalBirthday = currentUser?.birthday || '';
+    if (formData.birthday !== originalBirthday) {
+      payload.birthday = formData.birthday || undefined;
+    }
+
+    // Kiểm tra nếu không có thay đổi nào thì đóng modal luôn
+    if (Object.keys(payload).length === 0) {
+      onClose();
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
     try {
-      // Zentaku_BE: PATCH /user/me với body { displayName, bio, location, ... }
-      const res = await userService.updateUserProfile({
-        displayName: formData.displayName,
-        bio: formData.bio,
-        location: formData.location,
-        website: formData.website,
-        gender: formData.gender || undefined,
-        birthday: formData.birthday || undefined,
-      });
+      // Chỉ gọi API update với những field bị thay đổi (PATCH semantics)
+      const res = await userService.updateUserProfile(payload);
 
       // Zentaku_BE response đã unwrap: res.data = User object
       const updatedUserData = res.data;
