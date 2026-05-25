@@ -72,7 +72,7 @@ export const useAnimeDetail = (animeId: string | undefined): UseAnimeDetailRetur
   }, [animeId]);
 
   const hasBanner = useMemo(() => {
-    return !!(anime && anime.bannerImage);
+    return !!(anime && (anime.bannerImage || anime.banner_image));
   }, [anime]);
 
   // Fallback clicks since API is removed in Zentaku_BE
