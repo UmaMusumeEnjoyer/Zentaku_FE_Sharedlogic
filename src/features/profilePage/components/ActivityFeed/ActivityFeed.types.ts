@@ -14,6 +14,7 @@ export interface ActivityItem {
 }
 
 export interface ActivityFeedProps {
+  userId?: string | number;
   filterDate?: string; // Format: YYYY-MM-DD
   username: string;
 }

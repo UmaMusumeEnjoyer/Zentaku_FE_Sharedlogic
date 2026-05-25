@@ -3,12 +3,13 @@ import { userService } from '../../../../services/user.service';
 import { ActivityItem } from './ActivityFeed.types';
 
 interface UseActivityFeedParams {
+  userId?: string | number;
   username: string;
   filterDate?: string;
   t: (key: string, options?: any) => string; // Thêm hàm dịch
 }
 
-export const useActivityFeed = ({ username, filterDate, t }: UseActivityFeedParams) => {
+export const useActivityFeed = ({ userId, username, filterDate, t }: UseActivityFeedParams) => {
   const [activities, setActivities] = useState<ActivityItem[]>([]);
   const [visibleCount, setVisibleCount] = useState(10);
   const [loading, setLoading] = useState(true);
@@ -19,8 +20,8 @@ export const useActivityFeed = ({ username, filterDate, t }: UseActivityFeedPara
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (username) {
-          const res = await userService.getUserActivity(username);
+        if (userId) {
+          const res = await userService.getUserActivity(userId);
           setActivities(res.data.items || []);
         }
       } catch (error) {
@@ -31,7 +32,7 @@ export const useActivityFeed = ({ username, filterDate, t }: UseActivityFeedPara
     };
 
     fetchData();
-  }, [username]);
+  }, [userId]);
 
   // --- 2. FILTER & PAGINATION ---
   const filteredItems = useMemo(() => {

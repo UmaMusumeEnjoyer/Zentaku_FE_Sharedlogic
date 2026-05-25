@@ -310,7 +310,7 @@ export const userService = {
    * Hàm này tự động convert sang format cũ (counts object) cho backward compatibility
    * cho đến khi hooks/components được cập nhật ở Phase 4/5.
    */
-  getHeatmap: async (userIdOrUsername: string, year?: number) => {
+  getHeatmap: async (userIdOrUsername: string | number, year?: number) => {
     const currentYear = year || new Date().getFullYear();
     const key = `user:${userIdOrUsername}:heatmap:${currentYear}`;
     const cached = getCached(key);
@@ -361,7 +361,7 @@ export const userService = {
    * 
    * Tự động convert sang format cũ cho backward compatibility
    */
-  getUserActivity: async (userIdOrUsername: string, page = 1, perPage = 50, sort = 'desc') => {
+  getUserActivity: async (userIdOrUsername: string | number, page = 1, perPage = 50, sort = 'desc') => {
     const key = `user:${userIdOrUsername}:activity:${page}`;
     const cached = getCached(key);
     if (cached) return { data: cached };
