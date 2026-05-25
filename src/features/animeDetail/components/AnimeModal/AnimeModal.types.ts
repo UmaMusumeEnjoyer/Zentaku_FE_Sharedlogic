@@ -2,9 +2,10 @@
 
 export interface Anime_Modal {
   id: number | string;
-  cover_image: string;
-  name_romaji: string;
+  coverImage?: { large?: string } | string;
   title?: { romaji?: string; english?: string };
+  cover_image?: string;
+  name_romaji?: string;
 }
 
 export interface UserStatusData_Modal {

@@ -10,8 +10,14 @@ import { StatusItem } from '../StatisticsSection/StatisticsSection.types.Status'
  */
 export interface AnimeStats {
   rankings: Ranking[];
-  score_distribution: ScoreItem[];
-  status_distribution: StatusItem[];
+  stats?: {
+    scoreDistribution?: ScoreItem[];
+    statusDistribution?: StatusItem[];
+  };
+  scoreDistribution?: ScoreItem[];
+  statusDistribution?: StatusItem[];
+  score_distribution?: ScoreItem[];
+  status_distribution?: StatusItem[];
 }
 
 /**

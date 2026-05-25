@@ -1,8 +1,14 @@
 export interface Anime {
   id: number | string;
-  cover_image: string;
-  name_romaji: string;
-  desc: string; // HTML string
+  // camelCase (Zentaku_BE format)
+  coverImage?: { large?: string } | string;
+  title?: { romaji?: string };
+  description?: string;
+
+  // snake_case (Old format)
+  cover_image?: string;
+  name_romaji?: string;
+  desc?: string; // HTML string
 }
 
 export interface UserStatusData {
