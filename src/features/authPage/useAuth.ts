@@ -99,9 +99,17 @@ export const useAuth = (): UseAuthReturn => {
    * Đăng xuất - Gọi API logout của Zentaku_BE để xóa cookie phía server,
    * sau đó xóa token và state phía client
    */
-  const logout = useCallback(() => {
-    // Gọi API logout để xóa cookie/session phía BE (fire-and-forget)
-    authService.logout().catch(err => console.error('Logout API error:', err));
+  const logout = useCallback(async () => {
+    const token = localStorage.getItem('accessToken');
+    
+    if (token) {
+      try {
+        // Đợi API hoàn thành để request kịp lấy token từ localStorage
+        await authService.logout();
+      } catch (err) {
+        console.error('Logout API error:', err);
+      }
+    }
 
     // Xóa state phía client
     localStorage.removeItem('accessToken');

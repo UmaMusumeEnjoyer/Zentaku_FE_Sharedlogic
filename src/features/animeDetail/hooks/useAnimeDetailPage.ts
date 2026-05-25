@@ -53,12 +53,12 @@ export const useAnimeDetail = (animeId: string | undefined): UseAnimeDetailRetur
           animeService.getAnimeStats(animeId) // <-- Thêm dòng này
         ]);
 
-        setAnime(animeRes.data);
-        setStaffList(staffRes.data?.staff || []);
-        setCharacterList(charRes.data?.characters || []);
+        setAnime(animeRes.data?.data || animeRes.data);
+        setStaffList(staffRes.data?.edges || staffRes.data?.data?.edges || []);
+        setCharacterList(charRes.data?.edges || charRes.data?.data?.edges || []);
         
         // 3. Lưu dữ liệu stats vào state
-        setStats(statsRes.data);
+        setStats(statsRes.data?.data || statsRes.data);
 
       } catch (err) {
         console.error("Lỗi khi tải dữ liệu:", err);
@@ -72,7 +72,7 @@ export const useAnimeDetail = (animeId: string | undefined): UseAnimeDetailRetur
   }, [animeId]);
 
   const hasBanner = useMemo(() => {
-    return !!(anime && anime.banner_image);
+    return !!(anime && anime.bannerImage);
   }, [anime]);
 
   // Fallback clicks since API is removed in Zentaku_BE

@@ -45,6 +45,12 @@ export const useProfilePage = (
   const [totalContributions, setTotalContributions] = useState(0);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
+  // Social Data
+  const [followers, setFollowers] = useState<any[]>([]);
+  const [following, setFollowing] = useState<any[]>([]);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [socialLoading, setSocialLoading] = useState(false);
+
   // Create List Modal State
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newListData, setNewListData] = useState<NewListData>({
@@ -88,13 +94,17 @@ export const useProfilePage = (
     if (!targetUsername) return;
 
     setProfileLoading(true);
-    userService.getMyProfile()
+    const profilePromise = isOwnProfile 
+      ? userService.getMyProfile() 
+      : userService.getUserProfile(targetUsername);
+
+    profilePromise
       .then((res) => {
         setUserProfile(res.data);
       })
       .catch((err) => console.error("Failed to fetch profile:", err))
       .finally(() => setProfileLoading(false));
-  }, [targetUsername]);
+  }, [targetUsername, isOwnProfile]);
 
   // Fetch Lists (Custom & Liked)
   const fetchCustomLists = useCallback(() => {
@@ -144,6 +154,32 @@ export const useProfilePage = (
       fetchFavorites();
     }
   }, [activeTab, targetUsername]);
+
+  // Fetch Social Data
+  const fetchSocialData = useCallback(async () => {
+    if (!userProfile?.id) return;
+    setSocialLoading(true);
+    try {
+      const res = await userService.checkUserFollow(userProfile.id);
+      const data = res.data;
+      setFollowers(data.followers || []);
+      setFollowing(data.following || []);
+      setIsFollowing(data.isFollowing || false);
+    } catch (error) {
+      console.error("Failed to fetch social data:", error);
+      setFollowers([]);
+      setFollowing([]);
+      setIsFollowing(false);
+    } finally {
+      setSocialLoading(false);
+    }
+  }, [userProfile?.id]);
+
+  useEffect(() => {
+    if (activeTab === 'Social' && userProfile?.id) {
+      fetchSocialData();
+    }
+  }, [activeTab, userProfile?.id, fetchSocialData]);
 
   // Load Initial Data based on Tab
   useEffect(() => {
@@ -263,6 +299,28 @@ export const useProfilePage = (
     callbacks?.onNavigateToList(list.list_id, list);
   };
 
+  const toggleFollow = async () => {
+    if (!userProfile?.id) return;
+    const targetId = userProfile.id;
+    
+    // Optimistic Update
+    setIsFollowing(prev => !prev);
+    
+    try {
+      if (isFollowing) {
+        await userService.unfollowUser(targetId);
+      } else {
+        await userService.followUser(targetId);
+      }
+      // Re-fetch to guarantee accuracy
+      fetchSocialData();
+    } catch (error) {
+      console.error("Failed to toggle follow status:", error);
+      // Revert optimistic update
+      setIsFollowing(prev => !prev);
+    }
+  };
+
   return {
     // Info
     targetUsername,
@@ -305,6 +363,13 @@ export const useProfilePage = (
     newListData,
     creating,
     handleCreateListSubmit,
-    handleNewListInputChange
+    handleNewListInputChange,
+
+    // Social Follow
+    followers,
+    following,
+    isFollowing,
+    socialLoading,
+    toggleFollow
   };
 };

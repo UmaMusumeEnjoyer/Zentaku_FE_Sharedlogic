@@ -6,15 +6,17 @@
     "delete": "Delete"
   },
   "fields": {
-    "first_name": {
-      "label": "First Name"
+    "displayName": {
+      "label": "Display Name"
     },
-    "last_name": {
-      "label": "Last Name"
+    "bio": {
+      "label": "Bio"
     },
-    "username": {
-      "label": "Username",
-      "hint": "Changing username may affect your profile link."
+    "location": {
+      "label": "Location"
+    },
+    "website": {
+      "label": "Website"
     }
   },
   "actions": {

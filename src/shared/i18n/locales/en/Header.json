@@ -40,6 +40,12 @@
       "description": "Please select your preferred language",
       "english": "English",
       "japanese": "Japanese"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "description": "Manage your notification preferences",
+      "email": "Email Notifications",
+      "push": "Push Notifications"
     }
   }
 }

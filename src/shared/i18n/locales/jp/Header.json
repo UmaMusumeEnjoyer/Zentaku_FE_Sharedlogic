@@ -40,6 +40,12 @@
       "description": "お好みの言語を選択してください",
       "english": "英語",
       "japanese": "日本語"
+    },
+    "notifications": {
+      "title": "通知",
+      "description": "通知の設定を管理します",
+      "email": "メール通知",
+      "push": "プッシュ通知"
     }
   }
 }

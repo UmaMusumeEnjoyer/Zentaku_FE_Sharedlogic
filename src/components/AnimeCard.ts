@@ -4,11 +4,22 @@
 export interface AnimeData {
   id?: number | string;
   anilist_id?: number | string;
+  title?: {
+    romaji?: string;
+    english?: string;
+    native?: string;
+  };
   title_romaji?: string;
   name_romaji?: string;
   name_native?: string;
   name_english?: string;
-  cover_image: string;
+  coverImage?: {
+    extraLarge?: string;
+    large?: string;
+    medium?: string;
+    color?: string;
+  };
+  cover_image?: string;
   episode_progress?: number;
   episodes?: number;
   next_airing_ep?: {
@@ -20,11 +31,9 @@ export interface AnimeData {
 // 2. Logic lấy tiêu đề theo ngôn ngữ
 export const getAnimeTitle = (anime: AnimeData, language: 'en' | 'jp' = 'en'): string => {
   if (language === 'jp') {
-    // Ưu tiên: name_native -> name_romaji -> name_english -> fallback
-    return anime.name_native || anime.name_romaji || anime.title_romaji || anime.name_english || "Unknown Title";
+    return anime.title?.native || anime.name_native || anime.title?.romaji || anime.name_romaji || anime.title_romaji || anime.title?.english || anime.name_english || "Unknown Title";
   } else {
-    // Ưu tiên: name_english -> name_romaji -> name_native -> fallback
-    return anime.name_english || anime.name_romaji || anime.title_romaji || anime.name_native || "Unknown Title";
+    return anime.title?.english || anime.name_english || anime.title?.romaji || anime.name_romaji || anime.title_romaji || anime.title?.native || anime.name_native || "Unknown Title";
   }
 };
 

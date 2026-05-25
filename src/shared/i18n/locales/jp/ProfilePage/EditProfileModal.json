@@ -6,15 +6,17 @@
     "delete": "削除"
   },
   "fields": {
-    "first_name": {
-      "label": "名"
+    "displayName": {
+      "label": "表示名"
     },
-    "last_name": {
-      "label": "姓"
+    "bio": {
+      "label": "自己紹介"
     },
-    "username": {
-      "label": "ユーザー名",
-      "hint": "ユーザー名を変更すると、プロフィールリンクに影響する可能性があります。"
+    "location": {
+      "label": "場所"
+    },
+    "website": {
+      "label": "ウェブサイト"
     }
   },
   "actions": {

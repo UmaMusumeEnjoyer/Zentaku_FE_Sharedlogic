@@ -1,25 +1,17 @@
 // shared-logic/src/shared/hooks/useHeader.ts
 import { useState, useEffect, useCallback } from 'react';
-import { notificationService } from '../../services/notification.service';
-import { Notification } from '../../shared/types/notification.types';
+
 
 export interface UseHeaderReturn {
   // Dropdown states
   isDropdownOpen: boolean;
   isSearchModalOpen: boolean;
-  isNotiModalOpen: boolean;
   isSettingsModalOpen: boolean;
-  
-  // Notification data
-  notificationCount: number;
-  notifications: Notification[];
   
   // Actions
   toggleDropdown: () => void;
   openSearchModal: () => void;
   closeSearchModal: () => void;
-  openNotificationModal: () => void;
-  closeNotificationModal: () => void;
   openSettingsModal: () => void;
   closeSettingsModal: () => void;
   
@@ -41,25 +33,7 @@ export const useHeader = (config: UseHeaderConfig): UseHeaderReturn => {
   // States
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
-  const [isNotiModalOpen, setIsNotiModalOpen] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
-  const [notificationCount, setNotificationCount] = useState(0);
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-
-  // Fetch notifications when authenticated
-  useEffect(() => {
-    if (isAuthenticated) {
-      notificationService
-        .getMyNotifications({ status: 'sent', limit: 20 })
-        .then((res) => {
-          if (res.data) {
-            setNotificationCount(res.data.count || 0);
-            setNotifications(res.data.notifications || []);
-          }
-        })
-        .catch((err) => console.error("Failed to fetch notifications:", err));
-    }
-  }, [isAuthenticated]);
 
   // Actions
   const toggleDropdown = useCallback(() => {
@@ -72,15 +46,6 @@ export const useHeader = (config: UseHeaderConfig): UseHeaderReturn => {
 
   const closeSearchModal = useCallback(() => {
     setIsSearchModalOpen(false);
-  }, []);
-
-  const openNotificationModal = useCallback(() => {
-    setIsNotiModalOpen(true);
-    setIsDropdownOpen(false);
-  }, []);
-
-  const closeNotificationModal = useCallback(() => {
-    setIsNotiModalOpen(false);
   }, []);
 
   const openSettingsModal = useCallback(() => {
@@ -137,15 +102,10 @@ export const useHeader = (config: UseHeaderConfig): UseHeaderReturn => {
   return {
     isDropdownOpen,
     isSearchModalOpen,
-    isNotiModalOpen,
     isSettingsModalOpen,
-    notificationCount,
-    notifications,
     toggleDropdown,
     openSearchModal,
     closeSearchModal,
-    openNotificationModal,
-    closeNotificationModal,
     openSettingsModal,
     closeSettingsModal,
     formatDateTime,

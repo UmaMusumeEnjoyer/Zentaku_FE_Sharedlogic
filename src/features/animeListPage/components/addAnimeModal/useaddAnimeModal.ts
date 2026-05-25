@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import {AnimeItem_addAnimeModal as AnimeItem, UserAnimeData, AnimeStatusKey } from './addAnimeModal.types';
 import { userService } from '../../../../services/user.service';
 import { animeService } from '../../../../services/anime.service';
+import { searchService } from '../../../../services/search.service';
 
 export const useAddAnimeModal = (
   isOpen: boolean,
@@ -84,8 +85,8 @@ export const useAddAnimeModal = (
     setIsGlobalSearch(true);
 
     try {
-      const response = await animeService.searchByName(searchTerm);
-      const rawCandidates = response.data.candidates || [];
+      const response = await searchService.searchAnime({ q: searchTerm });
+      const rawCandidates = response.data?.data || response.data || [];
       const mappedResults = rawCandidates.map(mapAnimeData);
       setGlobalResults(mappedResults);
     } catch (error) {

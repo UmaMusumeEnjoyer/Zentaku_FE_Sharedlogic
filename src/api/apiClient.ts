@@ -144,8 +144,11 @@ apiClient.interceptors.response.use(
 
     // Kiểm tra nếu lỗi 401 và chưa retry
     if (error.response?.status === 401 && !originalRequest._retry) {
-      // Không retry nếu chính request refresh-token bị 401
-      if (originalRequest.url?.includes('/auth/refresh-token')) {
+      // Không retry nếu chính request refresh-token hoặc logout bị 401
+      if (
+        originalRequest.url?.includes('/auth/refresh-token') ||
+        originalRequest.url?.includes('/auth/logout')
+      ) {
         return Promise.reject(error);
       }
 
