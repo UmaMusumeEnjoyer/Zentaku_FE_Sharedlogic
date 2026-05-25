@@ -60,19 +60,20 @@ export const useProfilePage = (
 
   // --- 3. HELPER FUNCTIONS ---
   const getAvatarUrl = useCallback((url?: string | null) => {
-
-
     if (!url) {
-
       return DEFAULT_AVATAR;
     }
 
+    // Nếu url bắt đầu bằng /uploads thì để trình duyệt gọi relative path, Vite Proxy sẽ proxy tới BE.
+    if (url.startsWith('/uploads')) {
+      return url;
+    }
 
-
+    if (url.startsWith('http')) {
+      return url;
+    }
 
     const finalUrl = `${SharedConfig.VITE_BACKEND_DOMAIN}${url}`;
-
-
     return finalUrl;
   }, []);
 
