@@ -28,6 +28,7 @@ export interface RegisterRequest extends RegisterData {
  */
 export interface LoginResponse {
   accessToken: string;
+  refreshToken?: string;
   expiresIn?: number;
   user: {
     username: string;

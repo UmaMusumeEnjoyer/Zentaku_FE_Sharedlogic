@@ -74,7 +74,11 @@ export const useAuth = (): UseAuthReturn => {
 
       if (accessToken) {
         localStorage.setItem('accessToken', accessToken);
-        // Zentaku_BE: refreshToken lưu qua HTTP-only cookie, không cần lưu thủ công
+        // Zentaku_BE: refreshToken có thể lưu qua HTTP-only cookie, 
+        // nhưng ta hứng thêm fallback từ responseData để xử lý lỗi timeout
+        if (responseData.refreshToken) {
+          localStorage.setItem('refreshToken', responseData.refreshToken);
+        }
 
         if (username) {
           localStorage.setItem('username', username);
