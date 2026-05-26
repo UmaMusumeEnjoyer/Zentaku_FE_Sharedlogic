@@ -190,9 +190,18 @@ export const userService = {
     // Map old snake_case payload to new camelCase payload
     const mapStatus = (status: string) => {
       if (!status) return status;
-      const s = status.toUpperCase();
-      if (s === 'WATCHING' || s === 'READING') return 'CURRENT';
-      return s;
+      const s = status.toLowerCase();
+      if (s === 'watching') return 'WATCHING';
+      if (s === 'reading') return 'READING';
+      if (s === 'plan_to_watch') return 'PLANNING';
+      if (s === 'completed') return 'COMPLETED';
+      if (s === 'dropped') return 'DROPPED';
+      if (s === 'on_hold') return 'PAUSED';
+      
+      // Fallback cho trường hợp API cũ trả về CURRENT
+      if (s === 'current') return 'WATCHING';
+      
+      return status.toUpperCase();
     };
 
     const mappedData = {
@@ -238,24 +247,39 @@ export const userService = {
         if (response && response.data) {
           const d = response.data;
           
-          // Map CURRENT back to watching/reading for frontend
-          let oldStatus = d.status?.toLowerCase();
-          if (oldStatus === 'current') oldStatus = 'watching'; // Assuming anime by default
+          if (!d.isFollowed) {
+             response.data = { is_following: false };
+             return response;
+          }
+          
+          const t = d.tracking || {};
+          
+          // Map Backend LibraryStatus back to Frontend format
+          let oldStatus = t.status;
+          if (oldStatus === 'WATCHING') oldStatus = 'watching';
+          else if (oldStatus === 'READING') oldStatus = 'reading';
+          else if (oldStatus === 'PLANNING') oldStatus = 'plan_to_watch';
+          else if (oldStatus === 'COMPLETED') oldStatus = 'completed';
+          else if (oldStatus === 'DROPPED') oldStatus = 'dropped';
+          else if (oldStatus === 'PAUSED') oldStatus = 'on_hold';
+          else if (oldStatus === 'CURRENT') oldStatus = 'watching'; // Fallback
+          else oldStatus = oldStatus?.toLowerCase();
 
           response.data = {
             ...d,
+            ...t,
             watch_status: oldStatus,
             read_status: oldStatus,
-            episode_progress: d.progress,
-            chapter_progress: d.progress,
-            volume_progress: d.progressVolumes,
-            score: d.score,
-            user_note: d.notes,
-            note: d.notes,
-            private: d.isPrivate,
-            total_rewatch: d.rewatchCount,
-            start_date: d.startDate,
-            finish_date: d.finishDate,
+            episode_progress: t.progress,
+            chapter_progress: t.progress,
+            volume_progress: t.progressVolumes,
+            score: t.score,
+            user_note: t.notes,
+            note: t.notes,
+            private: t.isPrivate,
+            total_rewatch: t.rewatchCount,
+            start_date: t.startDate,
+            finish_date: t.finishDate,
             is_following: true
           };
         }
