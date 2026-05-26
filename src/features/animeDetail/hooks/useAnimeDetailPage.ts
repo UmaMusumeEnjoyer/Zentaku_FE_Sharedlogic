@@ -53,7 +53,12 @@ export const useAnimeDetail = (animeId: string | undefined): UseAnimeDetailRetur
           animeService.getAnimeStats(animeId) // <-- Thêm dòng này
         ]);
 
-        setAnime(animeRes.data?.data || animeRes.data);
+        const animeData = animeRes.data?.data || animeRes.data;
+        // Map idAnilist to id if id is missing (Zentaku_BE structure)
+        if (animeData && !animeData.id && animeData.idAnilist) {
+          animeData.id = animeData.idAnilist;
+        }
+        setAnime(animeData);
         setStaffList(staffRes.data?.edges || staffRes.data?.data?.edges || []);
         setCharacterList(charRes.data?.edges || charRes.data?.data?.edges || []);
         
