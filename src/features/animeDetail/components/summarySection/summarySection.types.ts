@@ -23,4 +23,6 @@ export interface UserStatusData {
 export interface SummarySectionProps {
   anime: Anime;
   hasBanner?: boolean;
+  activeTab?: string;
+  setActiveTab?: (tab: string) => void;
 }

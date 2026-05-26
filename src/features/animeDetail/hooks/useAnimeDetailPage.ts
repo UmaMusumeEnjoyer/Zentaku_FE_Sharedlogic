@@ -48,8 +48,8 @@ export const useAnimeDetail = (animeId: string | undefined): UseAnimeDetailRetur
         // 2. Gọi song song 4 API cùng lúc (bao gồm stats)
         const [animeRes, staffRes, charRes, statsRes] = await Promise.all([
           animeService.getById(animeId),
-          animeService.getAnimeStaff(animeId),
-          animeService.getCharacters(animeId),
+          animeService.getAnimeStaff(animeId, 1, 18),
+          animeService.getCharacters(animeId, 1, 18),
           animeService.getAnimeStats(animeId) // <-- Thêm dòng này
         ]);
 
