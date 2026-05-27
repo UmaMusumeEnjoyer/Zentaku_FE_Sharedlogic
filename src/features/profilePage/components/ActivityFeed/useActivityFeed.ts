@@ -39,8 +39,8 @@ export const useActivityFeed = ({ userId, username, filterDate, t }: UseActivity
     if (!filterDate) return activities;
 
     return activities.filter(item => {
-      // Tính toán ngày dựa trên ago_seconds
-      const actionDate = new Date(Date.now() - item.ago_seconds * 1000);
+      if (!item.createdAt) return false;
+      const actionDate = new Date(item.createdAt);
       const actionDateStr = actionDate.toISOString().split('T')[0];
       return actionDateStr === filterDate;
     });
@@ -60,51 +60,42 @@ export const useActivityFeed = ({ userId, username, filterDate, t }: UseActivity
     return t('ActivityFeed:time.days_ago', { count: Math.floor(s/86400) });
   };
 
-  const getActionClass = (type: string) => {
-    switch (type) {
-      case 'followed_anime': 
-      case 'create_list': 
-        return 'feed-icon-add';
-      case 'updated_followed_anime': 
-        return 'feed-icon-update';
-      default: 
-        return 'feed-icon-default';
-    }
+  const getAgoSeconds = (item: ActivityItem) => {
+    if (!item.createdAt) return 0;
+    return Math.floor((Date.now() - new Date(item.createdAt).getTime()) / 1000);
   };
 
-  const getActionIconChar = (type: string) => {
-    if (type === 'create_list') return '☰'; 
-    if (type === 'followed_anime') return '+';
-    if (type.includes('update')) return '✎';
+  const getActionClass = (item: ActivityItem) => {
+    if (item.type === 'MEDIA_FOLLOW') {
+      if (item.metaData?.action === 'FOLLOW') return 'feed-icon-add';
+      return 'feed-icon-update';
+    }
+    return 'feed-icon-default';
+  };
+
+  const getActionIconChar = (item: ActivityItem) => {
+    if (item.type === 'MEDIA_FOLLOW') {
+      if (item.metaData?.action === 'FOLLOW') return '+';
+      return '✎';
+    }
     return '•';
   };
 
-  const getActionDescription = (type: string) => {
-    switch (type) {
-      case 'followed_anime':
-        return t('ActivityFeed:actions.followed_anime');
-      case 'create_list':
-        return t('ActivityFeed:actions.create_list');
-      case 'updated_followed_anime':
-        return t('ActivityFeed:actions.updated_followed_anime');
-      default:
-        return t('ActivityFeed:actions.default');
+  const getActionDescription = (item: ActivityItem) => {
+    if (item.type === 'MEDIA_FOLLOW') {
+      if (item.metaData?.action === 'FOLLOW') return t('ActivityFeed:actions.followed_anime');
+      return t('ActivityFeed:actions.updated_followed_anime');
     }
+    return t('ActivityFeed:actions.default');
   };
 
   const getTargetName = (item: ActivityItem) => {
-    if (item.action_type === 'create_list') {
-      return item.metadata?.list_name || t('ActivityFeed:targets.unnamed_list');
-    }
-    return item.metadata?.title || t('ActivityFeed:targets.unknown_anime');
+    return item.metaData?.targetName || item.media?.titleRomaji || item.media?.titleEnglish || t('ActivityFeed:targets.unknown_anime');
   };
 
   // --- 4. NAVIGATION LOGIC ---
   const getTargetUrl = (item: ActivityItem) => {
-    if (item.action_type === 'create_list') {
-      return `/list/${item.target_id}`;
-    }
-    return `/anime/${item.target_id}`;
+    return `/anime/${item.metaData?.targetId || item.mediaId}`;
   };
 
   return {
@@ -121,6 +112,7 @@ export const useActivityFeed = ({ userId, username, filterDate, t }: UseActivity
 
     // Helpers
     formatTimeAgo,
+    getAgoSeconds,
     getActionClass,
     getActionIconChar,
     getActionDescription,

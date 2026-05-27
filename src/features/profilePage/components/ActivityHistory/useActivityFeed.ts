@@ -62,6 +62,12 @@ export const useActivityHistory = (userId?: string | number, onTotalCountChange?
                 counts[item.date] = item.count;
               }
             });
+          } else if (rawData.data && Array.isArray(rawData.data)) {
+            rawData.data.forEach((item: any) => {
+              if (item.date && item.count !== undefined) {
+                counts[item.date] = item.count;
+              }
+            });
           } else if (rawData.counts) {
             Object.assign(counts, rawData.counts);
           }
