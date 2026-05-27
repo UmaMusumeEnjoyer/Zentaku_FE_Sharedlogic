@@ -1,6 +1,7 @@
 // shared-logic/src/shared/hooks/useAuth.ts
 import { useState, useCallback } from 'react';
 import { authService } from '../../services/auth.service';
+import { userService } from '../../services/user.service';
 import { User, LoginCredentials } from './auth.types';
 
 export interface UseAuthReturn {
@@ -25,8 +26,8 @@ export const useAuth = (): UseAuthReturn => {
   const fetchUserInfo = useCallback(async (_username?: string) => {
     try {
       setIsLoading(true);
-      // Zentaku_BE: Dùng /auth/me để lấy thông tin user hiện tại qua accessToken
-      const response = await authService.getCurrentUser();
+      // Zentaku_BE: Dùng /user/me để lấy đầy đủ thông tin user hiện tại (bao gồm avatar)
+      const response = await userService.getMyProfile();
       if (response.data) {
         const userData = response.data;
         setUser({
