@@ -57,12 +57,11 @@ export const useFilterBar = ({ onSearch, activeFilters }: UseFilterBarProps) => 
   };
 
   const handleFilterChange = (key: FilterKey, value: string) => {
-    setFilters((prev) => {
-      const updated = { ...prev, [key]: value };
-      const { keyword, ...rest } = updated;
-      triggerSearch(keyword, rest);
-      return updated;
-    });
+    const updated = { ...filters, [key]: value };
+    setFilters((prev) => ({ ...prev, [key]: value }));
+    
+    const { keyword, ...rest } = updated;
+    triggerSearch(keyword, rest);
   };
 
   const handleClear = () => {
