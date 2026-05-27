@@ -79,9 +79,14 @@ export const animeService = {
   // API ĐÃ XÓA BỎ / DEPRECATED
   // ====================================================================
 
-  getAnimeCharacter: async (_id: number | string): Promise<any> => {
-    console.warn("⚠️ getAnimeCharacter API is removed in Zentaku_BE.");
-    return Promise.resolve({ data: {} as any });
+  getAnimeCharacter: async (id: number | string): Promise<any> => {
+    const key = `character:${id}:detail`;
+    const cached = getCached(key);
+    if (cached) return { data: cached };
+
+    const res = await apiClient.get(`/anilist/character/${id}`);
+    setCached(key, res.data, TTL_DEFAULT);
+    return res;
   },
 
   getStaffById: async (id: number | string): Promise<any> => {
