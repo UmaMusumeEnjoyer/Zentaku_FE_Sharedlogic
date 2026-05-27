@@ -53,6 +53,25 @@ export const animeService = {
     return res;
   },
 
+  getTrendingAnime: async (page = 1, perPage = 10, season?: string, year?: number, type: 'ANIME' | 'MANGA' | 'NOVEL' = 'ANIME'): Promise<any> => {
+    let url = `/search/trending?page=${page}&perPage=${perPage}&type=${type}`;
+    if (season && year) {
+      url += `&season=${season}&year=${year}`;
+    }
+    return apiClient.get(url);
+  },
+
+  getAnimeSchedule: async (start?: number, end?: number): Promise<any> => {
+    let url = `/schedule`;
+    const params = new URLSearchParams();
+    if (start) params.append('start', start.toString());
+    if (end) params.append('end', end.toString());
+    if (params.toString()) {
+      url += `?${params.toString()}`;
+    }
+    return apiClient.get(url);
+  },
+
   // --- STATS ---
   getAnimeStats: async (id: number | string): Promise<any> => {
     const key = `anime:${id}:stats`;

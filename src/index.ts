@@ -136,6 +136,10 @@ export {default as userSearchModalJP} from './shared/i18n/locales/jp/AnimeListPa
 
 export {default as animeListPageEN} from './shared/i18n/locales/en/AnimeListPage/animeListPage.json';
 export {default as animeListPageJP} from './shared/i18n/locales/jp/AnimeListPage/animeListPage.json';
+
+export { default as scheduleDashboardEN } from './shared/i18n/locales/en/ScheduleDashboard.json';
+export { default as scheduleDashboardJP } from './shared/i18n/locales/jp/ScheduleDashboard.json';
+
 /////////Components///////////////
 export * from './components/AnimeCard';
 export * from './components/GlobalSearch/GlobalSearch.types';

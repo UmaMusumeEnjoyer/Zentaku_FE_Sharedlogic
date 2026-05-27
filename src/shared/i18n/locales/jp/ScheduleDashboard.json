@@ -1,0 +1,26 @@
+{
+  "navigation": "ナビゲーション",
+  "weekly": "週間スケジュール",
+  "monthlySchedule": "月間スケジュール",
+  "following": "フォロー中",
+  "quickAccess": "クイックアクセス",
+  "newUpdate": "新着情報",
+  "localTime": "現地時間 (UTC+8)",
+  "today": "今日",
+  "daysOfWeek": {
+    "mon": "月",
+    "tue": "火",
+    "wed": "水",
+    "thu": "木",
+    "fri": "金",
+    "sat": "土",
+    "sun": "日"
+  },
+  "dailyDetailedSchedule": "日別詳細スケジュール",
+  "comingUp": "今後の放送",
+  "total": "合計",
+  "airingIn": "放送まで",
+  "episode": "第",
+  "ep": "話",
+  "scheduleAlerts": "スケジュールアラート"
+}

@@ -1,0 +1,26 @@
+{
+  "navigation": "Navigation",
+  "weekly": "Weekly",
+  "monthlySchedule": "Monthly Schedule",
+  "following": "Following",
+  "quickAccess": "Quick Access",
+  "newUpdate": "New Update",
+  "localTime": "Local Time (UTC+8)",
+  "today": "Today",
+  "daysOfWeek": {
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun"
+  },
+  "dailyDetailedSchedule": "Daily Detailed Schedule",
+  "comingUp": "Coming Up",
+  "total": "TOTAL",
+  "airingIn": "AIRING IN",
+  "episode": "Episode",
+  "ep": "Ep",
+  "scheduleAlerts": "SCHEDULE ALERTS"
+}
