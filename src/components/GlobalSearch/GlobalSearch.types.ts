@@ -3,7 +3,9 @@
 export interface SearchResultUser {
   id?: string | number;
   username: string;
-  avatar?: string; // Tùy chọn nếu API trả về ảnh sau này
+  displayName?: string;
+  avatar?: string;
+  followersCount?: number;
   [key: string]: any;
 }
 

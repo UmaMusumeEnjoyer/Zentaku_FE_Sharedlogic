@@ -425,16 +425,10 @@ export const userService = {
     return apiClient.get(`/user/${username}/animelist`);
   },
 
-  // ===========================
-  // USER SEARCH (ĐÃ XÓA BỎ)
-  // ===========================
-
   /**
-   * @deprecated Zentaku_BE không còn hỗ trợ tìm kiếm user công khai.
-   * Giữ lại stub để không break build, sẽ xóa khi UI components được cập nhật.
+   * Search users by displayName or username
    */
-  searchUsers: (_keyword: string) => {
-    console.warn('⚠️ searchUsers() is deprecated. Zentaku_BE does not support public user search.');
-    return Promise.resolve({ data: { results: [] } });
+  searchUsers: (keyword: string) => {
+    return apiClient.get(`/user/search`, { params: { q: keyword } });
   },
 };
