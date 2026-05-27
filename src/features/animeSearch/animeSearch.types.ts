@@ -8,20 +8,28 @@ export interface AnimeFilters {
   sort?: string;
 }
 
-// Định nghĩa cấu trúc Anime sau khi đã map dữ liệu
-// Định nghĩa cấu trúc Anime sau khi đã map dữ liệu
+// Định nghĩa cấu trúc Anime sau khi đã map dữ liệu (Zentaku_BE camelCase)
 export interface AnimeData_animeSearch {
   id: number | string;
-  anilist_id: number | string;
-  title_romaji?: string;
-  name_romaji?: string;
-  name_english?: string;
-  name_native?: string;
-  cover_image: string;
-  episodes: number | undefined;
-  average_score: number | null;
-  season: string | null;
-  next_airing_ep: any;
+  title: {
+    romaji?: string;
+    english?: string;
+    native?: string;
+  };
+  coverImage: {
+    large: string;
+    extraLarge?: string;
+    medium?: string;
+  };
+  episodes?: number;
+  averageScore?: number | null;
+  popularity?: number;
+  season?: string | null;
+  nextAiringEpisode?: {
+    episode: number;
+    timeUntilAiring: number;
+    airingAt?: number;
+  } | null;
   [key: string]: any; // Các trường bổ sung khác từ API
 }
 
@@ -37,4 +45,4 @@ export interface SearchSessionState {
     filters: AnimeFilters;
     hasFilter?: boolean;
   } | null;
-}
+}

@@ -60,9 +60,9 @@ export const searchService = {
    * Lấy danh sách Popular (All-time)
    * GET /search/popular
    */
-  getPopular: (page?: number, perPage?: number) => {
+  getPopular: (type: string, page?: number, perPage?: number) => {
     return apiClient.get('/search/popular', { 
-      params: { page, perPage } 
+      params: { type, page, perPage } 
     });
   },
 

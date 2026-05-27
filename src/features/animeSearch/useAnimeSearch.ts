@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { AnimeData_animeSearch, AnimeFilters, SearchSessionState } from './animeSearch.types';
 
-// Import API & Utils (Giữ nguyên đường dẫn như logic cũ)
-import { animeService } from '../../services/anime.service';
+// Import API & Utils
 import { searchService } from '../../services/search.service';
 import { getCurrentSeasonInfo, getNextSeasonInfo } from '../../shared/utils/seasonUtils';
 
@@ -24,22 +23,74 @@ export const useAnimeSearchPage = () => {
     hasFilter?: boolean;
   } | null>(null);
 
+  // State cho các section data (thay thế hardcoded constants)
+  const [trendingAnime, setTrendingAnime] = useState<AnimeData_animeSearch[]>([]);
+  const [popularSeason, setPopularSeason] = useState<AnimeData_animeSearch[]>([]);
+  const [upcomingNext, setUpcomingNext] = useState<AnimeData_animeSearch[]>([]);
+  const [allTimePopular, setAllTimePopular] = useState<AnimeData_animeSearch[]>([]);
+  const [sectionsLoading, setSectionsLoading] = useState(true);
+
   // --- HELPER: MAP DATA ---
-  const mapAnimeData = (rawItem: any): AnimeData_animeSearch => ({
-    ...rawItem,
+  const mapAnimeData = useCallback((rawItem: any): AnimeData_animeSearch => ({
     id: rawItem.id,
-    anilist_id: rawItem.id,
-    title_romaji: rawItem.title_romaji || rawItem.name_romaji || rawItem.romaji,
-    name_romaji: rawItem.name_romaji || rawItem.romaji,
-    name_english: rawItem.name_english || rawItem.english,
-    name_native: rawItem.name_native || rawItem.native,
-    cover_image: rawItem.cover_image || rawItem.cover,
-    episodes: rawItem.airing_episodes || rawItem.episodes,
-    average_score: rawItem.average_score,
-    season: rawItem.season,
-    next_airing_ep: null,
-    
-  });
+    title: rawItem.title || { romaji: undefined, english: undefined, native: undefined },
+    coverImage: rawItem.coverImage || { large: '' },
+    episodes: rawItem.episodes,
+    averageScore: rawItem.averageScore ?? null,
+    popularity: rawItem.popularity,
+    season: rawItem.season || null,
+    nextAiringEpisode: rawItem.nextAiringEpisode || null,
+  }), []);
+
+  // --- EFFECT: LOAD SECTION DATA FROM API ---
+  useEffect(() => {
+    const loadSectionData = async () => {
+      setSectionsLoading(true);
+      try {
+        // Gọi song song tất cả 4 API sections
+        const [trendingRes, currentSeasonRes, nextSeasonRes, popularRes] = await Promise.allSettled([
+          searchService.getTrending('anime', 1, 6),
+          searchService.getCurrentSeasonal(1, 6),
+          searchService.getNextSeasonal(1, 6),
+          searchService.getPopular('anime', 1, 6),
+        ]);
+
+        // Trending Now
+        if (trendingRes.status === 'fulfilled') {
+          const data = trendingRes.value.data;
+          const items = data?.trending || data?.items || data || [];
+          setTrendingAnime(Array.isArray(items) ? items.map(mapAnimeData) : []);
+        }
+
+        // Popular This Season
+        if (currentSeasonRes.status === 'fulfilled') {
+          const data = currentSeasonRes.value.data;
+          const items = data?.items || data || [];
+          setPopularSeason(Array.isArray(items) ? items.map(mapAnimeData) : []);
+        }
+
+        // Upcoming Next Season
+        if (nextSeasonRes.status === 'fulfilled') {
+          const data = nextSeasonRes.value.data;
+          const items = data?.items || data || [];
+          setUpcomingNext(Array.isArray(items) ? items.map(mapAnimeData) : []);
+        }
+
+        // All Time Popular
+        if (popularRes.status === 'fulfilled') {
+          const data = popularRes.value.data;
+          const items = data?.trending || data?.items || data || [];
+          setAllTimePopular(Array.isArray(items) ? items.map(mapAnimeData) : []);
+        }
+      } catch (error) {
+        console.error("Failed to load section data:", error);
+      } finally {
+        setSectionsLoading(false);
+      }
+    };
+
+    loadSectionData();
+  }, [mapAnimeData]);
 
   // --- EFFECT: RESTORE STATE ---
   useEffect(() => {
@@ -137,16 +188,18 @@ export const useAnimeSearchPage = () => {
         if (keyword && keyword.trim() !== "") queryParams.q = keyword;
 
         const response = await searchService.searchAnime(queryParams);
-        const rawResults = response.data.data || response.data || [];
-        mappedResults = rawResults.map(mapAnimeData);
-        setCanLoadMore(rawResults.length === 20);
+        const responseData = response.data;
+        const rawResults = responseData?.items || responseData || [];
+        mappedResults = Array.isArray(rawResults) ? rawResults.map(mapAnimeData) : [];
+        setCanLoadMore(responseData?.pageInfo?.hasNextPage ?? rawResults.length === 20);
       } 
       // Case 2: Simple Name Search
       else if (keyword && keyword.trim() !== "") {
         const response = await searchService.searchAnime({ q: keyword });
-        const rawCandidates = response.data.data || response.data || [];
-        mappedResults = rawCandidates.map(mapAnimeData);
-        setCanLoadMore(false);
+        const responseData = response.data;
+        const rawResults = responseData?.items || responseData || [];
+        mappedResults = Array.isArray(rawResults) ? rawResults.map(mapAnimeData) : [];
+        setCanLoadMore(responseData?.pageInfo?.hasNextPage ?? false);
       }
 
       setSearchResults(mappedResults);
@@ -172,9 +225,10 @@ export const useAnimeSearchPage = () => {
       setCurrentFilters(null);
 
       try {
-        const response = await searchService.getTrending('ANIME');
-        const rawResults = response.data.data || response.data || [];
-        setSearchResults(rawResults.map(mapAnimeData));
+        const response = await searchService.getTrending('anime');
+        const responseData = response.data;
+        const rawResults = responseData?.trending || responseData?.items || responseData || [];
+        setSearchResults(Array.isArray(rawResults) ? rawResults.map(mapAnimeData) : []);
         setCanLoadMore(false);
       } catch (error) {
         console.error("Fetch trending failed:", error);
@@ -226,13 +280,14 @@ export const useAnimeSearchPage = () => {
       if (sort) queryParams.sort = sort;
 
       const response = await searchService.searchAnime(queryParams);
-      const rawResults = response.data.data || response.data || [];
-      const newMappedResults = rawResults.map(mapAnimeData);
+      const responseData = response.data;
+      const rawResults = responseData?.items || responseData || [];
+      const newMappedResults = Array.isArray(rawResults) ? rawResults.map(mapAnimeData) : [];
 
       setSearchResults((prev) => [...prev, ...newMappedResults]);
       setPage(nextPage);
 
-      if (rawResults.length < 20) setCanLoadMore(false);
+      setCanLoadMore(responseData?.pageInfo?.hasNextPage ?? rawResults.length >= 20);
     } catch (error) {
       console.error("Load more failed:", error);
     } finally {
@@ -248,10 +303,16 @@ export const useAnimeSearchPage = () => {
     viewTitle,
     canLoadMore,
     currentFilters,
+    // Section data (API-loaded)
+    trendingAnime,
+    popularSeason,
+    upcomingNext,
+    allTimePopular,
+    sectionsLoading,
     // Actions
     handleSearch,
     handleBackToHome,
     handleViewAllClick,
     handleLoadMore
   };
-};
+};

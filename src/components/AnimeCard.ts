@@ -1,59 +1,54 @@
 // src/utils/animeLogic.ts
 
-// 1. Định nghĩa Interface cho dữ liệu Anime đầu vào
+// 1. Định nghĩa Interface cho dữ liệu Anime đầu vào (Zentaku_BE camelCase)
 export interface AnimeData {
   id?: number | string;
-  anilist_id?: number | string;
   title?: {
     romaji?: string;
     english?: string;
     native?: string;
   };
-  title_romaji?: string;
-  name_romaji?: string;
-  name_native?: string;
-  name_english?: string;
   coverImage?: {
     extraLarge?: string;
     large?: string;
     medium?: string;
     color?: string;
   };
-  cover_image?: string;
-  episode_progress?: number;
+  progress?: number;
   episodes?: number;
-  next_airing_ep?: {
+  nextAiringEpisode?: {
     episode: number;
     timeUntilAiring: number;
+    airingAt?: number;
   };
 }
 
 // 2. Logic lấy tiêu đề theo ngôn ngữ
 export const getAnimeTitle = (anime: AnimeData, language: 'en' | 'jp' = 'en'): string => {
   if (language === 'jp') {
-    return anime.title?.native || anime.name_native || anime.title?.romaji || anime.name_romaji || anime.title_romaji || anime.title?.english || anime.name_english || "Unknown Title";
+    return anime.title?.native || anime.title?.romaji || anime.title?.english || "Unknown Title";
   } else {
-    return anime.title?.english || anime.name_english || anime.title?.romaji || anime.name_romaji || anime.title_romaji || anime.title?.native || anime.name_native || "Unknown Title";
+    return anime.title?.english || anime.title?.romaji || anime.title?.native || "Unknown Title";
   }
 };
 
 // 3. Logic lấy ID cho Link
 export const getAnimeLinkId = (anime: AnimeData): number | string => {
-  return anime.anilist_id || anime.id || "";
+  return anime.id || "";
 };
 
 // 4. Logic tính toán thông tin hiển thị (Watched hoặc Airing)
 export const getAnimeDisplayInfo = (anime: AnimeData): string | null => {
   // Case A: Đang xem dở (Watched progress)
-  if (anime.episode_progress !== undefined) {
-    const currentEp = anime.episode_progress;
+  if (anime.progress !== undefined && anime.progress > 0) {
+    const currentEp = anime.progress;
     const totalEp = anime.episodes || '?';
     return `Watched: ${currentEp} / ${totalEp}`;
   } 
   
   // Case B: Chuẩn bị chiếu tập mới (Next Airing)
-  if (anime.next_airing_ep) {
-    const { episode, timeUntilAiring } = anime.next_airing_ep;
+  if (anime.nextAiringEpisode) {
+    const { episode, timeUntilAiring } = anime.nextAiringEpisode;
     
     const days = Math.floor(timeUntilAiring / 86400);
     const hours = Math.floor((timeUntilAiring % 86400) / 3600);
