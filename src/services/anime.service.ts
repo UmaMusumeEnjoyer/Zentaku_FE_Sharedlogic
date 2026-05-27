@@ -84,8 +84,13 @@ export const animeService = {
     return Promise.resolve({ data: {} as any });
   },
 
-  getStaffById: async (_id: number | string): Promise<any> => {
-    console.warn("⚠️ getStaffById API is removed in Zentaku_BE.");
-    return Promise.resolve({ data: {} as any });
+  getStaffById: async (id: number | string): Promise<any> => {
+    const key = `staff:${id}:detail`;
+    const cached = getCached(key);
+    if (cached) return { data: cached };
+
+    const res = await apiClient.get(`/anilist/staff/${id}`);
+    setCached(key, res.data, TTL_DEFAULT);
+    return res;
   }
 };

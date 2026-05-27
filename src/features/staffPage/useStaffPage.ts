@@ -33,8 +33,9 @@ export const useStaffPage = (staffId: string | undefined): UseStaffPageReturn =>
                 setStaff(data);
 
                 // Logic nhóm vai diễn theo năm
-                const groupedRoles = data.media.reduce((acc: RolesByYear, role) => {
-                    const year = role.season_year ? String(role.season_year) : 'TBA';
+                const nodes = data.staffMedia?.nodes || [];
+                const groupedRoles = nodes.reduce((acc: RolesByYear, role) => {
+                    const year = role.seasonYear ? String(role.seasonYear) : 'TBA';
                     if (!acc[year]) {
                         acc[year] = [];
                     }

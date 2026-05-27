@@ -2,24 +2,22 @@
 
 export interface StaffMediaRole {
     id: number | string;
-    season_year: number | string | null;
-    cover_image: string;
-    title_romaji: string;
+    seasonYear: number | null;
+    coverImage: { large: string };
+    title: { romaji: string; english?: string; native?: string };
     format: string;
-    character_role?: string;
 }
 
 export interface Staff {
     id: number | string;
-    image: string;
-    name_full: string;
-    name_native: string;
-    date_of_birth?: string;
+    image: { large: string };
+    name: { full: string; native?: string };
+    dateOfBirth?: { year?: number; month?: number; day?: number };
     age?: number | string;
     gender?: string;
-    home_town?: string;
+    homeTown?: string;
     description?: string;
-    media: StaffMediaRole[];
+    staffMedia?: { nodes: StaffMediaRole[] };
 }
 
 export interface RolesByYear {
