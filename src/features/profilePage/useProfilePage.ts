@@ -183,8 +183,8 @@ export const useProfilePage = (
         userService.getUserFollowers(userProfile.id),
         userService.getUserFollowing(userProfile.id)
       ]);
-      setFollowers(followersRes.data?.data?.data || []);
-      setFollowing(followingRes.data?.data?.data || []);
+      setFollowers(followersRes.data?.data || []);
+      setFollowing(followingRes.data?.data || []);
     } catch (error) {
       console.error("Failed to fetch social data:", error);
       setFollowers([]);
