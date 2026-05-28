@@ -11,7 +11,9 @@
     "badges": {
       "title": "Badges",
       "staff": "STAFF"
-    }
+    },
+    "follow": "Follow",
+    "unfollow": "Unfollow"
   },
   "tabs": {
     "overview": "Overview",

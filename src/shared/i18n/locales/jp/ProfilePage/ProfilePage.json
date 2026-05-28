@@ -11,7 +11,9 @@
     "badges": {
       "title": "バッジ",
       "staff": "STAFF"
-    }
+    },
+    "follow": "フォローする",
+    "unfollow": "フォロー解除"
   },
   "tabs": {
     "overview": "概要",
