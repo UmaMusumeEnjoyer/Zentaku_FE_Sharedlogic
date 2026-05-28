@@ -179,26 +179,26 @@ export const useProfilePage = (
     if (!userProfile?.id) return;
     setSocialLoading(true);
     try {
-      const res = await userService.checkUserFollow(userProfile.id);
-      const data = res.data;
-      setFollowers(data.followers || []);
-      setFollowing(data.following || []);
-      setIsFollowing(data.isFollowed || false);
+      const [followersRes, followingRes] = await Promise.all([
+        userService.getUserFollowers(userProfile.id),
+        userService.getUserFollowing(userProfile.id)
+      ]);
+      setFollowers(followersRes.data?.data || []);
+      setFollowing(followingRes.data?.data || []);
     } catch (error) {
       console.error("Failed to fetch social data:", error);
       setFollowers([]);
       setFollowing([]);
-      setIsFollowing(false);
     } finally {
       setSocialLoading(false);
     }
   }, [userProfile?.id]);
 
   useEffect(() => {
-    if (activeTab === 'Social' && userProfile?.id) {
+    if (userProfile?.id) {
       fetchSocialData();
     }
-  }, [activeTab, userProfile?.id, fetchSocialData]);
+  }, [fetchSocialData, userProfile?.id]);
 
   // Load Initial Data based on Tab
   useEffect(() => {

@@ -322,6 +322,14 @@ export const userService = {
     return apiClient.get(`/follows/users/${targetUserId}`);
   },
 
+  getUserFollowers: (userId: string | number, page = 1, perPage = 20) => {
+    return apiClient.get(`/follows/users/${userId}/followers`, { params: { page, perPage } });
+  },
+
+  getUserFollowing: (userId: string | number, page = 1, perPage = 20) => {
+    return apiClient.get(`/follows/users/${userId}/following`, { params: { page, perPage } });
+  },
+
   // ===========================
   // HEATMAP ACTIVITY
   // ===========================
