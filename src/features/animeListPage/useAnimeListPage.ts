@@ -103,7 +103,15 @@ export const useAnimeListPage = (
     if (!listId) return;
     try {
       const res = await listService.getMembers(listId);
-      const memberList = res.data.data || res.data.members || [];
+      const rawMembers = Array.isArray(res.data) ? res.data : (res.data?.data || res.data?.members || []);
+      const memberList = rawMembers.map((m: any) => ({
+        ...m,
+        isOwner: m.isOwner !== undefined ? m.isOwner : m.is_owner,
+        permission: m.permission || (
+          (m.permission_level === 'owner' || m.isOwner || m.is_owner) ? 'owner' : 
+          (m.permission_level === 'edit' || m.permissionLevel === 'EDITOR') ? 'editor' : 'viewer'
+        )
+      }));
       setMembers(memberList);
 
       if (currentUsername) {
@@ -148,13 +156,22 @@ export const useAnimeListPage = (
     try {
       const res = await listService.getListDetail(listId);
       const data = res.data.data || res.data;
+      const isUserOwner = data.ownerUsername === currentUsername || listInfo.isOwner;
       
+      if (isUserOwner && currentUsername) {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem("permission_level", "owner");
+        }
+        setCurrentPermission("owner");
+      }
+
       setListInfo(prev => ({
         ...prev,
         name: data.name || data.list_name || prev.name,
         description: data.description !== undefined ? data.description : prev.description,
         privacy: data.privacy || (data.is_private ? 'private' : 'public') || prev.privacy,
-        color: data.color || data.bannerImage || prev.color
+        color: data.color || data.bannerImage || prev.color,
+        isOwner: isUserOwner
       }));
 
       const items = data.animeItems || data.anime_items || [];

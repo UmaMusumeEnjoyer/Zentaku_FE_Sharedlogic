@@ -112,7 +112,16 @@ export const useProfilePage = (
     if (!targetUsername) return;
     setListsLoading(true);
     listService.getUserLists(targetUsername)
-      .then((res) => setCustomLists(res.data?.lists || []))
+      .then((res) => {
+        const rawLists = Array.isArray(res.data) ? res.data : (res.data?.data || res.data?.lists || []);
+        const mappedLists = rawLists.map((l: any) => ({
+          ...l,
+          list_id: l.list_id || l.id,
+          list_name: l.list_name || l.name,
+          is_private: l.is_private !== undefined ? l.is_private : (l.privacy === 'PRIVATE' || l.privacy === 'private')
+        }));
+        setCustomLists(mappedLists);
+      })
       .catch((err) => console.error(err))
       .finally(() => setListsLoading(false));
   }, [targetUsername]);
@@ -123,7 +132,15 @@ export const useProfilePage = (
     try {
       const payload = { username: targetUsername, limit: 20, offset: 0 };
       const res = await listService.getListsLikedByUser(payload);
-      setLikedLists(res.data?.liked_lists || []);
+      const rawLikedLists = Array.isArray(res.data) ? res.data : (res.data?.data || res.data?.liked_lists || []);
+      const mappedLikedLists = rawLikedLists.map((l: any) => ({
+        ...l,
+        list_id: l.list_id || l.id || l.list?.id,
+        list_name: l.list_name || l.name || l.list?.name,
+        is_private: l.is_private !== undefined ? l.is_private : (l.privacy === 'PRIVATE' || l.privacy === 'private' || l.list?.privacy === 'PRIVATE'),
+        like_count: l.like_count !== undefined ? l.like_count : (l.likeCount || l.list?.likeCount || 0)
+      }));
+      setLikedLists(mappedLikedLists);
     } catch (error) {
       console.error("Failed to fetch liked lists:", error);
       setLikedLists([]);
