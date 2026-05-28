@@ -15,7 +15,7 @@ const mapListPayload = (data: any) => {
     name: data.list_name || data.name,
     description: data.description,
     privacy: privacy,
-    bannerImage: data.color || data.bannerImage,
+    bannerImage: data.bannerImage || data.color,
   };
 };
 
@@ -47,6 +47,15 @@ export const listService = {
   updateCustomList: (listId: string, listData: any) => {
     const payload = mapListPayload(listData);
     return apiClient.put(`/list/${listId}/update`, payload);
+  },
+
+  // --- Upload Banner ---
+  uploadBanner: (file: any) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return apiClient.post('/list/upload-banner', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
   },
 
   // --- List Detail (NEW) ---

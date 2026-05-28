@@ -54,7 +54,7 @@ export const useProfilePage = (
   // Create List Modal State
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newListData, setNewListData] = useState<NewListData>({
-    list_name: '', description: '', is_private: false, color: '#3db4f2'
+    list_name: '', description: '', is_private: false, color: '#3db4f2', bannerImage: '', bannerImageFile: null
   });
   const [creating, setCreating] = useState(false);
 
@@ -311,11 +311,24 @@ export const useProfilePage = (
     e.preventDefault();
     setCreating(true);
     try {
-      await listService.create(newListData);
+      let finalBannerImage = newListData.bannerImage;
+      
+      // If there's a file, upload it first
+      if (newListData.bannerImageFile) {
+        const uploadRes = await listService.uploadBanner(newListData.bannerImageFile);
+        finalBannerImage = uploadRes.data?.data?.url || uploadRes.data?.url || uploadRes.data || finalBannerImage;
+      }
+
+      await listService.create({
+        ...newListData,
+        bannerImage: finalBannerImage
+      });
+      
       setShowCreateModal(false);
-      setNewListData({ list_name: '', description: '', is_private: false, color: '#3db4f2' });
+      setNewListData({ list_name: '', description: '', is_private: false, color: '#3db4f2', bannerImage: '', bannerImageFile: null });
       fetchCustomLists(); // Reload list
     } catch (error) {
+      console.error(error);
       alert("Error creating list.");
     } finally {
       setCreating(false);
@@ -324,6 +337,14 @@ export const useProfilePage = (
 
   const handleNewListInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
+    if (type === 'file') {
+      const file = (e.target as HTMLInputElement).files?.[0] || null;
+      setNewListData(prev => ({
+        ...prev,
+        [name]: file
+      }));
+      return;
+    }
     const checked = (e.target as HTMLInputElement).checked;
     setNewListData(prev => ({
       ...prev,

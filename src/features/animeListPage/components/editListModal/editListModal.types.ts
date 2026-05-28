@@ -12,4 +12,6 @@ export interface ListFormData {
   description: string;
   is_private: boolean;
   color: string;
+  bannerImage?: string;
+  bannerImageFile?: File | null;
 }

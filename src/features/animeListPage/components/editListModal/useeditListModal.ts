@@ -13,7 +13,9 @@ export const useEditListModal = (
     list_name: "",
     description: "",
     is_private: false,
-    color: "#000000"
+    color: "#000000",
+    bannerImage: "",
+    bannerImageFile: null
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -25,7 +27,9 @@ export const useEditListModal = (
         list_name: initialData.list_name || "",
         description: initialData.description || "",
         is_private: initialData.is_private || false,
-        color: initialData.color || "#3db4f2"
+        color: initialData.color || "#3db4f2",
+        bannerImage: initialData.bannerImage || "",
+        bannerImageFile: null
       });
     }
   }, [isOpen, initialData]);
@@ -33,7 +37,7 @@ export const useEditListModal = (
   // Handler: Input change
   const handleInputChange = useCallback((
     name: string, 
-    value: string | boolean
+    value: string | boolean | File | null
   ) => {
     setFormData(prev => ({
       ...prev,
@@ -45,8 +49,19 @@ export const useEditListModal = (
   const handleSubmit = useCallback(async () => {
     setIsSubmitting(true);
     try {
-      await listService.updateCustomList(listId, formData);
-      onUpdateSuccess(formData);
+      let finalBannerImage = formData.bannerImage;
+      if (formData.bannerImageFile) {
+        const uploadRes = await listService.uploadBanner(formData.bannerImageFile);
+        finalBannerImage = uploadRes.data?.data?.url || uploadRes.data?.url || uploadRes.data || finalBannerImage;
+      }
+      
+      const payload = {
+        ...formData,
+        bannerImage: finalBannerImage
+      };
+
+      await listService.updateCustomList(listId, payload);
+      onUpdateSuccess(payload);
       onClose();
     } catch (error) {
       console.error("Failed to update list:", error);

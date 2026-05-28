@@ -170,7 +170,8 @@ export const useAnimeListPage = (
         name: data.name || data.list_name || prev.name,
         description: data.description !== undefined ? data.description : prev.description,
         privacy: data.privacy || (data.is_private ? 'private' : 'public') || prev.privacy,
-        color: data.color || data.bannerImage || prev.color,
+        color: data.color || prev.color,
+        bannerImage: data.bannerImage || data.banner_image || prev.bannerImage,
         isOwner: isUserOwner
       }));
 

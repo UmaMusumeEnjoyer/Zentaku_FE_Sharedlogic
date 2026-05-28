@@ -17,6 +17,7 @@ export interface CustomList {
   description?: string;
   is_private: boolean;
   like_count?: number;
+  bannerImage?: string | null;
   [key: string]: any;
 }
 
@@ -26,6 +27,8 @@ export interface NewListData {
   description: string;
   is_private: boolean;
   color: string;
+  bannerImage?: string;
+  bannerImageFile?: File | null;
 }
 
 // Props (hiện tại trang này nhận tham số từ URL nên props rỗng)

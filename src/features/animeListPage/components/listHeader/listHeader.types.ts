@@ -9,6 +9,7 @@ export interface ListInfo {
   is_private: boolean;
   is_owner: boolean;
   color?: string;
+  bannerImage?: string;
 }
 
 export interface LikerUser_listHeader {

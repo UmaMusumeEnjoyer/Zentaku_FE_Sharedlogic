@@ -8,6 +8,7 @@ export interface ListInfo {
   privacy: 'public' | 'private';
   color: string;
   isOwner: boolean;
+  bannerImage?: string;
 }
 
 export interface GroupedAnime {
