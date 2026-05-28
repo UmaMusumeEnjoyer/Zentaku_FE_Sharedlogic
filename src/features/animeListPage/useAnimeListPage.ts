@@ -197,8 +197,14 @@ export const useAnimeListPage = (
         const anilistId = item.anilistId || item.anilist_id || item.mediaId;
         const detail = animeDetailsCache.current.get(anilistId);
         if (detail) {
+          const mappedCoverImage = typeof detail.coverImage === 'string'
+            ? { large: detail.coverImage }
+            : detail.coverImage;
+
           processedAnimeList.push({
             ...detail,
+            id: detail.idAnilist || detail.id || anilistId,
+            coverImage: mappedCoverImage,
             _added_by: item.addedBy || item.added_by,
             _added_date: item.addedAt || item.added_date,
             _note: item.note,
