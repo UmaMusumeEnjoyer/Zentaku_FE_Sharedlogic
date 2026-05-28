@@ -44,6 +44,13 @@ export const useAddAnimeModal = (
       episodes: rawItem.episodes || rawItem.airing_episodes || rawItem.media?.episodes,
       average_score: rawItem.averageScore || rawItem.average_score || rawItem.media?.averageScore,
       season: rawItem.season || rawItem.media?.season,
+      title: {
+        english: rawItem.title_english || rawItem.title?.english || rawItem.name_english || rawItem.media?.title?.english,
+        romaji: rawItem.romaji || rawItem.title_romaji || rawItem.name_romaji || rawItem.media?.title?.romaji,
+      },
+      coverImage: {
+        large: rawItem.cover_image || rawItem.coverImage?.large || rawItem.cover || rawItem.media?.coverImage?.large,
+      }
     };
   }, []);
 
