@@ -103,7 +103,7 @@ export const useAnimeListPage = (
     if (!listId) return;
     try {
       const res = await listService.getMembers(listId);
-      const memberList = res.data.members || [];
+      const memberList = res.data.data || res.data.members || [];
       setMembers(memberList);
 
       if (currentUsername) {
@@ -131,7 +131,7 @@ export const useAnimeListPage = (
     if (listInfo.isOwner && listId) {
       try {
         const res = await listService.getListRequests(listId);
-        setPendingRequests(res.data.requests || []);
+        setPendingRequests(res.data.data || res.data.requests || []);
       } catch (err) {
         console.error("Failed to fetch requests", err);
       }
@@ -146,19 +146,19 @@ export const useAnimeListPage = (
     setSelectedAnimeIds([]);
 
     try {
-      const res = await listService.getCustomListItems(listId);
-      const data = res.data;
+      const res = await listService.getListDetail(listId);
+      const data = res.data.data || res.data;
       
       setListInfo(prev => ({
         ...prev,
         name: data.name || data.list_name || prev.name,
         description: data.description !== undefined ? data.description : prev.description,
         privacy: data.privacy || (data.is_private ? 'private' : 'public') || prev.privacy,
-        color: data.color || prev.color
+        color: data.color || data.bannerImage || prev.color
       }));
 
-      const items = data.anime_items || [];
-      const uniqueIds = Array.from(new Set(items.map((item: any) => item.anilist_id))) as (string | number)[];
+      const items = data.animeItems || data.anime_items || [];
+      const uniqueIds = Array.from(new Set(items.map((item: any) => item.mediaId || item.anilist_id))) as (string | number)[];
       const idsToFetch = uniqueIds.filter(id => !animeDetailsCache.current.has(id));
 
       if (idsToFetch.length > 0) {
@@ -177,14 +177,15 @@ export const useAnimeListPage = (
 
       const processedAnimeList: any[] = [];
       items.forEach((item: any) => {
-        const detail = animeDetailsCache.current.get(item.anilist_id);
+        const anilistId = item.mediaId || item.anilist_id;
+        const detail = animeDetailsCache.current.get(anilistId);
         if (detail) {
           processedAnimeList.push({
             ...detail,
-            _added_by: item.added_by,
-            _added_date: item.added_date,
+            _added_by: item.addedBy || item.added_by,
+            _added_date: item.addedAt || item.added_date,
             _note: item.note,
-            _anilist_id: item.anilist_id
+            _anilist_id: anilistId
           });
         }
       });
@@ -307,12 +308,12 @@ export const useAnimeListPage = (
   const handleAddAnime = useCallback(async (anime: any) => {
     try {
       const payload = {
-        anilist_id: anime.anilist_id || anime.media?.id || anime.id,
+        anilistId: anime.anilist_id || anime.media?.id || anime.id,
         note: ""
       };
       await listService.addAnimeToCustomList(listId, payload);
       
-      const animeId = payload.anilist_id;
+      const animeId = payload.anilistId;
       if (!animeDetailsCache.current.has(animeId)) {
           animeDetailsCache.current.set(animeId, anime); 
       }
@@ -322,7 +323,7 @@ export const useAnimeListPage = (
         _added_by: currentUsername,
         _added_date: new Date().toISOString(),
         _note: "",
-        _anilist_id: payload.anilist_id
+        _anilist_id: payload.anilistId
       };
     
       setGroupedAnime(prev => {

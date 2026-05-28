@@ -99,17 +99,17 @@ export const listService = {
     // Chuyển can_edit thành permission_level
     const payload = {
       username: permissionData.username,
-      permission_level: permissionData.can_edit ? 'EDIT' : 'VIEW'
+      permission: permissionData.can_edit ? 'EDITOR' : 'VIEWER'
     };
     return apiClient.put(`/list/member/${listId}/permission`, payload);
   },
 
   requestJoin: (listId: string, message: string) => {
-    return apiClient.post(`/list/${listId}/request-join`, { request_type: "join", message });
+    return apiClient.post(`/list/${listId}/request-join`, { message });
   },
 
   requestEdit: (listId: string, message: string) => {
-    return apiClient.post(`/list/${listId}/request-edit`, { request_type: "edit_permission", message });
+    return apiClient.post(`/list/${listId}/request-edit`, { message });
   },
 
   getListRequests: (listId: string) => {
@@ -119,16 +119,14 @@ export const listService = {
   respondToJoinRequest: (listId: string | number, requestId: string | number, action: any) => {
     const actionStr = typeof action === 'string' ? action.toUpperCase() : (action?.action || '').toUpperCase();
     return apiClient.post(`/list/${listId}/join-requests/${requestId}/respond`, {
-      action: actionStr, 
-      can_edit: false 
+      action: actionStr
     });
   },
 
   respondToEditRequest: (listId: string | number, requestId: string | number, action: any) => {
     const actionStr = typeof action === 'string' ? action.toUpperCase() : (action?.action || '').toUpperCase();
     return apiClient.post(`/list/${listId}/edit-requests/${requestId}/respond`, {
-      action: actionStr, 
-      can_edit: true
+      action: actionStr
     });
   },
 
