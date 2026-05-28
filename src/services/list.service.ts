@@ -175,8 +175,7 @@ export const listService = {
     return Promise.resolve({ data: [] });
   },
 
-  getListLikers: (_listId: string, _data: any): Promise<any> => {
-    console.warn("⚠️ getListLikers API is removed in Zentaku_BE. Returning mock.");
-    return Promise.resolve({ data: {} as any });
+  getListLikers: (listId: string, data: any): Promise<any> => {
+    return apiClient.get(`/list/${listId}/likers`, { params: data });
   },
 };

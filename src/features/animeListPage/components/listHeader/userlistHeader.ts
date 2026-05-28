@@ -19,8 +19,8 @@ export const useListHeader = (listId: string, isOwner: boolean) => {
     const fetchLikeStatus = async () => {
       try {
         const res = await listService.getListLikeStatus(listId);
-        setIsLiked(res.data.is_liked);
-        setLikeCount(res.data.like_count);
+        setIsLiked(res.data?.data?.likedByMe || res.data?.likedByMe || false);
+        setLikeCount(res.data?.data?.likeCount || res.data?.likeCount || 0);
       } catch (error) {
         console.error("Failed to fetch like status", error);
       }
@@ -38,13 +38,12 @@ export const useListHeader = (listId: string, isOwner: boolean) => {
     
     // Optimistic update
     setIsLiked(!prevIsLiked);
-    setLikeCount(prevIsLiked ? prevCount - 1 : prevCount + 1);
+    setLikeCount(prevIsLiked ? Math.max(0, prevCount - 1) : prevCount + 1);
     setIsLoadingLike(true);
 
     try {
-      const res = await listService.toggleLike(listId);
-      setIsLiked(res.data.is_liked);
-      setLikeCount(res.data.like_count);
+      await listService.toggleLike(listId);
+      // Dựa hoàn toàn vào optimistic update vì backend chỉ trả về message
     } catch (error) {
       // Rollback on error
       setIsLiked(prevIsLiked);
@@ -63,9 +62,10 @@ export const useListHeader = (listId: string, isOwner: boolean) => {
       const payload = { limit: 20 };
       const res = await listService.getListLikers(listId, payload);
       
-      setLikersList(res.data.likers || []);
-      setShowingCount(res.data.showing || 0);
-      setLikeCount(res.data.like_count);
+      const rawData = res.data?.data || res.data || {};
+      setLikersList(rawData.likers || []);
+      setShowingCount(rawData.showing || 0);
+      setLikeCount(rawData.like_count || rawData.likeCount || 0);
       
       setShowLikersModal(true);
     } catch (error) {
