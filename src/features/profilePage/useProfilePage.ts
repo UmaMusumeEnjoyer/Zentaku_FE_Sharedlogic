@@ -156,7 +156,25 @@ export const useProfilePage = (
     }
   }, [activeTab, targetUsername]);
 
-  // Fetch Social Data
+  // Fetch Follow Status independently for Sidebar
+  const fetchFollowStatus = useCallback(async () => {
+    if (!userProfile?.id || isOwnProfile) return;
+    try {
+      const res = await userService.checkUserFollow(userProfile.id);
+      setIsFollowing(res.data?.isFollowed || false);
+    } catch (error) {
+      console.error("Failed to fetch follow status:", error);
+      setIsFollowing(false);
+    }
+  }, [userProfile?.id, isOwnProfile]);
+
+  useEffect(() => {
+    if (userProfile?.id && !isOwnProfile) {
+      fetchFollowStatus();
+    }
+  }, [fetchFollowStatus, userProfile?.id, isOwnProfile]);
+
+  // Fetch Social Data (For Social Tab)
   const fetchSocialData = useCallback(async () => {
     if (!userProfile?.id) return;
     setSocialLoading(true);
@@ -165,7 +183,7 @@ export const useProfilePage = (
       const data = res.data;
       setFollowers(data.followers || []);
       setFollowing(data.following || []);
-      setIsFollowing(data.isFollowing || false);
+      setIsFollowing(data.isFollowed || false);
     } catch (error) {
       console.error("Failed to fetch social data:", error);
       setFollowers([]);
@@ -314,7 +332,7 @@ export const useProfilePage = (
         await userService.followUser(targetId);
       }
       // Re-fetch to guarantee accuracy
-      fetchSocialData();
+      fetchFollowStatus();
     } catch (error) {
       console.error("Failed to toggle follow status:", error);
       // Revert optimistic update
