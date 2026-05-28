@@ -47,7 +47,7 @@ const PUBLIC_ROUTES = ['/auth/login', '/auth/register', '/auth/verify-email', '/
 /**
  * Helper: Lấy token từ storage (SharedConfig.storage hoặc localStorage)
  */
-async function getStorageItem(key: string): Promise<string | null> {
+export async function getStorageItem(key: string): Promise<string | null> {
   try {
     if (SharedConfig.storage) {
       return await SharedConfig.storage.getItem(key);

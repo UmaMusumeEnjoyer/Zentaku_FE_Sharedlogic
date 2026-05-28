@@ -23,6 +23,26 @@ export const chatService = {
   },
 
   // ===========================
+  // PRIVATE CHANNELS (DMs)
+  // ===========================
+
+  /**
+   * Lấy danh sách các cuộc trò chuyện riêng tư
+   * GET /channels/private
+   */
+  getPrivateChannels: () => {
+    return apiClient.get('/channels/private');
+  },
+
+  /**
+   * Tạo hoặc lấy private channel với một user
+   * POST /channels/private
+   */
+  createOrGetPrivateChannel: (recipientId: string | number) => {
+    return apiClient.post('/channels/private', { recipientId });
+  },
+
+  // ===========================
   // MESSAGES
   // ===========================
 
@@ -45,9 +65,9 @@ export const chatService = {
 
   /**
    * Cập nhật trạng thái đã đọc (read cursor) trong một channel
-   * POST /channels/{channelId}/read-cursor
+   * PATCH /channels/{channelId}/read-cursor
    */
   updateReadCursor: (channelId: string | number, data: any) => {
-    return apiClient.post(`/channels/${channelId}/read-cursor`, data);
+    return apiClient.patch(`/channels/${channelId}/read-cursor`, data);
   },
 };
