@@ -175,7 +175,7 @@ export const useAnimeListPage = (
       }));
 
       const items = data.animeItems || data.anime_items || [];
-      const uniqueIds = Array.from(new Set(items.map((item: any) => item.mediaId || item.anilist_id))) as (string | number)[];
+      const uniqueIds = Array.from(new Set(items.map((item: any) => item.anilistId || item.anilist_id || item.mediaId))) as (string | number)[];
       const idsToFetch = uniqueIds.filter(id => !animeDetailsCache.current.has(id));
 
       if (idsToFetch.length > 0) {
@@ -194,7 +194,7 @@ export const useAnimeListPage = (
 
       const processedAnimeList: any[] = [];
       items.forEach((item: any) => {
-        const anilistId = item.mediaId || item.anilist_id;
+        const anilistId = item.anilistId || item.anilist_id || item.mediaId;
         const detail = animeDetailsCache.current.get(anilistId);
         if (detail) {
           processedAnimeList.push({
