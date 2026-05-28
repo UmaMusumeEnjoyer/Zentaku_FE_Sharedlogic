@@ -86,7 +86,10 @@ export const useAddAnimeModal = (
 
     try {
       const response = await searchService.searchAnime({ q: searchTerm });
-      const rawCandidates = response.data?.data || response.data || [];
+      const resData = response.data || {};
+      const rawCandidates = Array.isArray(resData) 
+        ? resData 
+        : (resData.items || resData.data || []);
       const mappedResults = rawCandidates.map(mapAnimeData);
       setGlobalResults(mappedResults);
     } catch (error) {
