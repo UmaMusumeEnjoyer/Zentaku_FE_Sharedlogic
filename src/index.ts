@@ -11,6 +11,7 @@ export * from './services/streaming.service';
 export * from './services/media.service';
 export * from './services/chat.service';
 export * from './services/socket.service';
+export * from './services/watchParty.service';
 
 // Export features
 export * from './features/home';
@@ -24,7 +25,7 @@ export * from './features/loginHomePage';
 export * from './features/animeListSearch';
 export * from './features/profilePage';
 export * from './features/animeListPage';
-
+export * from './features/watchAlong';
 // Export i18n configuration và translations
 export * from './shared/i18n';
 export { default as commonEn } from './shared/i18n/locales/en/common.json';
