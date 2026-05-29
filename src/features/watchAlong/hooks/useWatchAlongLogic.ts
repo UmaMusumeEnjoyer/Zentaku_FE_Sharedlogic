@@ -88,6 +88,7 @@ export const useWatchAlongLogic = (roomId: string, currentUserId: string | null)
         setRoom(prev => prev ? {
           ...prev,
           currentSourceUrl: data.currentSourceUrl,
+          messages: data.messages || prev.messages || [],
           settings: data.settings,
           isPlaying: data.isPlaying,
           currentTimestamp: data.currentTimestamp
@@ -100,30 +101,38 @@ export const useWatchAlongLogic = (roomId: string, currentUserId: string | null)
       }
     };
 
+    const handleMessageCreated = (data: any) => {
+      if (data && data.channelId === roomId) {
+        setRoom(prev => prev ? {
+          ...prev,
+          messages: [...(prev.messages || []), data]
+        } : null);
+      }
+    };
+
     socketService.on(WATCH_ALONG_EVENTS.PLAYBACK_STATE_CHANGED, handlePlaybackStateChanged);
     socketService.on(WATCH_ALONG_EVENTS.SOURCE_CHANGED, handleSourceChanged);
+    socketService.on('message.created', handleMessageCreated);
 
     return () => {
       socketService.off(WATCH_ALONG_EVENTS.PLAYBACK_STATE_CHANGED, handlePlaybackStateChanged);
       socketService.off(WATCH_ALONG_EVENTS.SOURCE_CHANGED, handleSourceChanged);
+      socketService.off('message.created', handleMessageCreated);
     };
   }, [roomId]);
 
   // Actions
   const play = useCallback((timestamp?: number) => {
-    console.log('[WatchAlongLogic] play action called. isHost:', isHost, 'roomId:', roomId, 'timestamp:', timestamp);
     if (!isHost || !roomId) return;
     socketService.emit(WATCH_ALONG_EVENTS.PLAYBACK_PLAY, { channelId: roomId, timestamp });
   }, [isHost, roomId]);
 
   const pause = useCallback((timestamp?: number) => {
-    console.log('[WatchAlongLogic] pause action called. isHost:', isHost, 'roomId:', roomId, 'timestamp:', timestamp);
     if (!isHost || !roomId) return;
     socketService.emit(WATCH_ALONG_EVENTS.PLAYBACK_PAUSE, { channelId: roomId, timestamp });
   }, [isHost, roomId]);
 
   const seek = useCallback((timestamp: number) => {
-    console.log('[WatchAlongLogic] seek action called. isHost:', isHost, 'roomId:', roomId, 'timestamp:', timestamp);
     if (!isHost || !roomId) return;
     socketService.emit(WATCH_ALONG_EVENTS.PLAYBACK_SEEK, { channelId: roomId, timestamp });
   }, [isHost, roomId]);
@@ -132,6 +141,11 @@ export const useWatchAlongLogic = (roomId: string, currentUserId: string | null)
     if (!isHost || !roomId) return;
     socketService.emit(WATCH_ALONG_EVENTS.CHANGE_EPISODE, { channelId: roomId, newSourceUrl, newEpisodeNumber, subUrl, referer });
   }, [isHost, roomId]);
+
+  const sendMessage = useCallback((content: string) => {
+    if (!roomId || !content.trim()) return;
+    socketService.emit('message.send', { channelId: roomId, content, attachments: [] });
+  }, [roomId]);
 
   return {
     room,
@@ -144,6 +158,7 @@ export const useWatchAlongLogic = (roomId: string, currentUserId: string | null)
       pause,
       seek,
       changeEpisode,
+      sendMessage
     }
   };
 };

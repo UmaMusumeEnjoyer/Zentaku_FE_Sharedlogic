@@ -29,15 +29,14 @@ class SocketService {
     });
 
     this.socket.on('connect', () => {
-      console.log('Socket.IO connected', this.socket?.id);
+      // Connect logic
     });
 
     this.socket.on('disconnect', () => {
-      console.log('Socket.IO disconnected');
+      // Disconnect logic
     });
 
     this.socket.on('message', (envelope: any) => {
-      console.log('[SocketService] Received message:', envelope);
       const { event, data } = envelope;
       if (event) {
         this.emitLocal(event, data);
@@ -54,7 +53,6 @@ class SocketService {
 
   emit(event: string, data: any) {
     if (!this.socket?.connected) {
-      console.warn('Cannot emit, socket not connected');
       return;
     }
 
@@ -77,7 +75,7 @@ class SocketService {
       timestamp: Date.now(),
       data,
     };
-    console.log('[SocketService] Emitting event:', event, data);
+
     this.socket.emit('message', envelope);
   }
 

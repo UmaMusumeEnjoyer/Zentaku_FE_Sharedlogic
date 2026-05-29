@@ -5,7 +5,8 @@ export interface WatchRoom {
   isPlaying: boolean;
   currentTimestamp: number;
   currentSourceUrl?: string | null;
-  playlistQueue: any[];
+  playlistQueue?: any[];
+  messages?: any[];
   settings?: Record<string, any>;
   lastSyncedAt: string;
 }
