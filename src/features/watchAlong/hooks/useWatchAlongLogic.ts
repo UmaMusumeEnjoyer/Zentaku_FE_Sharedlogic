@@ -35,11 +35,19 @@ export const useWatchAlongLogic = (roomId: string, currentUserId: string | null)
             updatedAt: Date.now(),
           });
         }
-        
+
         // 2. Connect socket and join the Socket.IO room for broadcasts
         await socketService.connect();
-        socketService.emit('room.join', { channelId: roomId });
 
+        const joinRoom = () => {
+          socketService.emit('room.join', { channelId: roomId });
+        };
+
+        if (socketService.isConnected) {
+          joinRoom();
+        } else {
+          socketService.on('connection.ready', joinRoom);
+        }
       } catch (err: any) {
         if (mounted) {
           setError(err.message || 'Failed to join watch room');
@@ -77,9 +85,9 @@ export const useWatchAlongLogic = (roomId: string, currentUserId: string | null)
 
     const handleSourceChanged = (data: any) => {
       if (data && data.channelId === roomId) {
-        setRoom(prev => prev ? { 
-          ...prev, 
-          currentSourceUrl: data.currentSourceUrl, 
+        setRoom(prev => prev ? {
+          ...prev,
+          currentSourceUrl: data.currentSourceUrl,
           settings: data.settings,
           isPlaying: data.isPlaying,
           currentTimestamp: data.currentTimestamp
@@ -103,23 +111,26 @@ export const useWatchAlongLogic = (roomId: string, currentUserId: string | null)
 
   // Actions
   const play = useCallback((timestamp?: number) => {
+    console.log('[WatchAlongLogic] play action called. isHost:', isHost, 'roomId:', roomId, 'timestamp:', timestamp);
     if (!isHost || !roomId) return;
-    socketService.emit(WATCH_ALONG_EVENTS.PLAYBACK_PLAY, { channelId: roomId, atTimestamp: timestamp });
+    socketService.emit(WATCH_ALONG_EVENTS.PLAYBACK_PLAY, { channelId: roomId, timestamp });
   }, [isHost, roomId]);
 
   const pause = useCallback((timestamp?: number) => {
+    console.log('[WatchAlongLogic] pause action called. isHost:', isHost, 'roomId:', roomId, 'timestamp:', timestamp);
     if (!isHost || !roomId) return;
-    socketService.emit(WATCH_ALONG_EVENTS.PLAYBACK_PAUSE, { channelId: roomId, atTimestamp: timestamp });
+    socketService.emit(WATCH_ALONG_EVENTS.PLAYBACK_PAUSE, { channelId: roomId, timestamp });
   }, [isHost, roomId]);
 
   const seek = useCallback((timestamp: number) => {
+    console.log('[WatchAlongLogic] seek action called. isHost:', isHost, 'roomId:', roomId, 'timestamp:', timestamp);
     if (!isHost || !roomId) return;
-    socketService.emit(WATCH_ALONG_EVENTS.PLAYBACK_SEEK, { channelId: roomId, toTimestamp: timestamp });
+    socketService.emit(WATCH_ALONG_EVENTS.PLAYBACK_SEEK, { channelId: roomId, timestamp });
   }, [isHost, roomId]);
 
-  const changeEpisode = useCallback((newSourceUrl: string, newEpisodeNumber?: number) => {
+  const changeEpisode = useCallback((newSourceUrl: string, newEpisodeNumber?: number, subUrl?: string | null, referer?: string | null) => {
     if (!isHost || !roomId) return;
-    socketService.emit(WATCH_ALONG_EVENTS.CHANGE_EPISODE, { channelId: roomId, newSourceUrl, newEpisodeNumber });
+    socketService.emit(WATCH_ALONG_EVENTS.CHANGE_EPISODE, { channelId: roomId, newSourceUrl, newEpisodeNumber, subUrl, referer });
   }, [isHost, roomId]);
 
   return {

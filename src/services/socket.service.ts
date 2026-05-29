@@ -7,6 +7,10 @@ class SocketService {
   private socket: Socket | null = null;
   private listeners: Map<string, Function[]> = new Map();
 
+  get isConnected(): boolean {
+    return !!this.socket?.connected;
+  }
+
   async connect() {
     if (this.socket?.connected) return;
 
@@ -33,6 +37,7 @@ class SocketService {
     });
 
     this.socket.on('message', (envelope: any) => {
+      console.log('[SocketService] Received message:', envelope);
       const { event, data } = envelope;
       if (event) {
         this.emitLocal(event, data);
@@ -65,13 +70,15 @@ class SocketService {
     };
 
     // BE uses strict EventEnvelope format
-    this.socket.emit('message', {
+    const envelope = {
       event,
       version: '1.0',
       requestId: generateUUID(),
       timestamp: Date.now(),
       data,
-    });
+    };
+    console.log('[SocketService] Emitting event:', event, data);
+    this.socket.emit('message', envelope);
   }
 
   // Local event emitter for components to subscribe
