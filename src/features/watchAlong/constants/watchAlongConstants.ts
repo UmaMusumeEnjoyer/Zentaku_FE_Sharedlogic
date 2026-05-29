@@ -6,4 +6,11 @@ export const WATCH_ALONG_EVENTS = {
   PLAYBACK_STATE_CHANGED: 'playback.state.changed',
   CHANGE_EPISODE: 'playback.change_episode',
   SOURCE_CHANGED: 'playback.source.changed',
+  ROOM_SNAPSHOT: 'room.snapshot',
+  PRESENCE_JOINED: 'presence.joined',
+  PRESENCE_LEFT: 'presence.left',
+  PRESENCE_KICKED: 'presence.kicked',
+  ROOM_KICK: 'room.kick',
+  ROOM_JOIN: 'room.join',
+  ROOM_LEAVE: 'room.leave',
 };

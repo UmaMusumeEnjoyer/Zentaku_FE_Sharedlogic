@@ -4,7 +4,11 @@ import { socketService } from '../../../services/socket.service';
 import { WATCH_ALONG_EVENTS } from '../constants/watchAlongConstants';
 import type { WatchRoom } from '../types/watchAlong.types';
 
-export const useWatchAlongLogic = (roomId: string, currentUserId: string | null) => {
+export const useWatchAlongLogic = (
+  roomId: string,
+  currentUserId: string | null,
+  onKicked?: () => void
+) => {
   const [room, setRoom] = useState<WatchRoom | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -110,16 +114,71 @@ export const useWatchAlongLogic = (roomId: string, currentUserId: string | null)
       }
     };
 
+    const handleRoomSnapshot = (data: any) => {
+      if (data && data.channelId === roomId) {
+        setRoom(prev => prev ? {
+          ...prev,
+          participants: data.participants || []
+        } : null);
+      }
+    };
+
+    const handlePresenceJoined = (data: any) => {
+      if (data && data.channelId === roomId) {
+        setRoom(prev => {
+          if (!prev) return null;
+          const currentParticipants = prev.participants || [];
+          // Avoid duplicates
+          if (currentParticipants.some(p => p.userId === data.userId)) {
+            return prev;
+          }
+          return {
+            ...prev,
+            participants: [...currentParticipants, { userId: data.userId, displayName: data.displayName, avatar: data.avatar, role: 'member' }]
+          };
+        });
+      }
+    };
+
+    const handlePresenceLeft = (data: any) => {
+      if (data && data.channelId === roomId) {
+        setRoom(prev => {
+          if (!prev) return null;
+          const currentParticipants = prev.participants || [];
+          return {
+            ...prev,
+            participants: currentParticipants.filter(p => p.userId !== data.userId)
+          };
+        });
+      }
+    };
+
+    const handlePresenceKicked = (data: any) => {
+      if (data && data.channelId === roomId) {
+        if (onKicked) {
+          onKicked();
+        }
+      }
+    };
+
     socketService.on(WATCH_ALONG_EVENTS.PLAYBACK_STATE_CHANGED, handlePlaybackStateChanged);
     socketService.on(WATCH_ALONG_EVENTS.SOURCE_CHANGED, handleSourceChanged);
     socketService.on('message.created', handleMessageCreated);
+    socketService.on(WATCH_ALONG_EVENTS.ROOM_SNAPSHOT, handleRoomSnapshot);
+    socketService.on(WATCH_ALONG_EVENTS.PRESENCE_JOINED, handlePresenceJoined);
+    socketService.on(WATCH_ALONG_EVENTS.PRESENCE_LEFT, handlePresenceLeft);
+    socketService.on(WATCH_ALONG_EVENTS.PRESENCE_KICKED, handlePresenceKicked);
 
     return () => {
       socketService.off(WATCH_ALONG_EVENTS.PLAYBACK_STATE_CHANGED, handlePlaybackStateChanged);
       socketService.off(WATCH_ALONG_EVENTS.SOURCE_CHANGED, handleSourceChanged);
       socketService.off('message.created', handleMessageCreated);
+      socketService.off(WATCH_ALONG_EVENTS.ROOM_SNAPSHOT, handleRoomSnapshot);
+      socketService.off(WATCH_ALONG_EVENTS.PRESENCE_JOINED, handlePresenceJoined);
+      socketService.off(WATCH_ALONG_EVENTS.PRESENCE_LEFT, handlePresenceLeft);
+      socketService.off(WATCH_ALONG_EVENTS.PRESENCE_KICKED, handlePresenceKicked);
     };
-  }, [roomId]);
+  }, [roomId, currentUserId, onKicked]);
 
   // Actions
   const play = useCallback((timestamp?: number) => {
@@ -136,6 +195,19 @@ export const useWatchAlongLogic = (roomId: string, currentUserId: string | null)
     if (!isHost || !roomId) return;
     socketService.emit(WATCH_ALONG_EVENTS.PLAYBACK_SEEK, { channelId: roomId, timestamp });
   }, [isHost, roomId]);
+
+  const leaveRoom = useCallback(() => {
+    if (socketService.isConnected) {
+      socketService.emit(WATCH_ALONG_EVENTS.ROOM_LEAVE, { channelId: roomId });
+    }
+    setRoom(null);
+  }, [roomId]);
+
+  const kickParticipant = useCallback((targetUserId: string) => {
+    if (socketService.isConnected && isHost) {
+      socketService.emit(WATCH_ALONG_EVENTS.ROOM_KICK, { channelId: roomId, targetUserId });
+    }
+  }, [roomId, isHost]);
 
   const changeEpisode = useCallback((newSourceUrl: string, newEpisodeNumber?: number, subUrl?: string | null, referer?: string | null) => {
     if (!isHost || !roomId) return;
@@ -158,7 +230,9 @@ export const useWatchAlongLogic = (roomId: string, currentUserId: string | null)
       pause,
       seek,
       changeEpisode,
-      sendMessage
+      sendMessage,
+      leaveRoom,
+      kickParticipant
     }
   };
 };

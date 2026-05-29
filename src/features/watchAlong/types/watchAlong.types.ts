@@ -8,12 +8,14 @@ export interface WatchRoom {
   playlistQueue?: any[];
   messages?: any[];
   settings?: Record<string, any>;
+  participants?: WatchParticipant[];
   lastSyncedAt: string;
 }
 
 export interface WatchParticipant {
   userId: string;
   displayName: string;
+  avatar?: string | null;
   role: 'host' | 'member';
 }
 
