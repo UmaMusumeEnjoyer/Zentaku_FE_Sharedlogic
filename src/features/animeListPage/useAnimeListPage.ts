@@ -59,8 +59,8 @@ export const useAnimeListPage = (
     typeof localStorage !== 'undefined' ? localStorage.getItem("permission_level") : null
   );
 
-  const canEdit = currentPermission === "owner" || currentPermission === "edit";
-  const isViewer = currentPermission === "view" || currentPermission === "viewer";
+  const canEdit = !!currentPermission && ["owner", "edit", "editor"].includes(currentPermission.toLowerCase());
+  const isViewer = !!currentPermission && ["view", "viewer"].includes(currentPermission.toLowerCase());
 
   const [listInfo, setListInfo] = useState<ListInfo>(locationState?.listData || {
     name: "Loading...",
@@ -344,8 +344,17 @@ export const useAnimeListPage = (
 
   const handleAddAnime = useCallback(async (anime: any) => {
     try {
+      const anilistId = anime.anilist_id || anime.media?.id || anime.id;
+      
+      // Auto-sync anime before adding to custom list
+      try {
+        await animeService.getById(anilistId);
+      } catch (syncErr) {
+        console.warn("Failed to sync anime prior to adding:", syncErr);
+      }
+
       const payload = {
-        anilistId: anime.anilist_id || anime.media?.id || anime.id,
+        anilistId,
         note: ""
       };
       await listService.addAnimeToCustomList(listId, payload);
@@ -376,8 +385,12 @@ export const useAnimeListPage = (
         }
         return updated;
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to add anime:", error);
+      // Ensure the error is thrown so useAddAnimeModal catches it
+      // Also optionally alert the user here if we want immediate feedback
+      const errorMsg = error.response?.data?.error || error.response?.data?.message || "Failed to add anime.";
+      alert(`Error: ${errorMsg}`);
       throw error;
     }
   }, [listId, currentUsername]);

@@ -8,10 +8,10 @@ export const useUserAnimeGroup = (
   deleteMode: boolean,
   selectedAnimeIds: (string | number)[]
 ) => {
-  // Logic quyền chỉnh sửa: Phải là chính chủ VÀ có quyền edit
+  // Logic quyền chỉnh sửa: Được phép nếu có quyền edit (không quan trọng là group của ai)
   const hasEditPermission = useMemo(() => {
-    return isCurrentUser && canEdit;
-  }, [isCurrentUser, canEdit]);
+    return canEdit;
+  }, [canEdit]);
 
   // Kiểm tra anime có được chọn không
   const isAnimeSelected = useCallback((animeId: string | number): boolean => {
