@@ -1,4 +1,5 @@
 import { SearchListData } from './SearchListCard.types';
+import { SharedConfig } from '../../../api/config';
 
 export const useSearchListCard = (
   listData: SearchListData,
@@ -6,15 +7,44 @@ export const useSearchListCard = (
 ) => {
   const handleCardClick = () => {
     if (onNavigate) {
-      onNavigate(`/list/${listData.list_id}`);
+      onNavigate(`/list/${listData.id}`);
     }
   };
 
   // Logic xử lý màu mặc định
   const cardColor = listData.color || '#3db4f2';
 
+  const PLACEHOLDERS = {
+    userAvatar: "https://i.pravatar.cc/150?img=68",
+    username: "Unknown User"
+  };
+  const ASSET_BASE_URL = SharedConfig.VITE_BACKEND_DOMAIN || '';
+
+  const getAvatar = (): string => {
+    const avatarUrl = listData.ownerAvatar;
+    if (!avatarUrl) return PLACEHOLDERS.userAvatar;
+    
+    const formattedUrl = avatarUrl.startsWith('/') ? avatarUrl : `/${avatarUrl}`;
+    return avatarUrl.startsWith('http') 
+      ? avatarUrl 
+      : `${ASSET_BASE_URL}${formattedUrl}`;
+  };
+
+  const getBanner = (): string | null => {
+    const bannerUrl = listData.bannerImage;
+    if (!bannerUrl) return null;
+    const formattedUrl = bannerUrl.startsWith('/') ? bannerUrl : `/${bannerUrl}`;
+    return bannerUrl.startsWith('http') ? bannerUrl : `${ASSET_BASE_URL}${formattedUrl}`;
+  };
+
+  const username = listData.ownerUsername || PLACEHOLDERS.username;
+
   return {
     handleCardClick,
-    cardColor
+    cardColor,
+    avatarUrl: getAvatar(),
+    username,
+    bannerImage: getBanner(),
+    placeholderAvatar: PLACEHOLDERS.userAvatar
   };
 };

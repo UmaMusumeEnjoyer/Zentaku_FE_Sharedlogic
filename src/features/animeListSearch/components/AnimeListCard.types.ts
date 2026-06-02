@@ -9,13 +9,16 @@ export interface PreviewAnimeItem {
 }
 
 export interface AnimeListData {
-  list_id: string | number;
-  list_name: string;
+  id: string | number;
+  name: string;
+  slug?: string;
   color?: string;
-  like_count?: number;
-  anime_count?: number;
-  owner?: OwnerInfo;
-  preview_anime?: (string | PreviewAnimeItem)[]; // Mảng có thể chứa string url hoặc object
+  likeCount?: number;
+  itemCount?: number;
+  ownerUsername?: string;
+  ownerAvatar?: string;
+  owner?: OwnerInfo; // Fallback nếu có
+  bannerImage?: string;
 }
 
 export interface AnimeListCardProps {

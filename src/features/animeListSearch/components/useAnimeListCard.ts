@@ -2,7 +2,7 @@ import { AnimeListData } from './AnimeListCard.types';
 import { SharedConfig } from '../../../api/config';
 
 // Các hằng số được đưa vào ViewModel hoặc tách ra file constants riêng
-const BASE_URL = SharedConfig.apiBaseUrl;
+const ASSET_BASE_URL = SharedConfig.VITE_BACKEND_DOMAIN || '';
 const PLACEHOLDERS = {
   coverImages: [
     "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21-YCDuy1eZV523.png",
@@ -19,52 +19,35 @@ export const useAnimeListCard = (
 ) => {
   const handleCardClick = () => {
     if (onNavigate) {
-      onNavigate(`/list/${listData.list_id}`);
+      onNavigate(`/list/${listData.id}`);
     }
   };
 
   // Logic xử lý Avatar
   const getAvatar = (): string => {
-    const owner = listData.owner;
-    if (!owner || !owner.avatar_url) return PLACEHOLDERS.userAvatar;
+    const avatarUrl = listData.ownerAvatar || listData.owner?.avatar_url;
+    if (!avatarUrl) return PLACEHOLDERS.userAvatar;
     
-    return owner.avatar_url.startsWith('http') 
-      ? owner.avatar_url 
-      : `${BASE_URL}${owner.avatar_url}`;
+    const formattedUrl = avatarUrl.startsWith('/') ? avatarUrl : `/${avatarUrl}`;
+    return avatarUrl.startsWith('http') 
+      ? avatarUrl 
+      : `${ASSET_BASE_URL}${formattedUrl}`;
   };
 
-  const username = listData.owner?.username || PLACEHOLDERS.username;
-
-  // Logic xử lý 3 ảnh Preview
-  const getCoverImages = (): string[] => {
-    const rawPreview = listData.preview_anime || [];
-
-    // Map để lấy đường dẫn ảnh, xử lý cả trường hợp là object hoặc string
-    const apiImages = rawPreview.map((item) => {
-        if (typeof item === 'object' && item !== null && 'cover_image' in item) {
-            return (item as any).cover_image;
-        }
-        return item as string;
-    });
-    
-    let displayImages = [...apiImages];
-
-    // Điền thêm placeholder nếu thiếu
-    if (displayImages.length < 3) {
-      displayImages = [
-        ...displayImages,
-        ...PLACEHOLDERS.coverImages.slice(displayImages.length, 3)
-      ];
-    }
-    
-    return displayImages.slice(0, 3);
+  const getBanner = (): string | null => {
+    const bannerUrl = listData.bannerImage;
+    if (!bannerUrl) return null;
+    const formattedUrl = bannerUrl.startsWith('/') ? bannerUrl : `/${bannerUrl}`;
+    return bannerUrl.startsWith('http') ? bannerUrl : `${ASSET_BASE_URL}${formattedUrl}`;
   };
+
+  const username = listData.ownerUsername || listData.owner?.username || PLACEHOLDERS.username;
 
   return {
     handleCardClick,
     avatarUrl: getAvatar(),
     username,
-    coverImages: getCoverImages(),
+    bannerImage: getBanner(),
     placeholderAvatar: PLACEHOLDERS.userAvatar // Để dùng cho onError
   };
 };

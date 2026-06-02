@@ -1,9 +1,15 @@
 export interface SearchListData {
-  list_id: string | number;
-  list_name: string;
+  id: string | number;
+  name: string;
+  slug?: string;
   description?: string;
   color?: string;
-  like_count?: number;
+  likeCount?: number;
+  itemCount?: number;
+  ownerUsername?: string;
+  ownerAvatar?: string;
+  privacy?: string;
+  bannerImage?: string;
   [key: string]: any;
 }
 

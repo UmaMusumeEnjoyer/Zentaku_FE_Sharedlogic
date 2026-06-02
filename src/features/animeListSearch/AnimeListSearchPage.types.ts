@@ -1,11 +1,16 @@
 // Định nghĩa cấu trúc của một List (dựa trên cách dùng list.list_id trong code gốc)
 export interface AnimeListItem {
-  list_id: string | number;
-  list_name: string;  // Changed from title?: string to list_name: string (required)
+  id: string | number;
+  name: string;
+  slug?: string;
   description?: string;
-  color?: string;
-  like_count?: number;
-  items_count?: number;
+  color?: string; // Giữ lại cho compatibility với card hiện tại nếu cần
+  likeCount?: number;
+  itemCount?: number;
+  bannerImage?: string;
+  ownerUsername?: string;
+  ownerAvatar?: string;
+  privacy?: string;
   // Các trường khác từ API trả về
   [key: string]: any;
 }

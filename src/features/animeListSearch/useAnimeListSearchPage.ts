@@ -19,8 +19,9 @@ export const useAnimeListSearchPage = () => {
       setLoadingTop(true);
       try {
         const response = await listService.getMostLikedLists();
-        if (response.data && response.data.most_liked_lists) {
-          setTopLists(response.data.most_liked_lists);
+        const lists = response.data?.data?.data || response.data?.data || response.data?.most_liked_lists || [];
+        if (lists.length > 0) {
+          setTopLists(lists);
         }
       } catch (error) {
         console.error("Error fetching most liked lists:", error);
@@ -48,13 +49,17 @@ export const useAnimeListSearchPage = () => {
 
     try {
       const response = await listService.searchCustomLists(keyword);
-      // Response structure: { data: { query: "...", lists: [...], total: 1, ... } }
+      // Response structure Zentaku_BE: { data: { data: { items: [...], total: 1 } } }
       
-      if (response.data && response.data.lists) {
-        setSearchResults(response.data.lists);
+      const items = response.data?.data?.items || response.data?.items || response.data?.lists || [];
+      const total = response.data?.data?.total || response.data?.total || 0;
+      const showing = items.length;
+
+      if (items.length > 0) {
+        setSearchResults(items);
         setSearchMetadata({
-            total: response.data.total,
-            showing: response.data.showing
+            total: total,
+            showing: showing
         });
       } else {
         setSearchResults([]);
