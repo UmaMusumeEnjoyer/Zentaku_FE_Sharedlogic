@@ -97,7 +97,15 @@ export const listService = {
   },
 
   addMemberToList: (listId: string, userData: any) => {
-    return apiClient.post(`/list/member/${listId}/add`, userData);
+    let permission = 'VIEWER';
+    if (userData.can_edit === true || userData.permission_level === 'edit' || userData.permission === 'EDITOR') {
+      permission = 'EDITOR';
+    }
+    const payload = {
+      username: userData.username,
+      permission
+    };
+    return apiClient.post(`/list/member/${listId}/add`, payload);
   },
 
   removeMemberFromList: (listId: string, username: string) => {
@@ -108,7 +116,7 @@ export const listService = {
     // Chuyển can_edit thành permission_level
     const payload = {
       username: permissionData.username,
-      permission: permissionData.can_edit ? 'EDITOR' : 'VIEWER'
+      permission: permissionData.permission || (permissionData.can_edit ? 'EDITOR' : 'VIEWER')
     };
     return apiClient.put(`/list/member/${listId}/permission`, payload);
   },

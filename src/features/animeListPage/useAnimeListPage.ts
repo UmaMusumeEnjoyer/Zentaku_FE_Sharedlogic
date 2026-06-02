@@ -104,14 +104,21 @@ export const useAnimeListPage = (
     try {
       const res = await listService.getMembers(listId);
       const rawMembers = Array.isArray(res.data) ? res.data : (res.data?.data || res.data?.members || []);
-      const memberList = rawMembers.map((m: any) => ({
-        ...m,
-        isOwner: m.isOwner !== undefined ? m.isOwner : m.is_owner,
-        permission: m.permission || (
-          (m.permission_level === 'owner' || m.isOwner || m.is_owner) ? 'owner' : 
+      const memberList = rawMembers.map((m: any) => {
+        const isOwner = m.isOwner !== undefined ? m.isOwner : !!m.is_owner;
+        const permission = m.permission || (
+          (m.permission_level === 'owner' || isOwner) ? 'owner' : 
           (m.permission_level === 'edit' || m.permissionLevel === 'EDITOR') ? 'editor' : 'viewer'
-        )
-      }));
+        );
+        return {
+          ...m,
+          isOwner,
+          permission,
+          is_owner: isOwner,
+          can_edit: permission === 'owner' || permission === 'editor',
+          avatar_url: m.avatar || m.avatar_url
+        };
+      });
       setMembers(memberList);
 
       if (currentUsername) {
@@ -139,7 +146,13 @@ export const useAnimeListPage = (
     if (listInfo.isOwner && listId) {
       try {
         const res = await listService.getListRequests(listId);
-        setPendingRequests(res.data.data || res.data.requests || []);
+        const reqs = res.data.data || res.data.requests || res.data || [];
+        const mappedReqs = reqs.map((r: any) => ({
+          ...r,
+          type: r.requestType ? r.requestType.toLowerCase() : (r.request_type === 'edit_permission' ? 'edit' : 'join'),
+          id: r.id || r.request_id
+        }));
+        setPendingRequests(mappedReqs);
       } catch (err) {
         console.error("Failed to fetch requests", err);
       }
