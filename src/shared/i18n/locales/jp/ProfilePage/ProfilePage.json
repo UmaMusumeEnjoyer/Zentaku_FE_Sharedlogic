@@ -13,7 +13,17 @@
       "staff": "STAFF"
     },
     "follow": "フォローする",
-    "unfollow": "フォロー解除"
+    "unfollow": "フォロー解除",
+    "followers": "フォロワー",
+    "following": "フォロー中",
+    "message": "メッセージ"
+  },
+  "social": {
+    "title": "ソーシャルネットワーク",
+    "followers_count": "フォロワー ({{count}})",
+    "following_count": "フォロー中 ({{count}})",
+    "no_followers": "まだフォロワーがいません。",
+    "no_following": "まだ誰もフォローしていません。"
   },
   "tabs": {
     "overview": "概要",
@@ -51,6 +61,11 @@
       },
       "description": {
         "label": "説明"
+      },
+      "banner": {
+        "label": "バナー画像 (任意)",
+        "placeholder": "画像のURLを入力...",
+        "upload_label": "または画像をアップロード："
       },
       "is_private": {
         "label": "このリストを非公開にする"

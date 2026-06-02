@@ -1,0 +1,21 @@
+{
+  "exitFullScreen": "Exit Full Screen",
+  "pressEsc": "Press <b>Esc</b> to exit full screen",
+  "season": "Season",
+  "studio": "Studio",
+  "status": "Status",
+  "format": "Format",
+  "reading": "Reading",
+  "progress": "Progress",
+  "synopsis": "Synopsis",
+  "seeLess": "See less",
+  "seeMore": "See more",
+  "page": "Page",
+  "readingMode": "Reading Mode",
+  "longStrip": "Long Strip",
+  "wideStrip": "Wide Strip",
+  "singlePage": "Single Page",
+  "doublePage": "Double Page",
+  "fullScreen": "Full Screen",
+  "leftToRight": "Left To Right"
+}

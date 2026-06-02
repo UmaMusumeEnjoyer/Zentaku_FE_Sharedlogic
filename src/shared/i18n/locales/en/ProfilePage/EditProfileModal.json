@@ -7,16 +7,20 @@
   },
   "fields": {
     "displayName": {
-      "label": "Display Name"
+      "label": "Display Name",
+      "placeholder": "Your display name"
     },
     "bio": {
-      "label": "Bio"
+      "label": "Bio",
+      "placeholder": "Tell us about yourself"
     },
     "location": {
-      "label": "Location"
+      "label": "Location",
+      "placeholder": "Your location"
     },
     "website": {
-      "label": "Website"
+      "label": "Website",
+      "placeholder": "https://yourwebsite.com"
     }
   },
   "actions": {

@@ -1,0 +1,15 @@
+{
+  "host": "ホスト",
+  "viewers": "視聴者",
+  "unknownUser": "不明なユーザー",
+  "waitingForOthers": "他の参加者を待っています...",
+  "roomChat": "ルームチャット",
+  "welcomeMessage": "ウォッチパーティーへようこそ！",
+  "sendPlaceholder": "メッセージを送信...",
+  "chatBtn": "チャット",
+  "episode": "エピソード",
+  "live": "ライブ",
+  "hostId": "ホストID:",
+  "watchPartyRoom": "ウォッチパーティールーム",
+  "noDataAvailable": "利用可能なデータがありません"
+}

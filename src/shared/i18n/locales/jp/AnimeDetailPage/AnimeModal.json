@@ -21,6 +21,10 @@
   "placeholders": {
     "no_custom_lists": "カスタムリストなし"
   },
+  "buttons": {
+    "save": "保存",
+    "delete": "削除"
+  },
   "navBar": {
     "Overview": "概要",
     "Watch": "視聴",

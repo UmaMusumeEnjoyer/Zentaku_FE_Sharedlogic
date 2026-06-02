@@ -13,7 +13,17 @@
       "staff": "STAFF"
     },
     "follow": "Follow",
-    "unfollow": "Unfollow"
+    "unfollow": "Unfollow",
+    "followers": "Followers",
+    "following": "Following",
+    "message": "Message"
+  },
+  "social": {
+    "title": "Social Network",
+    "followers_count": "Followers ({{count}})",
+    "following_count": "Following ({{count}})",
+    "no_followers": "No followers yet.",
+    "no_following": "Not following anyone."
   },
   "tabs": {
     "overview": "Overview",
@@ -51,6 +61,11 @@
       },
       "description": {
         "label": "Description"
+      },
+      "banner": {
+        "label": "Banner Image (Optional)",
+        "placeholder": "Enter image URL...",
+        "upload_label": "Or upload an image:"
       },
       "is_private": {
         "label": "Make this list private"

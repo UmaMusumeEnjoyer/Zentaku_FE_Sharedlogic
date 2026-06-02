@@ -7,16 +7,20 @@
   },
   "fields": {
     "displayName": {
-      "label": "表示名"
+      "label": "表示名",
+      "placeholder": "表示名"
     },
     "bio": {
-      "label": "自己紹介"
+      "label": "自己紹介",
+      "placeholder": "自己紹介を入力"
     },
     "location": {
-      "label": "場所"
+      "label": "場所",
+      "placeholder": "場所"
     },
     "website": {
-      "label": "ウェブサイト"
+      "label": "ウェブサイト",
+      "placeholder": "https://yourwebsite.com"
     }
   },
   "actions": {

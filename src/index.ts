@@ -142,6 +142,21 @@ export {default as animeListPageJP} from './shared/i18n/locales/jp/AnimeListPage
 export { default as scheduleDashboardEN } from './shared/i18n/locales/en/ScheduleDashboard.json';
 export { default as scheduleDashboardJP } from './shared/i18n/locales/jp/ScheduleDashboard.json';
 
+export { default as MangaReaderEn } from './shared/i18n/locales/en/MangaReader.json';
+export { default as MangaReaderJp } from './shared/i18n/locales/jp/MangaReader.json';
+
+export { default as WatchPageEn } from './shared/i18n/locales/en/WatchPage.json';
+export { default as WatchPageJp } from './shared/i18n/locales/jp/WatchPage.json';
+
+export { default as WatchAlongEn } from './shared/i18n/locales/en/WatchAlong.json';
+export { default as WatchAlongJp } from './shared/i18n/locales/jp/WatchAlong.json';
+
+export { default as ChatAppEn } from './shared/i18n/locales/en/ChatApp.json';
+export { default as ChatAppJp } from './shared/i18n/locales/jp/ChatApp.json';
+
+export { default as NovelReaderEn } from './shared/i18n/locales/en/NovelReader.json';
+export { default as NovelReaderJp } from './shared/i18n/locales/jp/NovelReader.json';
+
 /////////Components///////////////
 export * from './components/AnimeCard';
 export * from './components/GlobalSearch/GlobalSearch.types';

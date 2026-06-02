@@ -1,0 +1,13 @@
+{
+  "errorLoadingData": "An error occurred while loading data.",
+  "noMessagesYet": "No messages yet",
+  "noConversations": "No conversations found.",
+  "someoneIsTyping": "Someone is typing...",
+  "sendMessageTo": "Send a message to",
+  "selectChatToStart": "Select a chat to start messaging",
+  "chatsTitle": "Chats",
+  "directTab": "Direct",
+  "groupsTab": "Groups",
+  "online": "Online",
+  "offline": "Offline"
+}

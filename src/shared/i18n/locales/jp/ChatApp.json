@@ -1,0 +1,13 @@
+{
+  "errorLoadingData": "データの読み込み中にエラーが発生しました。",
+  "noMessagesYet": "まだメッセージはありません",
+  "noConversations": "会話が見つかりません。",
+  "someoneIsTyping": "誰かが入力中です...",
+  "sendMessageTo": "メッセージを送信先:",
+  "selectChatToStart": "チャットを選択してメッセージを開始",
+  "chatsTitle": "チャット",
+  "directTab": "ダイレクト",
+  "groupsTab": "グループ",
+  "online": "オンライン",
+  "offline": "オフライン"
+}

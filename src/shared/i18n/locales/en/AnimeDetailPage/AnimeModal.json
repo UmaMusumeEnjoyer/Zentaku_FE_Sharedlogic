@@ -21,6 +21,10 @@
   "placeholders": {
     "no_custom_lists": "No custom lists"
   },
+  "buttons": {
+    "save": "Save",
+    "delete": "Delete"
+  },
   "navBar": {
     "Overview": "Overview",
     "Watch": "Watch",

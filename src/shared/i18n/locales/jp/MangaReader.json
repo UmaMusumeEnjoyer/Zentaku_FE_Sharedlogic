@@ -1,0 +1,21 @@
+{
+  "exitFullScreen": "全画面表示を終了",
+  "pressEsc": "<b>Esc</b>キーを押して全画面表示を終了します",
+  "season": "シーズン",
+  "studio": "スタジオ",
+  "status": "ステータス",
+  "format": "フォーマット",
+  "reading": "読書中",
+  "progress": "進行状況",
+  "synopsis": "あらすじ",
+  "seeLess": "一部を表示",
+  "seeMore": "もっと見る",
+  "page": "ページ",
+  "readingMode": "読書モード",
+  "longStrip": "縦読み (ロング)",
+  "wideStrip": "横読み (ワイド)",
+  "singlePage": "単一ページ",
+  "doublePage": "見開きページ",
+  "fullScreen": "全画面表示",
+  "leftToRight": "左から右へ"
+}

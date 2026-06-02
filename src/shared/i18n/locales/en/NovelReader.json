@@ -1,0 +1,18 @@
+{
+  "author": "Author",
+  "volume": "Vol",
+  "status": "Status",
+  "comments": "Comments",
+  "length": "Length",
+  "words": "words",
+  "lastUpdated": "Updated",
+  "closeSettings": "Close Settings",
+  "openSettings": "Open Settings",
+  "previousChapter": "Previous Chapter",
+  "nextChapter": "Next Chapter",
+  "backgroundColor": "Background Color",
+  "fontFamily": "Font Family",
+  "fontSize": "Font Size",
+  "margin": "Margin",
+  "textAlign": "Text Align"
+}

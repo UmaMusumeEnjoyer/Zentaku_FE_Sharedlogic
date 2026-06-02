@@ -1,0 +1,15 @@
+{
+  "host": "Host",
+  "viewers": "Viewers",
+  "unknownUser": "Unknown User",
+  "waitingForOthers": "Waiting for others to join...",
+  "roomChat": "Room Chat",
+  "welcomeMessage": "Welcome to the watch party!",
+  "sendPlaceholder": "Send a message...",
+  "chatBtn": "Chat",
+  "episode": "Episode",
+  "live": "LIVE",
+  "hostId": "Host ID:",
+  "watchPartyRoom": "Watch Party Room",
+  "noDataAvailable": "No data available"
+}
