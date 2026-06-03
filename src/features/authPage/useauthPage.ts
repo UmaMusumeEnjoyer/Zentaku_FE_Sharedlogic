@@ -2,18 +2,34 @@
 import { useState, useEffect } from 'react';
 import { authService } from '../../services/auth.service';
 import { RegisterData, RegisterRequest } from './auth.types';
+import {
+  type ValidationErrors,
+  validateLoginEmail,
+  validateLoginPassword,
+  validateLoginForm,
+  validateRegisterUsername,
+  validateRegisterEmail,
+  validateRegisterPassword,
+  validateRegisterConfirmPassword,
+  validateRegisterForm,
+  hasValidationErrors,
+} from './authValidation';
 
 export interface UseAuthPageReturn {
   isActive: boolean;
-  isLoading: boolean; // 1. Thêm kiểu dữ liệu cho isLoading
-  registerData: RegisterData & { confirm_password: string }; // UI vẫn dùng confirm_password cho input name
+  isLoading: boolean;
+  registerData: RegisterData & { confirm_password: string };
   loginData: { email: string; password: string };
+  loginErrors: ValidationErrors;
+  registerErrors: ValidationErrors;
   handleRegisterChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleLoginChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleRegisterSubmit: (e: React.FormEvent) => Promise<void>;
   handleLoginSubmit: (e: React.FormEvent) => Promise<void>;
   handleRegisterClick: () => void;
   handleLoginClick: () => void;
+  handleLoginBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
+  handleRegisterBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
 // ... (Giữ nguyên phần UseAuthPageCallbacks) ...
@@ -35,7 +51,7 @@ export const useAuthPage = (
   verificationToken?: string | null
 ): UseAuthPageReturn => {
   const [isActive, setIsActive] = useState(initialPath === 'signup');
-  const [isLoading, setIsLoading] = useState(false); // 2. Khởi tạo state isLoading
+  const [isLoading, setIsLoading] = useState(false);
 
   // ... (Giữ nguyên phần useState data và useEffect) ...
   const [registerData, setRegisterData] = useState({
@@ -49,6 +65,10 @@ export const useAuthPage = (
     email: '',
     password: '',
   });
+
+  // Validation errors state
+  const [loginErrors, setLoginErrors] = useState<ValidationErrors>({});
+  const [registerErrors, setRegisterErrors] = useState<ValidationErrors>({});
   
   // Email verification logic on mount (Giữ nguyên)
   useEffect(() => {
@@ -71,22 +91,76 @@ export const useAuthPage = (
     verifyToken();
   }, [verificationToken]);
 
+  // ---- Change handlers: clear error for the field being edited ----
   const handleRegisterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRegisterData({ ...registerData, [e.target.name]: e.target.value });
+    const { name } = e.target;
+    setRegisterData({ ...registerData, [name]: e.target.value });
+    // Clear error for this field as user starts typing
+    if (registerErrors[name]) {
+      setRegisterErrors((prev) => ({ ...prev, [name]: null }));
+    }
   };
 
   const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLoginData({ ...loginData, [e.target.name]: e.target.value });
+    const { name } = e.target;
+    setLoginData({ ...loginData, [name]: e.target.value });
+    // Clear error for this field as user starts typing
+    if (loginErrors[name]) {
+      setLoginErrors((prev) => ({ ...prev, [name]: null }));
+    }
   };
 
-  const handleRegisterSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (registerData.password !== registerData.confirm_password) {
-      callbacks.onRegisterError("Passwords do not match!");
-      return;
+  // ---- Blur handlers: validate individual field on blur ----
+  const handleLoginBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    let error: string | null = null;
+
+    switch (name) {
+      case 'email':
+        error = validateLoginEmail(value);
+        break;
+      case 'password':
+        error = validateLoginPassword(value);
+        break;
     }
 
-    setIsLoading(true); // 3. Bật loading
+    setLoginErrors((prev) => ({ ...prev, [name]: error }));
+  };
+
+  const handleRegisterBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    let error: string | null = null;
+
+    switch (name) {
+      case 'email':
+        error = validateRegisterEmail(value);
+        break;
+      case 'username':
+        error = validateRegisterUsername(value);
+        break;
+      case 'password':
+        error = validateRegisterPassword(value);
+        break;
+      case 'confirm_password':
+        error = validateRegisterConfirmPassword(registerData.password, value);
+        break;
+    }
+
+    setRegisterErrors((prev) => ({ ...prev, [name]: error }));
+  };
+
+  // ---- Submit handlers: validate full form before API call ----
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Run full form validation
+    const errors = validateRegisterForm(registerData);
+    setRegisterErrors(errors);
+    if (hasValidationErrors(errors)) {
+      return; // Stop — don't call API
+    }
+
+    setIsLoading(true);
 
     try {
       const requestData: RegisterRequest = {
@@ -116,14 +190,21 @@ export const useAuthPage = (
         callbacks.onRegisterError('Unable to connect to the server.');
       }
     } finally {
-      setIsLoading(false); // 4. Tắt loading
+      setIsLoading(false);
     }
   };
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Run full form validation
+    const errors = validateLoginForm(loginData);
+    setLoginErrors(errors);
+    if (hasValidationErrors(errors)) {
+      return; // Stop — don't call API
+    }
     
-    setIsLoading(true); // 5. Bật loading
+    setIsLoading(true);
 
     try {
         const result = await callbacks.loginCallback(loginData.email, loginData.password);
@@ -135,30 +216,36 @@ export const useAuthPage = (
     } catch (error) {
         callbacks.onLoginError("Login failed unexpectedly.");
     } finally {
-        setIsLoading(false); // 6. Tắt loading
+        setIsLoading(false);
     }
   };
 
   const handleRegisterClick = () => {
     setIsActive(true);
+    setLoginErrors({});  // Clear errors when switching forms
     callbacks.onNavigateToSignup();
   };
 
   const handleLoginClick = () => {
     setIsActive(false);
+    setRegisterErrors({});  // Clear errors when switching forms
     callbacks.onNavigateToLogin();
   };
 
   return {
     isActive,
-    isLoading, // 7. Return isLoading
+    isLoading,
     registerData,
     loginData,
+    loginErrors,
+    registerErrors,
     handleRegisterChange,
     handleLoginChange,
     handleRegisterSubmit,
     handleLoginSubmit,
     handleRegisterClick,
     handleLoginClick,
+    handleLoginBlur,
+    handleRegisterBlur,
   };
 };
