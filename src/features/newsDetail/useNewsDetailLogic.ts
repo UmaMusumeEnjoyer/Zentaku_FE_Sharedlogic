@@ -1,6 +1,16 @@
+import { useState, useEffect } from 'react';
 import { newsData } from './newsData'; // Đảm bảo đường dẫn import đúng
 
 export const useNewsDetailLogic = (id?: string) => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000); // Mock loading time
+    return () => clearTimeout(timer);
+  }, [id]);
+
   // Logic nghiệp vụ: Tìm tin tức dựa trên ID
   const newsItem = newsData.find(news => news.id.toString() === id);
 
@@ -15,5 +25,6 @@ export const useNewsDetailLogic = (id?: string) => {
     id,
     contentParagraphs,
     isNotFound: !newsItem, // Cờ trạng thái để UI dễ dàng kiểm tra
+    isLoading,
   };
 };
