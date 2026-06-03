@@ -1,27 +1,38 @@
 // src/features/home/hooks/useHomeLogic.ts
 import { useState, useEffect } from 'react';
-import { TRENDING_ANIME_MOCK, GENRES_MOCK, LATEST_NEWS_MOCK } from './homeConstants';
-import { AnimeItem, NewsItem } from './home.types';
-// Sau này import animeService từ '../../../services/anime.service' vào đây
+import { GENRES_MOCK, LATEST_NEWS_MOCK } from './homeConstants';
+import { NewsItem } from './home.types';
+import { animeService } from '../../services/anime.service';
+import type { AnimeData } from '../../components/AnimeCard';
 
 export const useHomeLogic = () => {
-  // Giả lập state như khi gọi API thật
-  const [trendingAnime, setTrendingAnime] = useState<AnimeItem[]>([]);
+  const [trendingAnime, setTrendingAnime] = useState<AnimeData[]>([]);
+  const [scheduledAnime, setScheduledAnime] = useState<AnimeData[]>([]);
   const [genres, setGenres] = useState<string[]>([]);
   const [latestNews, setLatestNews] = useState<NewsItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Giả lập API call delay
     const loadData = async () => {
       setIsLoading(true);
-      // Ở đây sau này sẽ là: await animeService.getTrending()
-      setTimeout(() => {
-        setTrendingAnime(TRENDING_ANIME_MOCK);
+      try {
+        const [trendingRes, scheduleRes] = await Promise.all([
+          animeService.getTrendingAnime(1, 15),
+          animeService.getAnimeSchedule()
+        ]);
+        
+        // Zentaku_BE response structure handling
+        setTrendingAnime(trendingRes.data?.data || trendingRes.data || []);
+        
+        // Schedule response might be a list directly or under data
+        setScheduledAnime(scheduleRes.data?.data || scheduleRes.data || []);
+      } catch (error) {
+        console.error("Error fetching home data:", error);
+      } finally {
         setGenres(GENRES_MOCK);
         setLatestNews(LATEST_NEWS_MOCK);
         setIsLoading(false);
-      }, 500);
+      }
     };
 
     loadData();
@@ -29,6 +40,7 @@ export const useHomeLogic = () => {
 
   return {
     trendingAnime,
+    scheduledAnime,
     genres,
     latestNews,
     isLoading
