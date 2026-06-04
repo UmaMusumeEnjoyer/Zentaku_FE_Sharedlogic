@@ -172,6 +172,19 @@ export const useAuthPage = (
       const response = await authService.register(requestData);
       // Zentaku_BE response đã unwrap: response.data = { message: "..." }
       callbacks.onRegisterSuccess(response.data?.message || 'Registration successful!');
+      
+      // Clear form data
+      setRegisterData({
+        username: '',
+        email: '',
+        password: '',
+        confirm_password: '',
+      });
+      setRegisterErrors({});
+      
+      // Slide to login form
+      setIsActive(false);
+      
       callbacks.onNavigateToLogin();
     } catch (error: any) {
       // ... (Giữ nguyên logic xử lý lỗi) ...
