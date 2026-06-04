@@ -356,25 +356,37 @@ export const useProfilePage = (
     callbacks?.onNavigateToList(list.list_id, list);
   };
 
-  const toggleFollow = async () => {
+  const toggleFollow = async (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
     if (!userProfile?.id) return;
     const targetId = userProfile.id;
     
+    // Lưu lại trạng thái cũ để revert nếu lỗi
+    const previousState = isFollowing;
+    
     // Optimistic Update
-    setIsFollowing(prev => !prev);
+    setIsFollowing(!previousState);
     
     try {
-      if (isFollowing) {
+      if (previousState) {
         await userService.unfollowUser(targetId);
       } else {
         await userService.followUser(targetId);
       }
-      // Re-fetch to guarantee accuracy
-      fetchFollowStatus();
-    } catch (error) {
+      
+      // Update social data (followers count) to reflect the change
+      fetchSocialData();
+      
+    } catch (error: any) {
       console.error("Failed to toggle follow status:", error);
       // Revert optimistic update
-      setIsFollowing(prev => !prev);
+      setIsFollowing(previousState);
+      
+      // Nếu có alert từ phía dưới (interceptor, etc), ta có thể đè nó hoặc log ra
     }
   };
 
