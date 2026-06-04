@@ -1,20 +1,86 @@
 // shared-logic/src/shared/types/notification.types.ts
-export interface Notification {
-  notification_id: number;
-  anilist_id: number;
-  anime_title?: string;
-  episode_number: number;
-  airing_at: string;
-  sent_at: string;
-  status: 'pending' | 'sent' | 'failed';
+
+/**
+ * Notification type enum matching backend NotificationType
+ */
+export enum NotificationType {
+  MESSAGE = 'message',
+  ANIME_AIRING = 'anime_airing',
 }
 
+/**
+ * Metadata for message notifications
+ */
+export interface MessageNotificationMetadata {
+  channelId?: string;
+  senderId?: string;
+  senderName?: string;
+  senderAvatar?: string | null;
+  messagePreview?: string;
+}
+
+/**
+ * Metadata for anime airing notifications
+ */
+export interface AnimeAiringNotificationMetadata {
+  animeId?: number;
+  animeName?: string;
+  episodeNumber?: number;
+  airingAt?: string;
+  coverImage?: string | null;
+}
+
+/**
+ * Combined notification metadata type
+ */
+export type NotificationMetadata = MessageNotificationMetadata &
+  AnimeAiringNotificationMetadata &
+  Record<string, unknown>;
+
+/**
+ * Individual notification item from the server
+ */
+export interface NotificationItem {
+  id: string;
+  type: NotificationType;
+  title: string;
+  body?: string | null;
+  metadata?: NotificationMetadata | null;
+  isRead: boolean;
+  readAt?: string | null;
+  createdAt: string;
+}
+
+/**
+ * Pagination info for notification list
+ */
+export interface NotificationPagination {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
+/**
+ * Response from GET /api/notifications
+ */
 export interface NotificationListResponse {
-  count: number;
-  notifications: Notification[];
+  notifications: NotificationItem[];
+  unreadCount: number;
+  pagination: NotificationPagination;
 }
 
+/**
+ * Response from GET /api/notifications/unread-count
+ */
+export interface UnreadCountResponse {
+  unreadCount: number;
+}
+
+/**
+ * Params for fetching notifications
+ */
 export interface GetNotificationsParams {
-  status?: 'pending' | 'sent' | 'failed';
+  page?: number;
   limit?: number;
 }

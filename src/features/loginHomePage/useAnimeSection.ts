@@ -1,6 +1,6 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { AnimeItem_AnimeSection, NotificationSettings } from './AnimeSection.types';
-import { notificationService} from '../../services/notification.service';
+import { userService } from '../../services/user.service';
 
 export const useAnimeSection = (animeList: AnimeItem_AnimeSection[], allowNotification: boolean = false) => {
   // --- STATE UI ---
@@ -22,15 +22,15 @@ export const useAnimeSection = (animeList: AnimeItem_AnimeSection[], allowNotifi
       const fetchSettings = async () => {
         setIsLoadingSettings(true);
         try {
-          const response = await notificationService.getPreferences();
-          const serverData = response.data;
+          const response = await userService.getMyProfile();
+          const serverData = (response.data as any)?.notificationSettings;
 
           if (serverData) {
             setSettings({
-              notify_before_hours: serverData.notify_before_hours,
-              enabled: serverData.enabled,
-              notify_by_email: serverData.notify_by_email,
-              notify_in_app: serverData.notify_in_app
+              notify_before_hours: 24, // Default, not stored in user profile
+              enabled: true,
+              notify_by_email: serverData.email ?? true,
+              notify_in_app: serverData.push ?? true
             });
           }
         } catch (error) {
@@ -67,7 +67,12 @@ export const useAnimeSection = (animeList: AnimeItem_AnimeSection[], allowNotifi
     };
 
     try {
-      await notificationService.updatePreferences(payload);
+      await userService.updatePreferences({
+        notificationSettings: {
+          email: payload.notify_by_email,
+          push: payload.notify_in_app,
+        }
+      });
       console.log("Settings saved successfully:", payload);
       setShowModal(false);
     } catch (error) {

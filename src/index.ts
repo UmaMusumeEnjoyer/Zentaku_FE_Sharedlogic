@@ -164,3 +164,6 @@ export * from './components/GlobalSearch/useGlobalSearch';
 export * from './components/Header/userHeader';
 // shared-logic/src/index.ts - Thêm vào file hiện tại
 export * from './shared/types';
+
+// Export notification hooks
+export * from './shared/hooks';
