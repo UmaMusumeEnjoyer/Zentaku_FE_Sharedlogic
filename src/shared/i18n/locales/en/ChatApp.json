@@ -9,5 +9,15 @@
   "directTab": "Direct",
   "groupsTab": "Groups",
   "online": "Online",
-  "offline": "Offline"
+  "offline": "Offline",
+  "floatingChat.newMessages": "New Messages",
+  "floatingChat.noNewMessages": "No new messages",
+  "floatingChat.minimize": "Minimize",
+  "floatingChat.close": "Close",
+  "floatingChat.openFullChat": "Open full chat",
+  "floatingChat.typeMessage": "Type a message...",
+  "floatingChat.active": "Active",
+  "floatingChat.justNow": "Just now",
+  "floatingChat.minutesAgo": "{{count}}m ago",
+  "floatingChat.hoursAgo": "{{count}}h ago"
 }

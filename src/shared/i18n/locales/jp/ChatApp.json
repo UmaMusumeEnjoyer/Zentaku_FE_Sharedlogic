@@ -9,5 +9,15 @@
   "directTab": "ダイレクト",
   "groupsTab": "グループ",
   "online": "オンライン",
-  "offline": "オフライン"
+  "offline": "オフライン",
+  "floatingChat.newMessages": "新着メッセージ",
+  "floatingChat.noNewMessages": "新着メッセージはありません",
+  "floatingChat.minimize": "最小化",
+  "floatingChat.close": "閉じる",
+  "floatingChat.openFullChat": "チャットを開く",
+  "floatingChat.typeMessage": "メッセージを入力...",
+  "floatingChat.active": "アクティブ",
+  "floatingChat.justNow": "たった今",
+  "floatingChat.minutesAgo": "{{count}}分前",
+  "floatingChat.hoursAgo": "{{count}}時間前"
 }
