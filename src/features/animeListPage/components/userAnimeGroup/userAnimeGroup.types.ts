@@ -10,8 +10,8 @@ export interface UserAnimeGroupProps {
   onToggleDeleteMode: () => void;
   onConfirmDelete: () => void;
   onSelectAnime: (animeId: string | number) => void;
+  viewMode?: 'grid' | 'list';
 }
-
 export interface AnimeItem_userAnimeGroup {
   id: string | number;
   _anilist_id?: string | number;
