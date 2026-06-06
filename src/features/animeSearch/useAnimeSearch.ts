@@ -65,14 +65,14 @@ export const useAnimeSearchPage = () => {
         // Popular This Season
         if (currentSeasonRes.status === 'fulfilled') {
           const data = currentSeasonRes.value.data;
-          const items = data?.items || data || [];
+          const items = data?.results || data?.items || data || [];
           setPopularSeason(Array.isArray(items) ? items.map(mapAnimeData) : []);
         }
 
         // Upcoming Next Season
         if (nextSeasonRes.status === 'fulfilled') {
           const data = nextSeasonRes.value.data;
-          const items = data?.items || data || [];
+          const items = data?.results || data?.items || data || [];
           setUpcomingNext(Array.isArray(items) ? items.map(mapAnimeData) : []);
         }
 
@@ -216,36 +216,16 @@ export const useAnimeSearchPage = () => {
   const handleViewAllClick = async (type: 'TRENDING_NOW' | 'POPULAR_THIS_SEASON' | 'UPCOMING_NEXT_SEASON') => {
     sessionStorage.removeItem(SESSION_KEY);
 
-    if (type === 'TRENDING_NOW') {
-      setLoading(true);
-      setIsSearching(true);
-      setViewTitle('Trending Now');
-      setSearchResults([]);
-      setPage(1);
-      setCurrentFilters(null);
-
-      try {
-        const response = await searchService.getTrending('anime');
-        const responseData = response.data;
-        const rawResults = responseData?.trending || responseData?.items || responseData || [];
-        setSearchResults(Array.isArray(rawResults) ? rawResults.map(mapAnimeData) : []);
-        setCanLoadMore(false);
-      } catch (error) {
-        console.error("Fetch trending failed:", error);
-      } finally {
-        setLoading(false);
-      }
-      window.scrollTo({ top: 400, behavior: 'smooth' });
-      return;
-    }
-
     // Setup filter mặc định
     let targetFilters: AnimeFilters = {
       genre: 'Any', year: 'Any', season: 'Any',
       format: 'Any', status: 'Any', sort: 'POPULARITY_DESC'
     };
 
-    if (type === 'POPULAR_THIS_SEASON') {
+    if (type === 'TRENDING_NOW') {
+      targetFilters = { ...targetFilters, sort: 'TRENDING_DESC' };
+      setViewTitle('Trending Now');
+    } else if (type === 'POPULAR_THIS_SEASON') {
       const { year, season } = getCurrentSeasonInfo();
       targetFilters = { ...targetFilters, year, season };
       setViewTitle('Popular This Season');
