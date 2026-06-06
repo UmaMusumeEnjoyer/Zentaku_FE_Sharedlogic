@@ -11,5 +11,7 @@
   "live": "ライブ",
   "hostId": "ホストID:",
   "watchPartyRoom": "ウォッチパーティールーム",
-  "noDataAvailable": "利用可能なデータがありません"
+  "noDataAvailable": "利用可能なデータがありません",
+  "closeChat": "チャットを閉じる",
+  "closeMembers": "メンバーを閉じる"
 }

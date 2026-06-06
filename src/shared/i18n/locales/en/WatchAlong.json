@@ -11,5 +11,7 @@
   "live": "LIVE",
   "hostId": "Host ID:",
   "watchPartyRoom": "Watch Party Room",
-  "noDataAvailable": "No data available"
+  "noDataAvailable": "No data available",
+  "closeChat": "Close Chat",
+  "closeMembers": "Close Members"
 }
