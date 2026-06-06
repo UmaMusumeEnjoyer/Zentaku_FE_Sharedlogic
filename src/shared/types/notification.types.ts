@@ -6,6 +6,7 @@
 export enum NotificationType {
   MESSAGE = 'message',
   ANIME_AIRING = 'anime_airing',
+  LIST_INTERACTION = 'list_interaction',
 }
 
 /**
@@ -31,10 +32,20 @@ export interface AnimeAiringNotificationMetadata {
 }
 
 /**
+ * Metadata for list interaction notifications
+ */
+export interface ListInteractionNotificationMetadata {
+  listId?: string | number;
+  listBanner?: string | null;
+  actorAvatar?: string | null;
+}
+
+/**
  * Combined notification metadata type
  */
 export type NotificationMetadata = MessageNotificationMetadata &
   AnimeAiringNotificationMetadata &
+  ListInteractionNotificationMetadata &
   Record<string, unknown>;
 
 /**

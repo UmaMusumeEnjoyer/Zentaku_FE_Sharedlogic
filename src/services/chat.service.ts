@@ -30,6 +30,14 @@ export const chatService = {
     return apiClient.get(`/communities/${communityId}/members`);
   },
 
+  /**
+   * Toggle mute cho một cộng đồng
+   * POST /communities/{communityId}/mute
+   */
+  toggleMuteCommunity: (communityId: string | number, isMuted: boolean) => {
+    return apiClient.post(`/communities/${communityId}/mute`, { isMuted });
+  },
+
   // ===========================
   // PRIVATE CHANNELS (DMs)
   // ===========================
