@@ -4,6 +4,10 @@
     "like": "Like",
     "unlike": "Unlike",
     "viewLikers": "View who liked this list",
-    "likesLabel": "Likes"
+    "likesLabel": "Likes",
+    "enterChat": "Enter Chat",
+    "createChat": "Create Chat",
+    "enterChatTitle": "Enter chat room",
+    "createChatTitle": "Create chat room"
   }
 }

@@ -4,6 +4,10 @@
     "like": "いいね",
     "unlike": "いいね解除",
     "viewLikers": "このリストをいいねした人を表示",
-    "likesLabel": "いいね数"
+    "likesLabel": "いいね数",
+    "enterChat": "チャットに参加",
+    "createChat": "チャットを作成",
+    "enterChatTitle": "チャットルームに参加する",
+    "createChatTitle": "チャットルームを作成する"
   }
 }
