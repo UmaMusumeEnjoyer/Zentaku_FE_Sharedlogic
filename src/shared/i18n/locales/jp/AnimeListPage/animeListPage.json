@@ -12,7 +12,8 @@
       "editDetails": "リスト詳細を編集",
       "deleteList": "リストを削除",
       "requestEdit": "編集アクセスをリクエスト",
-      "joinRequest": "参加リクエスト"
+      "joinRequest": "参加リクエスト",
+      "manage": "メンバー"
     },
     "requestModal": {
       "joinTitle": "参加リクエスト",

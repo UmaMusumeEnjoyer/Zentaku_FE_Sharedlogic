@@ -12,7 +12,8 @@
       "editDetails": "Edit List Details",
       "deleteList": "Delete List",
       "requestEdit": "Request Edit Access",
-      "joinRequest": "Join Request"
+      "joinRequest": "Join Request",
+      "manage": "Members"
     },
     "requestModal": {
       "joinTitle": "Join Request",
