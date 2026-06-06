@@ -12,6 +12,7 @@ export interface ListInfo {
   bannerImage?: string;
   communityId?: string;
   channelId?: string;
+  isMember?: boolean;
 }
 
 export interface LikerUser_listHeader {
