@@ -10,6 +10,8 @@ export interface ListInfo {
   is_owner: boolean;
   color?: string;
   bannerImage?: string;
+  communityId?: string;
+  channelId?: string;
 }
 
 export interface LikerUser_listHeader {

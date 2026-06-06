@@ -185,6 +185,8 @@ export const useAnimeListPage = (
         privacy: data.privacy || (data.is_private ? 'private' : 'public') || prev.privacy,
         color: data.color || prev.color,
         bannerImage: data.bannerImage || data.banner_image || prev.bannerImage,
+        communityId: data.communityId || prev.communityId,
+        channelId: data.channelId || prev.channelId,
         isOwner: isUserOwner
       }));
 

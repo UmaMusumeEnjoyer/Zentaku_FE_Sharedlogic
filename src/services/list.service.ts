@@ -67,6 +67,10 @@ export const listService = {
     return apiClient.get(`/list/${listId}`);
   },
 
+  createChat: (listId: string) => {
+    return apiClient.post(`/list/${listId}/chat`);
+  },
+
   // --- Items in List ---
   getItems: (listId: string) => {
     // API cũ là /list/anime/{listId}/. Tạm giữ endpoint cũ nhưng bỏ slash, 

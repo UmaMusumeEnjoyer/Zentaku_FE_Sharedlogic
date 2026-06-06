@@ -22,6 +22,14 @@ export const chatService = {
     return apiClient.get(`/communities/${communityId}/channels`);
   },
 
+  /**
+   * Lấy danh sách thành viên của một cộng đồng
+   * GET /communities/{communityId}/members
+   */
+  getCommunityMembers: (communityId: string | number) => {
+    return apiClient.get(`/communities/${communityId}/members`);
+  },
+
   // ===========================
   // PRIVATE CHANNELS (DMs)
   // ===========================

@@ -9,6 +9,8 @@ export interface ListInfo {
   color: string;
   isOwner: boolean;
   bannerImage?: string;
+  communityId?: string;
+  channelId?: string;
 }
 
 export interface GroupedAnime {
