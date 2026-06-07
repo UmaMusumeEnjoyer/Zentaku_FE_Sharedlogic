@@ -6,42 +6,48 @@ import { getStorageItem } from '../api/apiClient';
 class SocketService {
   private socket: Socket | null = null;
   private listeners: Map<string, Function[]> = new Map();
+  private isConnecting = false;
 
   get isConnected(): boolean {
     return !!this.socket?.connected;
   }
 
   async connect() {
-    if (this.socket?.connected) return;
+    if (this.socket?.connected || this.isConnecting) return;
+    this.isConnecting = true;
 
-    const token = await getStorageItem('accessToken');
-    if (!token) {
-      console.warn('Socket connect failed: No access token');
-      return;
-    }
-
-    // Backend Socket.IO URL
-    const baseUrl = SharedConfig.VITE_BACKEND_DOMAIN || SharedConfig.apiBaseUrl.replace(/\/api\/?$/, '');
-
-    this.socket = io(baseUrl, {
-      auth: { token },
-      transports: ['websocket', 'polling'],
-    });
-
-    this.socket.on('connect', () => {
-      // Connect logic
-    });
-
-    this.socket.on('disconnect', () => {
-      // Disconnect logic
-    });
-
-    this.socket.on('message', (envelope: any) => {
-      const { event, data } = envelope;
-      if (event) {
-        this.emitLocal(event, data);
+    try {
+      const token = await getStorageItem('accessToken');
+      if (!token) {
+        console.warn('Socket connect failed: No access token');
+        return;
       }
-    });
+
+      // Backend Socket.IO URL
+      const baseUrl = SharedConfig.VITE_BACKEND_DOMAIN || SharedConfig.apiBaseUrl.replace(/\/api\/?$/, '');
+
+      this.socket = io(baseUrl, {
+        auth: { token },
+        transports: ['websocket', 'polling'],
+      });
+
+      this.socket.on('connect', () => {
+        // Connect logic
+      });
+
+      this.socket.on('disconnect', () => {
+        // Disconnect logic
+      });
+
+      this.socket.on('message', (envelope: any) => {
+        const { event, data } = envelope;
+        if (event) {
+          this.emitLocal(event, data);
+        }
+      });
+    } finally {
+      this.isConnecting = false;
+    }
   }
 
   disconnect() {
