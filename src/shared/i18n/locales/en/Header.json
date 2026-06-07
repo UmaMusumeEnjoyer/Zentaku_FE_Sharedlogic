@@ -17,7 +17,8 @@
 },
 "accessibility": {
     "toggle_theme": "Switch Theme",
-    "search": "Search"
+    "search": "Search",
+    "search_placeholder": "Search users..."
 },
 "notifications": {
     "title": "Notifications",

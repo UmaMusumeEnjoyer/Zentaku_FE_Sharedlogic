@@ -17,7 +17,8 @@
   },
   "accessibility": {
     "toggle_theme": "テーマ切り替え",
-    "search": "検索"
+    "search": "検索",
+    "search_placeholder": "ユーザーを検索..."
   },
   "notifications": {
     "title": "通知",
