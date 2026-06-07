@@ -43,6 +43,7 @@ export const useAuth = (): UseAuthReturn => {
           website: userData.website,
           banner: userData.banner,
           createdAt: userData.createdAt,
+          systemRole: userData.systemRole,
           // Backward compatibility: map sang trường cũ cho các UI chưa cập nhật
           avatar_url: userData.avatar,
           first_name: userData.displayName,
@@ -137,6 +138,7 @@ export const useAuth = (): UseAuthReturn => {
         avatar: userData.avatar !== undefined ? userData.avatar : prev.avatar,
         username: userData.username !== undefined ? userData.username : prev.username,
         displayName: userData.displayName !== undefined ? userData.displayName : prev.displayName,
+        systemRole: userData.systemRole !== undefined ? userData.systemRole : prev.systemRole,
         // Backward compatibility: đồng bộ trường cũ
         avatar_url: userData.avatar !== undefined ? userData.avatar : (userData.avatar_url !== undefined ? userData.avatar_url : prev.avatar_url),
         first_name: userData.displayName !== undefined ? userData.displayName : (userData.first_name !== undefined ? userData.first_name : prev.first_name),

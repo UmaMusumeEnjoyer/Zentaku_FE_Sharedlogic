@@ -77,6 +77,7 @@ export interface CurrentUserResponse {
   website?: string;
   banner?: string;
   createdAt?: string;
+  systemRole?: string;
 }
 
 // === USER TYPE (Zentaku_BE schema, camelCase) ===
@@ -98,6 +99,7 @@ export interface User {
   website?: string;
   banner?: string;
   createdAt?: string;
+  systemRole?: string;
 
   // === DEPRECATED (backward compatibility) ===
   // Các trường cũ giữ lại tạm thời để không break UI components

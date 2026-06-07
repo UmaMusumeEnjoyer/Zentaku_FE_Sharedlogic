@@ -1,5 +1,6 @@
 // Export cấu hình để App khởi tạo
 export { initSharedLogic, SharedConfig } from './api/config';
+export * from './api/apiClient';
 
 // Export các services
 export * from './services/auth.service';
