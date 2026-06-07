@@ -13,7 +13,19 @@ class SocketService {
   }
 
   async connect() {
-    if (this.socket?.connected || this.isConnecting) return;
+    if (this.isConnecting) return;
+    
+    if (this.socket) {
+      if (this.socket.connected) return;
+      this.isConnecting = true;
+      try {
+        this.socket.connect();
+      } finally {
+        this.isConnecting = false;
+      }
+      return;
+    }
+
     this.isConnecting = true;
 
     try {

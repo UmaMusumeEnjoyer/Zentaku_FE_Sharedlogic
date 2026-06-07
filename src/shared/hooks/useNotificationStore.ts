@@ -112,10 +112,16 @@ export const useNotificationStore = create<NotificationState>((set, get) => ({
   },
 
   addNotification: (notification: NotificationItem) => {
-    set((state) => ({
-      notifications: [notification, ...state.notifications],
-      unreadCount: state.unreadCount + (notification.isRead ? 0 : 1),
-    }));
+    set((state) => {
+      // Deduplicate by ID
+      if (state.notifications.some((n) => String(n.id) === String(notification.id))) {
+        return state;
+      }
+      return {
+        notifications: [notification, ...state.notifications],
+        unreadCount: state.unreadCount + (notification.isRead ? 0 : 1),
+      };
+    });
   },
 
   markAsRead: async (notificationId: string) => {

@@ -84,6 +84,8 @@ export const useAnimeListPage = (
   const [showRequestModal, setShowRequestModal] = useState(false);
   const [requestType, setRequestType] = useState<RequestType>('join');
   const [isSubmittingRequest, setIsSubmittingRequest] = useState(false);
+  const [hasRequestedJoin, setHasRequestedJoin] = useState(false);
+  const [hasRequestedEdit, setHasRequestedEdit] = useState(false);
 
   const [deleteMode, setDeleteMode] = useState(false);
   const [selectedAnimeIds, setSelectedAnimeIds] = useState<(string | number)[]>([]);
@@ -330,9 +332,11 @@ export const useAnimeListPage = (
       if (requestType === 'join') {
         await listService.requestJoin(listId, message);
         alert("Your join request has been sent successfully!");
+        setHasRequestedJoin(true);
       } else if (requestType === 'edit') {
         await listService.requestEdit(listId, message);
         alert("Your edit access request has been sent successfully!");
+        setHasRequestedEdit(true);
       }
       setShowRequestModal(false);
     } catch (error: any) {
@@ -482,6 +486,8 @@ export const useAnimeListPage = (
     showRequestModal,
     requestType,
     isSubmittingRequest,
+    hasRequestedJoin,
+    hasRequestedEdit,
     deleteMode,
     selectedAnimeIds,
     isDeleting,
