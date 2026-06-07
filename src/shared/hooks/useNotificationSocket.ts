@@ -29,6 +29,8 @@ export type OnNewNotificationCallback = (notification: NotificationItem) => void
 interface UseNotificationSocketOptions {
   /** Optional callback invoked when a new notification arrives */
   onNewNotification?: OnNewNotificationCallback;
+  /** Whether the user is authenticated. If false, skips socket connection and API calls. */
+  isAuthenticated?: boolean;
 }
 
 export function useNotificationSocket(options?: UseNotificationSocketOptions) {
@@ -36,6 +38,7 @@ export function useNotificationSocket(options?: UseNotificationSocketOptions) {
   const fetchNotifications = useNotificationStore((s) => s.fetchNotifications);
   const fetchUnreadCount = useNotificationStore((s) => s.fetchUnreadCount);
   const callbackRef = useRef(options?.onNewNotification);
+  const isAuthenticated = options?.isAuthenticated;
 
   // Keep callback ref up to date
   useEffect(() => {
@@ -43,6 +46,8 @@ export function useNotificationSocket(options?: UseNotificationSocketOptions) {
   }, [options?.onNewNotification]);
 
   useEffect(() => {
+    if (!isAuthenticated) return;
+
     // Fetch initial notifications on mount
     fetchNotifications();
     fetchUnreadCount();
@@ -65,5 +70,5 @@ export function useNotificationSocket(options?: UseNotificationSocketOptions) {
     return () => {
       if (unsubscribe) unsubscribe();
     };
-  }, [addNotification, fetchNotifications, fetchUnreadCount]);
+  }, [isAuthenticated, addNotification, fetchNotifications, fetchUnreadCount]);
 }
