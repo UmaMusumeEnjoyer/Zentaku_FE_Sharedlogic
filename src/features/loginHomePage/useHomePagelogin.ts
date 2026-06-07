@@ -25,13 +25,30 @@ export const useHomePagelogin = () => {
           
           if (response.data) {
             // Map dữ liệu từ API vào State
-            // Logic giữ nguyên từ file gốc: xử lý fallback (on_hold/paused, plan_to_watch/planning)
+            // Convert backend fields (cover_image, title_english) to frontend AnimeData format (coverImage, title)
+            const mapAnimeList = (list: any[]) => {
+              if (!Array.isArray(list)) return [];
+              return list.map(item => ({
+                ...item,
+                id: item.anilist_id || item.id,
+                title: {
+                  english: item.title_english || item.name_english,
+                  romaji: item.title_romaji || item.name_romaji,
+                  native: item.title_native || item.name_native,
+                },
+                coverImage: {
+                  large: item.cover_image,
+                  medium: item.cover_image,
+                }
+              }));
+            };
+
             setAnimeLists({
-              watching: response.data.watching || [],
-              completed: response.data.completed || [],
-              onHold: response.data.on_hold || response.data.paused || [],
-              dropped: response.data.dropped || [],
-              planning: response.data.plan_to_watch || response.data.planning || []
+              watching: mapAnimeList(response.data.watching || []),
+              completed: mapAnimeList(response.data.completed || []),
+              onHold: mapAnimeList(response.data.on_hold || response.data.paused || []),
+              dropped: mapAnimeList(response.data.dropped || []),
+              planning: mapAnimeList(response.data.plan_to_watch || response.data.planning || [])
             });
           }
         } else {

@@ -7,6 +7,8 @@
   "newUpdate": "New Update",
   "localTime": "Local Time (UTC+8)",
   "today": "Today",
+  "thisMonth": "This Month",
+  "thisWeek": "This Week",
   "daysOfWeek": {
     "mon": "Mon",
     "tue": "Tue",
