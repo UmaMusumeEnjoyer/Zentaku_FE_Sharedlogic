@@ -47,6 +47,11 @@ export function useNotificationSocket(options?: UseNotificationSocketOptions) {
     fetchNotifications();
     fetchUnreadCount();
 
+    // Ensure the socket is connected to receive real-time events globally
+    if (!socketService.isConnected) {
+      socketService.connect();
+    }
+
     // Listen for realtime notification events
     const unsubscribe = socketService.on('notification.new', (data: NotificationItem) => {
       addNotification(data);
