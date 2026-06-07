@@ -92,6 +92,8 @@ export const useEditorModal = (
         episode_progress: Number(formData.progress) || 0,
         watch_status: formData.status,
         isFavorite: formData.isFavorite,
+        score: Number(formData.score) || 0,
+        private: formData.private,
         start_date: formData.startDate || new Date().toISOString().split('T')[0],
         finish_date: formData.finishDate || null,
         total_rewatch: Number(formData.rewatches) || 0,
