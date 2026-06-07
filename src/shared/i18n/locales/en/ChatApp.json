@@ -19,5 +19,10 @@
   "floatingChat.active": "Active",
   "floatingChat.justNow": "Just now",
   "floatingChat.minutesAgo": "{{count}}m ago",
-  "floatingChat.hoursAgo": "{{count}}h ago"
+  "floatingChat.hoursAgo": "{{count}}h ago",
+  "send": "Send",
+  "showChat": "Show Chat",
+  "hideChat": "Hide Chat",
+  "messages": "Messages",
+  "loading": "Loading..."
 }

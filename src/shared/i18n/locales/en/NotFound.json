@@ -1,0 +1,11 @@
+{
+  "title": "404",
+  "nameTag": "404 Page Not Found-Chan",
+  "dialogue": {
+    "user": "You: Oh, hi 404-chan, have you seen my page?",
+    "chan": "404-Chan: 404-chan? Calling me by my first name... I... I didn't realise we were so close user-kun..."
+  },
+  "buttons": {
+    "goHome": "Leave, and go home"
+  }
+}

@@ -31,9 +31,11 @@ export * from './shared/i18n';
 export { default as commonEn } from './shared/i18n/locales/en/common.json';
 export { default as notificationEn } from './shared/i18n/locales/en/notification.json';
 export { default as homePageEn } from './shared/i18n/locales/en/HomePage.json';
+export { default as notFoundEn } from './shared/i18n/locales/en/NotFound.json';
 export { default as commonJp } from './shared/i18n/locales/jp/common.json';
 export { default as notificationJp } from './shared/i18n/locales/jp/notification.json';
 export { default as homePageJp } from './shared/i18n/locales/jp/HomePage.json';
+export { default as notFoundJp } from './shared/i18n/locales/jp/NotFound.json';
 
 export { default as newsDetailPageEn } from './shared/i18n/locales/en/NewsDetailPage.json';
 export { default as newsDetailPageJp } from './shared/i18n/locales/jp/NewsDetailPage.json';
