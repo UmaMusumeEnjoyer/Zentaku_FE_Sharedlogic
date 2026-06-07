@@ -148,7 +148,7 @@ export const useAnimeSearchPage = () => {
   };
 
   // --- HANDLER: SEARCH ---
-  const handleSearch = async (keyword: string, filters: AnimeFilters) => {
+  const handleSearch = async (keyword: string, filters: AnimeFilters, forceSearch: boolean = false) => {
     const { genre, year, season, format, status, sort } = filters;
 
     const hasFilter : boolean =
@@ -160,7 +160,7 @@ export const useAnimeSearchPage = () => {
       (status && status !== 'Any')
     );
 
-    if ((!keyword || keyword.trim() === "") && !hasFilter) {
+    if (!forceSearch && (!keyword || keyword.trim() === "") && !hasFilter) {
       handleBackToHome();
       return;
     }
@@ -176,7 +176,7 @@ export const useAnimeSearchPage = () => {
       let mappedResults: AnimeData_animeSearch[] = [];
 
       // Case 1: Search by Criteria (Filter or Sort)
-      if (hasFilter || (sort && sort !== 'POPULARITY_DESC')) {
+      if (forceSearch || hasFilter || (sort && sort !== 'POPULARITY_DESC')) {
         const queryParams: any = { page: 1, perPage: 20 };
 
         if (year && year !== 'Any') queryParams.year = parseInt(year.toString());
@@ -213,7 +213,7 @@ export const useAnimeSearchPage = () => {
   };
 
   // --- HANDLER: VIEW ALL ---
-  const handleViewAllClick = async (type: 'TRENDING_NOW' | 'POPULAR_THIS_SEASON' | 'UPCOMING_NEXT_SEASON') => {
+  const handleViewAllClick = async (type: 'TRENDING_NOW' | 'POPULAR_THIS_SEASON' | 'UPCOMING_NEXT_SEASON' | 'ALL_TIME_POPULAR') => {
     sessionStorage.removeItem(SESSION_KEY);
 
     // Setup filter mặc định
@@ -233,10 +233,13 @@ export const useAnimeSearchPage = () => {
       const { year, season } = getNextSeasonInfo();
       targetFilters = { ...targetFilters, year, season };
       setViewTitle('Upcoming Next Season');
+    } else if (type === 'ALL_TIME_POPULAR') {
+      targetFilters = { ...targetFilters, sort: 'POPULARITY_DESC' };
+      setViewTitle('All Time Popular');
     }
 
     // Trigger search với filter vừa tạo
-    handleSearch('', targetFilters);
+    handleSearch('', targetFilters, true);
     window.scrollTo({ top: 400, behavior: 'smooth' });
   };
 
