@@ -7,7 +7,7 @@ export const supportService = {
   },
 
   getAdminTickets: (params?: { page?: number; limit?: number; status?: string; category?: string }) => {
-    return apiClient.get<{ success: boolean; data: { data: SupportTicket[]; total: number } }>('/support/admin/tickets', { params });
+    return apiClient.get<{ data: SupportTicket[]; total: number }>('/support/admin/tickets', { params });
   },
 
   updateTicketStatus: (id: string, data: UpdateTicketStatusRequest) => {
