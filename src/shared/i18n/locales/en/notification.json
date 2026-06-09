@@ -8,5 +8,7 @@
     "minutesAgo": "{{count}}m ago",
     "hoursAgo": "{{count}}h ago",
     "daysAgo": "{{count}}d ago"
-  }
+  },
+  "newFollowerTitle": "New Follower",
+  "newFollowerBody": "{{name}} started following you"
 }

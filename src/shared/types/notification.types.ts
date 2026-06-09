@@ -7,6 +7,7 @@ export enum NotificationType {
   MESSAGE = 'message',
   ANIME_AIRING = 'anime_airing',
   LIST_INTERACTION = 'list_interaction',
+  NEW_FOLLOWER = 'new_follower',
 }
 
 /**
@@ -41,11 +42,22 @@ export interface ListInteractionNotificationMetadata {
 }
 
 /**
+ * Metadata for new follower notifications
+ */
+export interface FollowerNotificationMetadata {
+  followerId?: string;
+  followerName?: string;
+  followerUsername?: string;
+  followerAvatar?: string | null;
+}
+
+/**
  * Combined notification metadata type
  */
 export type NotificationMetadata = MessageNotificationMetadata &
   AnimeAiringNotificationMetadata &
   ListInteractionNotificationMetadata &
+  FollowerNotificationMetadata &
   Record<string, unknown>;
 
 /**
