@@ -24,5 +24,8 @@
   "showChat": "Show Chat",
   "hideChat": "Hide Chat",
   "messages": "Messages",
-  "loading": "Loading..."
+  "loading": "Loading...",
+  "ownerRole": "Owner",
+  "editorRole": "Editor",
+  "viewerRole": "Viewer"
 }
