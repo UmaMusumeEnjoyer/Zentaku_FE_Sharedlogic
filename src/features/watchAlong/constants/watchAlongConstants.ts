@@ -13,4 +13,5 @@ export const WATCH_ALONG_EVENTS = {
   ROOM_KICK: 'room.kick',
   ROOM_JOIN: 'room.join',
   ROOM_LEAVE: 'room.leave',
+  ROOM_CLOSED: 'room.closed',
 };

@@ -13,5 +13,6 @@
   "watchPartyRoom": "Watch Party Room",
   "noDataAvailable": "No data available",
   "closeChat": "Close Chat",
-  "closeMembers": "Close Members"
+  "closeMembers": "Close Members",
+  "roomClosedMessage": "The watch party has been closed by the host."
 }

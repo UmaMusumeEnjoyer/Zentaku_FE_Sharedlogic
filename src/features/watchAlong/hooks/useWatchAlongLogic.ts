@@ -7,7 +7,8 @@ import type { WatchRoom } from '../types/watchAlong.types';
 export const useWatchAlongLogic = (
   roomId: string,
   currentUserId: string | null,
-  onKicked?: () => void
+  onKicked?: () => void,
+  onRoomClosed?: () => void
 ) => {
   const [room, setRoom] = useState<WatchRoom | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -25,6 +26,7 @@ export const useWatchAlongLogic = (
     if (!roomId) return;
 
     let mounted = true;
+    let hasJoined = false;
 
     const initRoom = async () => {
       try {
@@ -32,6 +34,7 @@ export const useWatchAlongLogic = (
         // 1. Join room (which also gets the current snapshot)
         const roomData = await watchPartyService.joinWatchRoom(roomId);
         if (mounted) {
+          hasJoined = true;
           setRoom(roomData);
           setRemotePlaybackState({
             isPlaying: roomData.isPlaying,
@@ -67,8 +70,15 @@ export const useWatchAlongLogic = (
 
     return () => {
       mounted = false;
-      // Leave room on unmount
-      watchPartyService.leaveWatchRoom(roomId).catch(console.error);
+      // Only leave if we successfully joined, prevents Strict Mode
+      // double-mount from deleting the room before the second mount
+      if (hasJoined) {
+        if (socketService.isConnected) {
+          socketService.emit(WATCH_ALONG_EVENTS.ROOM_LEAVE, { channelId: roomId });
+        }
+        // Leave room on unmount (REST API fallback)
+        watchPartyService.leaveWatchRoom(roomId).catch(console.error);
+      }
     };
   }, [roomId]);
 
@@ -161,6 +171,16 @@ export const useWatchAlongLogic = (
       }
     };
 
+    const handleRoomClosed = (data: any) => {
+      if (data && data.channelId === roomId) {
+        if (onRoomClosed) {
+          onRoomClosed();
+        } else if (onKicked) {
+          onKicked(); // Fallback if onRoomClosed is not provided
+        }
+      }
+    };
+
     socketService.on(WATCH_ALONG_EVENTS.PLAYBACK_STATE_CHANGED, handlePlaybackStateChanged);
     socketService.on(WATCH_ALONG_EVENTS.SOURCE_CHANGED, handleSourceChanged);
     socketService.on('message.created', handleMessageCreated);
@@ -168,6 +188,7 @@ export const useWatchAlongLogic = (
     socketService.on(WATCH_ALONG_EVENTS.PRESENCE_JOINED, handlePresenceJoined);
     socketService.on(WATCH_ALONG_EVENTS.PRESENCE_LEFT, handlePresenceLeft);
     socketService.on(WATCH_ALONG_EVENTS.PRESENCE_KICKED, handlePresenceKicked);
+    socketService.on(WATCH_ALONG_EVENTS.ROOM_CLOSED, handleRoomClosed);
 
     return () => {
       socketService.off(WATCH_ALONG_EVENTS.PLAYBACK_STATE_CHANGED, handlePlaybackStateChanged);
@@ -177,8 +198,9 @@ export const useWatchAlongLogic = (
       socketService.off(WATCH_ALONG_EVENTS.PRESENCE_JOINED, handlePresenceJoined);
       socketService.off(WATCH_ALONG_EVENTS.PRESENCE_LEFT, handlePresenceLeft);
       socketService.off(WATCH_ALONG_EVENTS.PRESENCE_KICKED, handlePresenceKicked);
+      socketService.off(WATCH_ALONG_EVENTS.ROOM_CLOSED, handleRoomClosed);
     };
-  }, [roomId, currentUserId, onKicked]);
+  }, [roomId, currentUserId, onKicked, onRoomClosed]);
 
   // Actions
   const play = useCallback((timestamp?: number) => {
