@@ -8,11 +8,14 @@
     "followed_anime": "followed anime",
     "create_list": "created custom list",
     "updated_followed_anime": "updated progress",
+    "followed_user": "started following",
+    "unfollowed_user": "unfollowed",
     "default": "performed action"
   },
   "targets": {
     "unnamed_list": "Unnamed List",
-    "unknown_anime": "Unknown Anime"
+    "unknown_anime": "Unknown Anime",
+    "unknown_user": "Unknown User"
   },
   "buttons": {
     "load_more": "Load more activity"

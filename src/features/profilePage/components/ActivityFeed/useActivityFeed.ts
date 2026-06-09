@@ -70,6 +70,10 @@ export const useActivityFeed = ({ userId, username, filterDate, t }: UseActivity
       if (item.metaData?.action === 'FOLLOW') return 'feed-icon-add';
       return 'feed-icon-update';
     }
+    if (item.type === 'USER_FOLLOW' || item.type === 'USER_UNFOLLOW') {
+      if (item.metaData?.action === 'FOLLOW' || item.type === 'USER_FOLLOW') return 'feed-icon-add';
+      return 'feed-icon-default';
+    }
     return 'feed-icon-default';
   };
 
@@ -77,6 +81,10 @@ export const useActivityFeed = ({ userId, username, filterDate, t }: UseActivity
     if (item.type === 'MEDIA_FOLLOW') {
       if (item.metaData?.action === 'FOLLOW') return '+';
       return '✎';
+    }
+    if (item.type === 'USER_FOLLOW' || item.type === 'USER_UNFOLLOW') {
+      if (item.metaData?.action === 'FOLLOW' || item.type === 'USER_FOLLOW') return '+';
+      return '-';
     }
     return '•';
   };
@@ -86,15 +94,25 @@ export const useActivityFeed = ({ userId, username, filterDate, t }: UseActivity
       if (item.metaData?.action === 'FOLLOW') return t('ActivityFeed:actions.followed_anime');
       return t('ActivityFeed:actions.updated_followed_anime');
     }
+    if (item.type === 'USER_FOLLOW' || item.type === 'USER_UNFOLLOW') {
+      if (item.metaData?.action === 'FOLLOW' || item.type === 'USER_FOLLOW') return t('ActivityFeed:actions.followed_user');
+      return t('ActivityFeed:actions.unfollowed_user');
+    }
     return t('ActivityFeed:actions.default');
   };
 
   const getTargetName = (item: ActivityItem) => {
+    if (item.type === 'USER_FOLLOW' || item.type === 'USER_UNFOLLOW') {
+      return item.metaData?.targetName || t('ActivityFeed:targets.unknown_user');
+    }
     return item.metaData?.targetName || item.media?.titleRomaji || item.media?.titleEnglish || t('ActivityFeed:targets.unknown_anime');
   };
 
   // --- 4. NAVIGATION LOGIC ---
   const getTargetUrl = (item: ActivityItem) => {
+    if (item.type === 'USER_FOLLOW' || item.type === 'USER_UNFOLLOW') {
+      return `/user/${item.metaData?.targetUsername || item.metaData?.targetId}`;
+    }
     return `/anime/${item.metaData?.targetId || item.mediaId}`;
   };
 

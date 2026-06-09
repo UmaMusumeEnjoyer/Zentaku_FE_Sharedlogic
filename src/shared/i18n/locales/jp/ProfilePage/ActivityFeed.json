@@ -8,11 +8,14 @@
     "followed_anime": "フォローしたアニメ",
     "create_list": "カスタムリストを作成",
     "updated_followed_anime": "進捗を更新",
+    "followed_user": "をフォローしました",
+    "unfollowed_user": "のフォローを解除しました",
     "default": "アクションを実行"
   },
   "targets": {
     "unnamed_list": "未命名リスト",
-    "unknown_anime": "不明なアニメ"
+    "unknown_anime": "不明なアニメ",
+    "unknown_user": "不明なユーザー"
   },
   "buttons": {
     "load_more": "さらにアクティビティを読み込む"
