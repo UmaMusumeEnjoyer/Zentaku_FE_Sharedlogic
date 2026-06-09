@@ -31,6 +31,10 @@ export const listService = {
     return apiClient.get(url);
   },
 
+  getUserJoinedLists: () => {
+    return apiClient.get('/list/user/joined');
+  },
+
   create: (data: any) => {
     const payload = mapListPayload(data);
     return apiClient.post('/list/create', payload);

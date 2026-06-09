@@ -38,6 +38,8 @@ export const useProfilePage = (
   const [listsLoading, setListsLoading] = useState(false);
   const [likedLists, setLikedLists] = useState<CustomList[]>([]);
   const [likedListsLoading, setLikedListsLoading] = useState(false);
+  const [joinedLists, setJoinedLists] = useState<CustomList[]>([]);
+  const [joinedListsLoading, setJoinedListsLoading] = useState(false);
 
   // Favorites & Activity Data
   const [favoriteList, setFavoriteList] = useState<any[]>([]);
@@ -149,6 +151,24 @@ export const useProfilePage = (
     }
   }, [targetUsername]);
 
+  const fetchJoinedLists = useCallback(() => {
+    if (!targetUsername || !isOwnProfile) return;
+    setJoinedListsLoading(true);
+    listService.getUserJoinedLists()
+      .then((res) => {
+        const rawLists = Array.isArray(res.data) ? res.data : (res.data?.data || res.data?.lists || []);
+        const mappedLists = rawLists.map((l: any) => ({
+          ...l,
+          list_id: l.list_id || l.id,
+          list_name: l.list_name || l.name,
+          is_private: l.is_private !== undefined ? l.is_private : (l.privacy === 'PRIVATE' || l.privacy === 'private')
+        }));
+        setJoinedLists(mappedLists);
+      })
+      .catch((err) => console.error("Failed to fetch joined lists:", err))
+      .finally(() => setJoinedListsLoading(false));
+  }, [targetUsername, isOwnProfile]);
+
   // Fetch Favorites
   useEffect(() => {
     if (activeTab === 'Favorites' && targetUsername) {
@@ -217,14 +237,16 @@ export const useProfilePage = (
     }
   }, [fetchSocialData, userProfile?.id]);
 
-  // Load Initial Data based on Tab
   useEffect(() => {
     if (activeTab === 'Anime List') {
       fetchCustomLists();
-      if (isOwnProfile) fetchLikedLists();
+      if (isOwnProfile) {
+        fetchLikedLists();
+        fetchJoinedLists();
+      }
     }
     setSelectedDate(null);
-  }, [activeTab, fetchCustomLists, fetchLikedLists, isOwnProfile]);
+  }, [activeTab, fetchCustomLists, fetchLikedLists, fetchJoinedLists, isOwnProfile]);
 
   const handleUpdateSuccess = (updatedUser: UserProfile_ProfilePage) => {
 
@@ -415,6 +437,8 @@ export const useProfilePage = (
     listsLoading,
     likedLists,
     likedListsLoading,
+    joinedLists,
+    joinedListsLoading,
     handleListClick,
 
     // Favorites
