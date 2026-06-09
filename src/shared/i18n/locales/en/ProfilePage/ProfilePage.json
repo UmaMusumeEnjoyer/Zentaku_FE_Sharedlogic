@@ -40,9 +40,11 @@
     "my_custom_lists": "My Custom Lists",
     "users_lists": "{{username}}'s Lists",
     "new_list": "New List",
+    "joined_lists": "Joined Lists",
     "liked_lists": "Liked Lists",
     "empty": {
       "no_lists": "No custom lists found.",
+      "no_joined_lists": "No joined lists found.",
       "no_liked_lists": "No liked lists yet."
     },
     "badges": {

@@ -40,9 +40,11 @@
     "my_custom_lists": "マイカスタムリスト",
     "users_lists": "{{username}}さんのリスト",
     "new_list": "新規リスト",
+    "joined_lists": "参加しているリスト",
     "liked_lists": "いいねしたリスト",
     "empty": {
       "no_lists": "カスタムリストが見つかりません。",
+      "no_joined_lists": "参加しているリストはありません。",
       "no_liked_lists": "まだいいねしたリストはありません。"
     },
     "badges": {
