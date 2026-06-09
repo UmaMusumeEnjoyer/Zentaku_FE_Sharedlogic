@@ -241,6 +241,11 @@ export const useWatchAlongLogic = (
     socketService.emit('message.send', { channelId: roomId, content, attachments: [] });
   }, [roomId]);
 
+  const inviteFriend = useCallback(async (targetUserId: string | number) => {
+    if (!roomId) return;
+    return watchPartyService.inviteToWatchRoom(roomId, targetUserId);
+  }, [roomId]);
+
   return {
     room,
     isHost,
@@ -254,7 +259,8 @@ export const useWatchAlongLogic = (
       changeEpisode,
       sendMessage,
       leaveRoom,
-      kickParticipant
+      kickParticipant,
+      inviteFriend
     }
   };
 };

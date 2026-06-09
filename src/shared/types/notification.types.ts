@@ -8,6 +8,7 @@ export enum NotificationType {
   ANIME_AIRING = 'anime_airing',
   LIST_INTERACTION = 'list_interaction',
   NEW_FOLLOWER = 'new_follower',
+  WATCH_PARTY_INVITE = 'watch_party_invite',
 }
 
 /**
@@ -52,12 +53,23 @@ export interface FollowerNotificationMetadata {
 }
 
 /**
+ * Metadata for watch party invite notifications
+ */
+export interface WatchPartyInviteMetadata {
+  channelId?: string;
+  hostUsername?: string;
+  hostAvatar?: string | null;
+  chatChannelId?: string | null;
+}
+
+/**
  * Combined notification metadata type
  */
 export type NotificationMetadata = MessageNotificationMetadata &
   AnimeAiringNotificationMetadata &
   ListInteractionNotificationMetadata &
   FollowerNotificationMetadata &
+  WatchPartyInviteMetadata &
   Record<string, unknown>;
 
 /**

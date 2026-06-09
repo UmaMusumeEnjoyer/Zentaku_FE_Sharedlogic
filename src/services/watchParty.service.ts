@@ -41,5 +41,10 @@ export const watchPartyService = {
       }, 500); // 500ms delay to prevent Strict Mode unmount/remount issues
       pendingLeaves.set(channelId, timeoutId);
     });
-  }
+  },
+
+  inviteToWatchRoom: async (channelId: string, targetUserId: string | number) => {
+    const response = await apiClient.post(`/watch-rooms/${channelId}/invite`, { targetUserId });
+    return response.data;
+  },
 };
