@@ -164,6 +164,9 @@ export { default as ChatAppJp } from './shared/i18n/locales/jp/ChatApp.json';
 export { default as NovelReaderEn } from './shared/i18n/locales/en/NovelReader.json';
 export { default as NovelReaderJp } from './shared/i18n/locales/jp/NovelReader.json';
 
+export { default as AdminDashboardEn } from './shared/i18n/locales/en/AdminDashboard.json';
+export { default as AdminDashboardJp } from './shared/i18n/locales/jp/AdminDashboard.json';
+
 /////////Components///////////////
 export * from './components/AnimeCard';
 export * from './components/GlobalSearch/GlobalSearch.types';

@@ -9,6 +9,7 @@ export const NAMESPACES = ['common', 'HomePage', 'NewsDetailPage', 'RankingSecti
     , 'EditProfileModal', 'ProfilePage'
     , 'addAnimeModal', ' editListModal', 'likersModal', 'listHeader', 'requestList', 'requestModal', 'sidebar'
     , 'userAnimeGroup', 'userItem', 'userSearchModal', 'animeListPage'
+    , 'AdminDashboard'
 ] as const;
 
 // 2. Định nghĩa danh sách Ngôn ngữ
@@ -23,9 +24,11 @@ export const DEFAULT_LANG = 'en';
 import common from './locales/en/common.json';
 import HomePage from './locales/en/HomePage.json';
 import CharacterPage from './locales/en/CharacterPage.json';
+import AdminDashboard from './locales/en/AdminDashboard.json';
 
 export interface I18nSchema {
     common: typeof common;
     HomePage: typeof HomePage;
     CharacterPage: typeof CharacterPage;
+    AdminDashboard: typeof AdminDashboard;
 }
