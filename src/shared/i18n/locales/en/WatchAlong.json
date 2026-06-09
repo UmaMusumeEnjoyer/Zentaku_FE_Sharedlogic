@@ -25,5 +25,12 @@
     "inviting": "Inviting...",
     "invite": "Invite"
   },
-  "inviteFriends": "Invite Friends"
+  "inviteFriends": "Invite Friends",
+  "kickedMessage": "You have been kicked from this watch party.",
+  "leaveWarning": {
+    "title": "Leave Warning",
+    "message": "Are you sure you want to leave? This watch party will be closed and all viewers will be returned to the home page.",
+    "cancel": "Cancel",
+    "confirm": "Confirm Leave"
+  }
 }

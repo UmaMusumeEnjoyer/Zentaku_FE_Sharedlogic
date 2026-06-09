@@ -25,5 +25,12 @@
     "inviting": "招待中...",
     "invite": "招待"
   },
-  "inviteFriends": "友達を招待する"
+  "inviteFriends": "友達を招待する",
+  "kickedMessage": "このウォッチパーティーからキックされました。",
+  "leaveWarning": {
+    "title": "退出の警告",
+    "message": "本当に退出しますか？このウォッチパーティーは閉じられ、すべての視聴者がホームページに戻されます。",
+    "cancel": "キャンセル",
+    "confirm": "退出を確認"
+  }
 }
