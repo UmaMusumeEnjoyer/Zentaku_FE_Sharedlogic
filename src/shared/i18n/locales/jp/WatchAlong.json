@@ -14,5 +14,16 @@
   "noDataAvailable": "利用可能なデータがありません",
   "closeChat": "チャットを閉じる",
   "closeMembers": "メンバーを閉じる",
-  "roomClosedMessage": "ホストによりルームが閉じられました。"
+  "roomClosedMessage": "ホストによりルームが閉じられました。",
+  "inviteModal": {
+    "title": "友達を招待する",
+    "searchPlaceholder": "友達を検索...",
+    "noResults": "ユーザーが見つかりません",
+    "noFollowing": "誰もフォローしていません",
+    "inRoom": "参加中",
+    "invited": "招待済み",
+    "inviting": "招待中...",
+    "invite": "招待"
+  },
+  "inviteFriends": "友達を招待する"
 }

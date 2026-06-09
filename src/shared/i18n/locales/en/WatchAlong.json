@@ -14,5 +14,16 @@
   "noDataAvailable": "No data available",
   "closeChat": "Close Chat",
   "closeMembers": "Close Members",
-  "roomClosedMessage": "The watch party has been closed by the host."
+  "roomClosedMessage": "The watch party has been closed by the host.",
+  "inviteModal": {
+    "title": "Invite Friends",
+    "searchPlaceholder": "Search friends...",
+    "noResults": "No users found",
+    "noFollowing": "You are not following anyone",
+    "inRoom": "In Room",
+    "invited": "Invited",
+    "inviting": "Inviting...",
+    "invite": "Invite"
+  },
+  "inviteFriends": "Invite Friends"
 }
