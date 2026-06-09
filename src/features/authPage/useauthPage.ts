@@ -47,8 +47,7 @@ export interface UseAuthPageCallbacks {
 
 export const useAuthPage = (
   callbacks: UseAuthPageCallbacks,
-  initialPath?: 'login' | 'signup',
-  verificationToken?: string | null
+  initialPath?: 'login' | 'signup'
 ): UseAuthPageReturn => {
   const [isActive, setIsActive] = useState(initialPath === 'signup');
   const [isLoading, setIsLoading] = useState(false);
@@ -69,27 +68,6 @@ export const useAuthPage = (
   // Validation errors state
   const [loginErrors, setLoginErrors] = useState<ValidationErrors>({});
   const [registerErrors, setRegisterErrors] = useState<ValidationErrors>({});
-  
-  // Email verification logic on mount (Giữ nguyên)
-  useEffect(() => {
-    const verifyToken = async () => {
-      if (verificationToken) {
-        setIsLoading(true); // Có thể thêm loading khi verify
-        try {
-          await authService.verifyEmail(verificationToken);
-          callbacks.onVerifySuccess("Email verified successfully! Please login.");
-          callbacks.onNavigateToLogin();
-        } catch (error: any) {
-          const errorMsg = error.response?.data?.error || "Verification failed.";
-          callbacks.onVerifyError(errorMsg);
-          callbacks.onNavigateToLogin();
-        } finally {
-            setIsLoading(false);
-        }
-      }
-    };
-    verifyToken();
-  }, [verificationToken]);
 
   // ---- Change handlers: clear error for the field being edited ----
   const handleRegisterChange = (e: React.ChangeEvent<HTMLInputElement>) => {

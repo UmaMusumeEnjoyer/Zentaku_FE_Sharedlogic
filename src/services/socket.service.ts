@@ -36,7 +36,9 @@ class SocketService {
       }
 
       // Backend Socket.IO URL
-      const baseUrl = SharedConfig.VITE_BACKEND_DOMAIN || SharedConfig.apiBaseUrl.replace(/\/api\/?$/, '');
+      // Nếu là môi trường Dev (dùng /api proxy), thì websocket cũng nên dùng proxy ('/')
+      const isDev = SharedConfig.apiBaseUrl === '/api';
+      const baseUrl = isDev ? '/' : (SharedConfig.VITE_BACKEND_DOMAIN || SharedConfig.apiBaseUrl.replace(/\/api\/?$/, ''));
 
       this.socket = io(baseUrl, {
         auth: { token },
