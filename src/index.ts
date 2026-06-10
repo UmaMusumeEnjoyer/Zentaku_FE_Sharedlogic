@@ -14,6 +14,7 @@ export * from './services/chat.service';
 export * from './services/socket.service';
 export * from './services/watchParty.service';
 export * from './services/support.service';
+export * from './services/admin.service';
 
 // Export features
 export * from './features/home';
