@@ -34,9 +34,11 @@ export const useAnimeListCard = (
       : `${ASSET_BASE_URL}${formattedUrl}`;
   };
 
-  const getBanner = (): string | null => {
+  const FALLBACK_BANNER = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_EKkkCeMlmiwTOTcuvq-IgSjufiZ4Rz80Zw&s';
+
+  const getBanner = (): string => {
     const bannerUrl = listData.bannerImage;
-    if (!bannerUrl) return null;
+    if (!bannerUrl || bannerUrl.startsWith('#')) return FALLBACK_BANNER;
     const formattedUrl = bannerUrl.startsWith('/') ? bannerUrl : `/${bannerUrl}`;
     return bannerUrl.startsWith('http') ? bannerUrl : `${ASSET_BASE_URL}${formattedUrl}`;
   };
