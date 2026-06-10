@@ -76,6 +76,13 @@ export const adminService = {
   },
 
   /**
+   * Delete an ENTIRE anime completely from FilmServer
+   */
+  deleteAnime: async (animeId: number): Promise<void> => {
+    await apiClient.delete(`/admin/movies/${animeId}`);
+  },
+
+  /**
    * Get active conversion status
    */
   getConversionStatus: async (): Promise<Record<string, unknown>> => {
