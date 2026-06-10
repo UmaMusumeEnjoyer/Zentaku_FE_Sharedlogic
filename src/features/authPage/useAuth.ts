@@ -93,10 +93,10 @@ export const useAuth = (): UseAuthReturn => {
         return { success: false, message: 'Token not found in response' };
       }
     } catch (err: any) {
-      let message = err.response?.data?.message || 'Login failed. Please try again.';
+      let message = err.response?.data?.message || 'Auth:validation.login_failed';
       
       if (err.response?.status === 401) {
-        message = 'Sai tên đăng nhập hoặc mật khẩu';
+        message = 'Auth:validation.invalid_credentials';
       }
       
       setError(message);
