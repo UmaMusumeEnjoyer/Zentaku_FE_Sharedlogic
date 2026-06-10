@@ -80,4 +80,14 @@ export const authService = {
   getCurrentUser: () => {
     return apiClient.get<CurrentUserResponse>('/auth/me');
   },
+
+  /**
+   * Lấy URL chuyển hướng tới Google OAuth
+   * Phương thức này không gọi qua Axios mà được dùng gán vào href hoặc window.location
+   */
+  getGoogleLoginUrl: () => {
+    // Determine base URL dynamically or use hardcoded backend URL
+    const baseURL = apiClient.defaults.baseURL || 'http://localhost:3500/api';
+    return `${baseURL}/auth/google`;
+  },
 };

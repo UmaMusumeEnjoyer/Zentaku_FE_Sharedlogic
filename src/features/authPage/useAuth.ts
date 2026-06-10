@@ -12,6 +12,7 @@ export interface UseAuthReturn {
   logout: () => void;
   fetchUserInfo: (username: string) => Promise<void>;
   updateUserInState: (userData: Partial<User>) => void;
+  loginWithToken: (accessToken: string) => Promise<{ success: boolean; message: string }>;
 }
 
 export const useAuth = (): UseAuthReturn => {
@@ -152,6 +153,52 @@ export const useAuth = (): UseAuthReturn => {
     });
   }, []);
 
+  const loginWithToken = useCallback(async (accessToken: string) => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      
+      localStorage.setItem('accessToken', accessToken);
+      
+      // Fetch user info using the token to get username and complete login
+      const response = await authService.getCurrentUser();
+      const userData = response.data;
+      
+      if (userData && userData.username) {
+        localStorage.setItem('username', userData.username);
+        // Map data immediately
+        setUser({
+          id: userData.id,
+          username: userData.username,
+          email: userData.email,
+          displayName: userData.displayName,
+          avatar: userData.avatar,
+          bio: userData.bio,
+          gender: userData.gender,
+          birthday: userData.birthday,
+          location: userData.location,
+          website: userData.website,
+          banner: userData.banner,
+          createdAt: userData.createdAt,
+          systemRole: userData.systemRole,
+          avatar_url: userData.avatar,
+          first_name: userData.displayName,
+        });
+        
+        return { success: true, message: 'Google login successful!' };
+      }
+      
+      return { success: false, message: 'Failed to retrieve user info from token.' };
+    } catch (err: any) {
+      console.error('Login with token error:', err);
+      const message = 'Login failed. Please try again.';
+      setError(message);
+      return { success: false, message };
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
   return {
     user,
     isLoading,
@@ -160,5 +207,6 @@ export const useAuth = (): UseAuthReturn => {
     logout,
     fetchUserInfo,
     updateUserInState,
+    loginWithToken,
   };
 };
