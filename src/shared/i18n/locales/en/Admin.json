@@ -1,0 +1,77 @@
+{
+  "uploadMovie": {
+    "steps": {
+      "search": "Select Anime",
+      "episode": "Select Episode",
+      "upload": "Upload File"
+    },
+    "search": {
+      "tabServer": "Server Anime",
+      "tabNew": "Search New Anime",
+      "placeholderNew": "Search anime by name...",
+      "placeholderServer": "Search anime on server by name or ID...",
+      "loading": "Searching...",
+      "loadingServer": "Loading anime list from server...",
+      "noResultsNew": "No results found for \"{{query}}\"",
+      "noResultsServer": "No anime saved on FilmServer yet."
+    },
+    "episode": {
+      "changeAnime": "Change",
+      "selectLabel": "Select Episode to Upload ({{count}} selected)",
+      "manualInputLabel": "Or enter manually (e.g., 1, 3, 5-10)",
+      "manualInputPlaceholder": "Example: 1, 3, 5-10",
+      "selectedHint": "Selected episodes: {{episodes}}",
+      "noSelectedHint": "No episodes selected",
+      "existingTitle": "Episodes on FilmServer ({{count}})",
+      "deleteAllBtn": "Delete Entire Anime",
+      "deleteAllBtnLoading": "Deleting...",
+      "deleteEpisodeBtnTitle": "Delete episode",
+      "manageSourceTitle": "Click to Manage Source",
+      "btnBack": "Back",
+      "btnNext": "Continue",
+      "hasSource": "✅ Ready",
+      "noSourceHls": "⏳ Not Ready / Converting",
+      "noSourceVtt": "❌ Not Ready"
+    },
+    "upload": {
+      "summary": "AniList ID: {{id}} — Episodes to upload: {{count}}",
+      "successTitle": "Successfully uploaded {{count}} episodes!",
+      "successSub": "Server is processing HLS conversion.",
+      "btnContinue": "Continue Uploading",
+      "progressHeader": "Overall Progress",
+      "statusPending": "Pending ({{progress}}%)",
+      "statusUploading": "Uploading ({{progress}}%)",
+      "statusSuccess": "Completed ✓",
+      "statusError": "Error ✕"
+    },
+    "alerts": {
+      "invalidVideo": "Invalid video format: {{ext}}. Supported: mp4, mkv, webm.",
+      "invalidSubtitle": "Invalid subtitle format: {{ext}}. Only .vtt is supported.",
+      "noFilesSelected": "Please select at least one video or subtitle file for any episode.",
+      "deleteEpisodeConfirm": "Are you sure you want to permanently delete episode {{epNum}} from the server?\n(Video and subtitle data cannot be recovered)",
+      "deleteEpisodeSuccess": "Episode {{epNum}} deleted successfully.",
+      "deleteEpisodeError": "An error occurred while deleting the episode from FilmServer.",
+      "deleteAllConfirm": "⚠️ WARNING: Are you sure you want to completely DELETE this anime from FilmServer?\n(All {{count}} episodes, videos, and subtitles will be permanently deleted and cannot be recovered!)",
+      "deleteAllSuccess": "Entire anime deleted successfully.",
+      "deleteAllError": "An error occurred while deleting the entire anime.",
+      "updateSourceSuccess": "New source uploaded successfully! HLS conversion process has started automatically.",
+      "updateSourceError": "An error occurred while uploading the new source."
+    }
+  },
+  "confirmModal": {
+    "defaultTitle": "Confirmation",
+    "btnCancel": "Cancel",
+    "btnConfirm": "Confirm"
+  },
+  "conversionWidget": {
+    "calculating": "Calculating...",
+    "processing": "Processing",
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "noTasks": "No background tasks are currently running.",
+    "uploadTitle": "Upload Anime",
+    "episode": "Episode",
+    "hlsTitle": "HLS Anime",
+    "eta": "ETA"
+  }
+}

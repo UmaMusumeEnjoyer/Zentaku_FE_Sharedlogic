@@ -1,0 +1,77 @@
+{
+  "uploadMovie": {
+    "steps": {
+      "search": "アニメを選択",
+      "episode": "エピソードを選択",
+      "upload": "ファイルをアップロード"
+    },
+    "search": {
+      "tabServer": "サーバーのアニメ",
+      "tabNew": "新しいアニメを検索",
+      "placeholderNew": "名前でアニメを検索...",
+      "placeholderServer": "サーバーのアニメを名前かIDで検索...",
+      "loading": "検索中...",
+      "loadingServer": "サーバーからアニメのリストを読み込んでいます...",
+      "noResultsNew": "「{{query}}」の検索結果が見つかりません",
+      "noResultsServer": "フィルムサーバーに保存されたアニメはまだありません。"
+    },
+    "episode": {
+      "changeAnime": "変更",
+      "selectLabel": "アップロードするエピソードを選択 ({{count}} 選択済み)",
+      "manualInputLabel": "または手動で入力 (例: 1, 3, 5-10)",
+      "manualInputPlaceholder": "例: 1, 3, 5-10",
+      "selectedHint": "選択されたエピソード: {{episodes}}",
+      "noSelectedHint": "エピソードが選択されていません",
+      "existingTitle": "フィルムサーバー上のエピソード ({{count}})",
+      "deleteAllBtn": "アニメ全体を削除",
+      "deleteAllBtnLoading": "削除中...",
+      "deleteEpisodeBtnTitle": "エピソードを削除",
+      "manageSourceTitle": "クリックしてソースを管理",
+      "btnBack": "戻る",
+      "btnNext": "次へ",
+      "hasSource": "✅ 完了",
+      "noSourceHls": "⏳ 未完了 / 変換中",
+      "noSourceVtt": "❌ 未完了"
+    },
+    "upload": {
+      "summary": "AniList ID: {{id}} — アップロードするエピソード数: {{count}}",
+      "successTitle": "{{count}} 個のエピソードを正常にアップロードしました！",
+      "successSub": "サーバーが HLS 変換を処理しています。",
+      "btnContinue": "アップロードを続ける",
+      "progressHeader": "全体の進捗",
+      "statusPending": "待機中 ({{progress}}%)",
+      "statusUploading": "アップロード中 ({{progress}}%)",
+      "statusSuccess": "完了 ✓",
+      "statusError": "エラー ✕"
+    },
+    "alerts": {
+      "invalidVideo": "無効なビデオ形式です: {{ext}}。サポートされている形式: mp4, mkv, webm。",
+      "invalidSubtitle": "無効な字幕形式です: {{ext}}。.vtt のみがサポートされています。",
+      "noFilesSelected": "エピソードに少なくとも1つのビデオまたは字幕ファイルを選択してください。",
+      "deleteEpisodeConfirm": "サーバーからエピソード {{epNum}} を完全に削除してもよろしいですか？\n(ビデオと字幕データは復元できません)",
+      "deleteEpisodeSuccess": "エピソード {{epNum}} が正常に削除されました。",
+      "deleteEpisodeError": "フィルムサーバーからエピソードを削除する際にエラーが発生しました。",
+      "deleteAllConfirm": "⚠️ 警告: フィルムサーバーからこのアニメを完全に削除してもよろしいですか？\n(すべての {{count}} エピソード、ビデオ、字幕は完全に削除され、復元できません！)",
+      "deleteAllSuccess": "アニメ全体が正常に削除されました。",
+      "deleteAllError": "アニメ全体を削除する際にエラーが発生しました。",
+      "updateSourceSuccess": "新しいソースが正常にアップロードされました！HLS変換プロセスが自動的に開始されました。",
+      "updateSourceError": "新しいソースをアップロードする際にエラーが発生しました。"
+    }
+  },
+  "confirmModal": {
+    "defaultTitle": "確認",
+    "btnCancel": "キャンセル",
+    "btnConfirm": "確認"
+  },
+  "conversionWidget": {
+    "calculating": "計算中...",
+    "processing": "処理中",
+    "expand": "展開",
+    "collapse": "折りたたむ",
+    "noTasks": "現在実行中のバックグラウンドタスクはありません。",
+    "uploadTitle": "アニメをアップロード",
+    "episode": "エピソード",
+    "hlsTitle": "HLS アニメ",
+    "eta": "ETA"
+  }
+}
