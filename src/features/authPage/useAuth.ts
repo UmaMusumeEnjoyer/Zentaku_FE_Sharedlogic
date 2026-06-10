@@ -93,7 +93,12 @@ export const useAuth = (): UseAuthReturn => {
         return { success: false, message: 'Token not found in response' };
       }
     } catch (err: any) {
-      const message = err.response?.data?.message || 'Login failed. Please try again.';
+      let message = err.response?.data?.message || 'Login failed. Please try again.';
+      
+      if (err.response?.status === 401) {
+        message = 'Sai tên đăng nhập hoặc mật khẩu';
+      }
+      
       setError(message);
       return { success: false, message };
     } finally {
