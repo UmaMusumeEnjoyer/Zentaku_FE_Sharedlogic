@@ -73,8 +73,25 @@ export const authService = {
   },
 
   /**
+   * Quên mật khẩu - Gửi email reset link
+   * POST /auth/forgot-password
+   */
+  forgotPassword: (email: string) => {
+    return apiClient.post<{ message: string }>('/auth/forgot-password', { email });
+  },
+
+  /**
+   * Đặt lại mật khẩu mới qua token
+   * POST /auth/reset-password
+   */
+  resetPassword: (token: string, newPassword: string) => {
+    return apiClient.post<{ message: string }>('/auth/reset-password', { token, newPassword });
+  },
+
+  /**
    * Lấy thông tin user hiện tại qua accessToken
    * GET /auth/me
+
    * Response (unwrapped): CurrentUserResponse
    */
   getCurrentUser: () => {
