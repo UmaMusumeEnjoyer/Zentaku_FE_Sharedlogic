@@ -52,6 +52,10 @@ export const useAuthPage = (
   const [isActive, setIsActive] = useState(initialPath === 'signup');
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    setIsActive(initialPath === 'signup');
+  }, [initialPath]);
+
   // ... (Giữ nguyên phần useState data và useEffect) ...
   const [registerData, setRegisterData] = useState({
     username: '',
