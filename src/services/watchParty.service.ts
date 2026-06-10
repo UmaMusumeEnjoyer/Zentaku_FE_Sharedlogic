@@ -44,7 +44,8 @@ export const watchPartyService = {
   },
 
   inviteToWatchRoom: async (channelId: string, targetUserId: string | number) => {
-    const response = await apiClient.post(`/watch-rooms/${channelId}/invite`, { targetUserId });
+    const frontendUrl = typeof window !== 'undefined' ? window.location.origin : undefined;
+    const response = await apiClient.post(`/watch-rooms/${channelId}/invite`, { targetUserId, frontendUrl });
     return response.data;
   },
 };
