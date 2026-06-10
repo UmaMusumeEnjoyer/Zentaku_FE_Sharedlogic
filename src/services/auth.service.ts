@@ -84,8 +84,8 @@ export const authService = {
    * Đặt lại mật khẩu mới qua token
    * POST /auth/reset-password
    */
-  resetPassword: (token: string, newPassword: string) => {
-    return apiClient.post<{ message: string }>('/auth/reset-password', { token, newPassword });
+  resetPassword: (token: string, password: string, confirmPassword: string) => {
+    return apiClient.post<{ message: string }>('/auth/reset-password', { token, password, confirmPassword });
   },
 
   /**
