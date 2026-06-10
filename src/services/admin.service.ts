@@ -77,6 +77,14 @@ export const adminService = {
   },
 
   /**
+   * Get basic anime info by AniList ID
+   */
+  getAnimeBasicInfo: async (anilistId: number): Promise<any> => {
+    const res = await apiClient.get(`/anilist/anime/${anilistId}`);
+    return res.data;
+  },
+
+  /**
    * Search anime from AniList API (via Zentaku_BE search endpoint)
    */
   searchAnime: async (query: string, page = 1, perPage = 10): Promise<any> => {
