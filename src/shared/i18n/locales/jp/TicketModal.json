@@ -1,0 +1,27 @@
+{
+  "title": "バグを報告",
+  "form": {
+    "category": "カテゴリー",
+    "title": "タイトル",
+    "description": "詳細"
+  },
+  "categories": {
+    "ui": "UI・デザイン",
+    "server": "サーバーの問題",
+    "content": "コンテンツの問題",
+    "other": "その他"
+  },
+  "placeholders": {
+    "title": "問題の簡単な概要",
+    "description": "問題を再現するための詳細を記入してください..."
+  },
+  "buttons": {
+    "submit": "送信する",
+    "submitting": "送信中..."
+  },
+  "errors": {
+    "required": "必須項目をすべて入力してください。",
+    "submitFailed": "レポートの送信に失敗しました。"
+  },
+  "success": "レポートが正常に送信されました。"
+}

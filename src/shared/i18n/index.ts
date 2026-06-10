@@ -9,7 +9,7 @@ export const NAMESPACES = ['common', 'HomePage', 'NewsDetailPage', 'RankingSecti
     , 'EditProfileModal', 'ProfilePage'
     , 'addAnimeModal', ' editListModal', 'likersModal', 'listHeader', 'requestList', 'requestModal', 'sidebar'
     , 'userAnimeGroup', 'userItem', 'userSearchModal', 'animeListPage'
-    , 'AdminDashboard'
+    , 'AdminDashboard', 'TicketModal'
 ] as const;
 
 // 2. Định nghĩa danh sách Ngôn ngữ

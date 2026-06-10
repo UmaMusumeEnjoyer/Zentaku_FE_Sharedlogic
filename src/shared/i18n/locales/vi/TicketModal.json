@@ -1,0 +1,27 @@
+{
+  "title": "Báo cáo lỗi",
+  "form": {
+    "category": "Phân loại",
+    "title": "Tiêu đề",
+    "description": "Mô tả chi tiết"
+  },
+  "categories": {
+    "ui": "Giao diện (UI)",
+    "server": "Lỗi máy chủ",
+    "content": "Lỗi nội dung",
+    "other": "Khác"
+  },
+  "placeholders": {
+    "title": "Tóm tắt ngắn gọn về lỗi",
+    "description": "Vui lòng cung cấp chi tiết để chúng tôi có thể mô phỏng lại lỗi..."
+  },
+  "buttons": {
+    "submit": "Gửi báo cáo",
+    "submitting": "Đang gửi..."
+  },
+  "errors": {
+    "required": "Vui lòng điền đầy đủ các trường bắt buộc.",
+    "submitFailed": "Gửi báo cáo thất bại."
+  },
+  "success": "Báo cáo của bạn đã được gửi thành công."
+}

@@ -167,6 +167,10 @@ export { default as NovelReaderJp } from './shared/i18n/locales/jp/NovelReader.j
 export { default as AdminDashboardEn } from './shared/i18n/locales/en/AdminDashboard.json';
 export { default as AdminDashboardJp } from './shared/i18n/locales/jp/AdminDashboard.json';
 
+export { default as TicketModalEn } from './shared/i18n/locales/en/TicketModal.json';
+export { default as TicketModalJp } from './shared/i18n/locales/jp/TicketModal.json';
+export { default as TicketModalVi } from './shared/i18n/locales/vi/TicketModal.json';
+
 /////////Components///////////////
 export * from './components/AnimeCard';
 export * from './components/GlobalSearch/GlobalSearch.types';

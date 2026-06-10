@@ -1,0 +1,27 @@
+{
+  "title": "Report a Bug",
+  "form": {
+    "category": "Category",
+    "title": "Title",
+    "description": "Description"
+  },
+  "categories": {
+    "ui": "User Interface",
+    "server": "Server Issue",
+    "content": "Content Issue",
+    "other": "Other"
+  },
+  "placeholders": {
+    "title": "Brief summary of the issue",
+    "description": "Please provide details to help us reproduce the issue..."
+  },
+  "buttons": {
+    "submit": "Submit Report",
+    "submitting": "Submitting..."
+  },
+  "errors": {
+    "required": "Please fill in all required fields.",
+    "submitFailed": "Failed to submit report."
+  },
+  "success": "Your report has been submitted successfully."
+}
