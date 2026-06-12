@@ -145,9 +145,13 @@ apiClient.interceptors.response.use(
     // Kiểm tra nếu lỗi 401 và chưa retry
     if (error.response?.status === 401 && !originalRequest._retry) {
       // Không retry nếu chính request refresh-token hoặc logout bị 401
+      // Cũng không retry đối với các API public (ví dụ: /auth/login, /auth/register)
+      const requestUrl = originalRequest.url || '';
+      const isPublicRoute = PUBLIC_ROUTES.some(route => requestUrl.includes(route));
+
       if (
-        originalRequest.url?.includes('/auth/refresh-token') ||
-        originalRequest.url?.includes('/auth/logout')
+        isPublicRoute ||
+        requestUrl.includes('/auth/logout')
       ) {
         return Promise.reject(error);
       }
