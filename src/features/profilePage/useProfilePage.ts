@@ -6,7 +6,7 @@ import { SharedConfig } from '../../api/config';
 import { UserProfile_ProfilePage, CustomList, NewListData } from './ProfilePage.types';
 
 // Constants
-const DEFAULT_AVATAR = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlZjpoc6BcEHSBXN83B8niRWSjcbNE-DArpg&s";
+const DEFAULT_AVATAR = "https://media.gametora.com/umamusume/characters/profile/1114.png";
 
 export interface UseProfilePageCallbacks {
   onNavigateToUserProfile: (username: string) => void;
@@ -68,6 +68,10 @@ export const useProfilePage = (
 
     // Nếu url bắt đầu bằng /uploads thì để trình duyệt gọi relative path, Vite Proxy sẽ proxy tới BE.
     if (url.startsWith('/uploads')) {
+      const isReactNative = typeof window === 'undefined' || typeof window.document === 'undefined';
+      if (isReactNative) {
+        return `${SharedConfig.VITE_BACKEND_DOMAIN}${url}`;
+      }
       return url;
     }
 
