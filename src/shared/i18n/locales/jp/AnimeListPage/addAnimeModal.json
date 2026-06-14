@@ -9,11 +9,15 @@
     "noResults": "\"{{searchTerm}}\"の検索結果はありません",
     "loadError": "ライブラリデータを読み込めませんでした。",
     "sections": {
+      "recommended": "✨ おすすめアニメ",
       "watching": "視聴中",
-      "planning": "視聴予定",
+      "plan_to_watch": "視聴予定",
       "completed": "視聴済み",
-      "onHold": "保留中",
+      "on_hold": "保留中",
       "dropped": "視聴中止"
-    }
+    },
+    "becauseGenre": "似たジャンルが好きだから",
+    "becauseYouHave": "リストにあるため: {{animes}}",
+    "genreFallback": "類似ジャンル"
   }
 }

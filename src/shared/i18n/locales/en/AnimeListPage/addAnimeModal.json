@@ -9,11 +9,15 @@
     "noResults": "No results found for \"{{searchTerm}}\"",
     "loadError": "Could not load library data.",
     "sections": {
+      "recommended": "✨ Recommended Anime",
       "watching": "Watching",
-      "planning": "Planning",
+      "plan_to_watch": "Planning",
       "completed": "Completed",
       "dropped": "Dropped",
-      "onHold": "On Hold"
-    }
+      "on_hold": "On Hold"
+    },
+    "becauseGenre": "Because you like similar genres",
+    "becauseYouHave": "Because you have: {{animes}}",
+    "genreFallback": "Similar Genres"
   }
 }

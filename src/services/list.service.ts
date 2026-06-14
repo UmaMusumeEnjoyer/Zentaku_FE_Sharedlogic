@@ -76,7 +76,7 @@ export const listService = {
   },
 
   // --- Recommendations (NEW) ---
-  getListRecommendations: (listId: string, limit: number = 30) => {
+  getListRecommendations: (listId: string, limit: number = 10) => {
     return apiClient.get(`/list/${listId}/recommendations`, { params: { limit } });
   },
 
