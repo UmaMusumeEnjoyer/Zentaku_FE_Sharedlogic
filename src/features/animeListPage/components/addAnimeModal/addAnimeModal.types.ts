@@ -4,6 +4,7 @@ export interface AddAnimeModalProps {
   onClose: () => void;
   onAddAnime: (anime: AnimeItem_addAnimeModal) => Promise<void>;
   currentList?: AnimeItem_addAnimeModal[];
+  listId?: string; // Để fetch recommendations
 }
 
 export interface AnimeItem_addAnimeModal {
@@ -37,7 +38,22 @@ export interface AnimeItem_addAnimeModal {
   cover?: string;
 }
 
+export interface RecommendedAnime {
+  idAnilist: number;
+  title: {
+    romaji: string;
+    english?: string;
+  };
+  coverImage: string;
+  score: number;
+  genres: string[];
+  episodes?: number;
+  relevanceScore: number;
+  recommendedBy: string[];
+}
+
 export interface UserAnimeData {
+  recommended?: AnimeItem_addAnimeModal[]; // Map RecommendedAnime về dạng component cần
   watching?: AnimeItem_addAnimeModal[];
   completed?: AnimeItem_addAnimeModal[];
   on_hold?: AnimeItem_addAnimeModal[];
@@ -45,4 +61,4 @@ export interface UserAnimeData {
   plan_to_watch?: AnimeItem_addAnimeModal[];
 }
 
-export type AnimeStatusKey = 'watching' | 'completed' | 'on_hold' | 'dropped' | 'plan_to_watch';
+export type AnimeStatusKey = 'recommended' | 'watching' | 'completed' | 'on_hold' | 'dropped' | 'plan_to_watch';

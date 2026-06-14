@@ -3,10 +3,12 @@ import {AnimeItem_addAnimeModal as AnimeItem, UserAnimeData, AnimeStatusKey } fr
 import { userService } from '../../../../services/user.service';
 import { animeService } from '../../../../services/anime.service';
 import { searchService } from '../../../../services/search.service';
+import { listService } from '../../../../services/list.service';
 
 export const useAddAnimeModal = (
   isOpen: boolean,
-  currentList: AnimeItem[] = []
+  currentList: AnimeItem[] = [],
+  listId?: string
 ) => {
   const [userData, setUserData] = useState<UserAnimeData | null>(null);
   const [globalResults, setGlobalResults] = useState<AnimeItem[]>([]);
@@ -16,7 +18,7 @@ export const useAddAnimeModal = (
   const [addingIds, setAddingIds] = useState<string[]>([]);
   const [addedIds, setAddedIds] = useState<string[]>([]);
 
-  const statusKeys: AnimeStatusKey[] = ['watching', 'completed', 'on_hold', 'dropped', 'plan_to_watch'];
+  const statusKeys: AnimeStatusKey[] = ['recommended', 'watching', 'completed', 'on_hold', 'dropped', 'plan_to_watch'];
 
   // Logic lấy ID cho danh sách hiện tại (currentList)
   const existingIds = useMemo(() => {
@@ -54,18 +56,62 @@ export const useAddAnimeModal = (
     };
   }, []);
 
-  // Fetch user anime list khi modal mở
+  // Fetch user anime list & recommendations khi modal mở
   useEffect(() => {
     if (isOpen) {
       const username = localStorage.getItem("username");
       if (username) {
         setLoading(true);
-        userService.getUserAnimeList(username)
-          .then(res => {
-            setUserData(res.data);
+        
+        const fetchUserList = userService.getUserAnimeList(username);
+        const fetchRecs = listId ? listService.getListRecommendations(listId) : Promise.resolve({ data: [] });
+
+        Promise.all([fetchUserList, fetchRecs])
+          .then(([userRes, recsRes]) => {
+            const rawUserData = userRes.data;
+            const rawRecs = recsRes.data || [];
+
+            // 1. Gather all IDs in user library to filter recommendations
+            const userLibraryIds = new Set<string>();
+            const statusList = ['watching', 'completed', 'on_hold', 'dropped', 'plan_to_watch'];
+            statusList.forEach(status => {
+              const listItems = rawUserData[status];
+              if (Array.isArray(listItems)) {
+                listItems.forEach(item => {
+                  const id = item.anilist_id || item.media?.id || item.id;
+                  if (id) userLibraryIds.add(String(id));
+                });
+              }
+            });
+
+            // 2. Filter recommendations: Not in user library AND not in current custom list
+            const validRecs = rawRecs.filter((rec: any) => {
+              const idStr = String(rec.idAnilist);
+              return !userLibraryIds.has(idStr) && !existingIds.has(idStr);
+            }).map((rec: any) => ({
+              id: String(rec.idAnilist),
+              anilist_id: rec.idAnilist,
+              title_romaji: rec.title?.romaji,
+              title_english: rec.title?.english,
+              cover_image: rec.coverImage,
+              episodes: rec.episodes,
+              average_score: rec.score,
+              title: {
+                english: rec.title?.english,
+                romaji: rec.title?.romaji,
+              },
+              coverImage: { large: rec.coverImage },
+              media: { genres: rec.genres, recommendedBy: rec.recommendedBy } // Lưu thêm info
+            }));
+
+            // 3. Update state
+            setUserData({
+              ...rawUserData,
+              recommended: validRecs
+            });
           })
           .catch(err => {
-            console.error("Failed to fetch user list", err);
+            console.error("Failed to fetch data for AddAnimeModal", err);
           })
           .finally(() => {
             setLoading(false);
@@ -138,6 +184,7 @@ export const useAddAnimeModal = (
 
   // Utility: Format status title
   const formatStatusTitle = useCallback((status: string): string => {
+    if (status === 'recommended') return '✨ Anime gợi ý';
     return status.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
   }, []);
 

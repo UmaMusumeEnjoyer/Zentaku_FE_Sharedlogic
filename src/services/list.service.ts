@@ -75,6 +75,11 @@ export const listService = {
     return apiClient.post(`/list/${listId}/chat`);
   },
 
+  // --- Recommendations (NEW) ---
+  getListRecommendations: (listId: string, limit: number = 30) => {
+    return apiClient.get(`/list/${listId}/recommendations`, { params: { limit } });
+  },
+
   // --- Items in List ---
   getItems: (listId: string) => {
     // API cũ là /list/anime/{listId}/. Tạm giữ endpoint cũ nhưng bỏ slash, 
